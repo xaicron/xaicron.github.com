@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>YAPC 2012 - 続・Mobage を支える技術</title>
+<link rel="stylesheet" href="static/css/style.css" />
+<link rel="stylesheet" href="static/css/pretty.css" />
+</head>
+<body>
+
+<section class="center">
+
+<!-- raw html start -->
+<div style="position: relative; top: 30%;">
+<!-- raw html end -->
+<h1>続・<span style="color: yellow">Mobage</span> を支える技術</h1>
+
+<p>
+YAPC::Asia 2012 - 09/28 at 東京大学
+<br />Yuji Shimada (<span style="color: yellow">xaicron</span>)
+<!-- raw html start -->
+</div>
+<!-- raw html end -->
+</p>
+</section>
+
+<section>
+
+<h1>Me</h1>
+
+<ul>
+<li>嶋田 裕二 (Yuji Shimada)</li>
+<li>@xaicron</li>
+<li>ソフトウェアエンジニア</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Me</h1>
+
+<p>
+CPAN Author
+</p>
+<p>
+<img src="static/img/metacpan.png" alt="static/img/metacpan.png" title="static/img/metacpan.png" />
+</p>
+</section>
+
+<section>
+
+<h1>Me</h1>
+
+<p>
+<del>デザインセンスがとてもよい</del>
+</p>
+<p>
+<a href="http://blog.livedoor.jp/xaicron/"><img src="static/img/blog.png" alt="static/img/blog.png" title="static/img/blog.png" /></a>
+</p>
+</section>
+
+<section>
+
+<h1>Me</h1>
+
+<p>
+<span style="color: yellow">New!</span> 最近ぎっくり腰になりました
+</p>
+</section>
+
+<section>
+
+<h1>Works</h1>
+
+<ul>
+<li>DeNA Co., Ltd.</li>
+<li>Mobage オープンプラットフォーム</li>
+<ul>
+<li>Mobge API</li>
+<li>Gadget Server (Proxy Server)</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>宣伝</h1>
+
+</section>
+
+<section>
+
+<h1>宣伝</h1>
+
+<p>
+春頃に「<a href="http://www.amazon.co.jp/o/ASIN/4774151114/xaicron-22/">Mobage を支える技術</a>」という本を書きました。
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<img src="static/img/zuttomo-book.jpg" alt="static/img/zuttomo-book.jpg" title="static/img/zuttomo-book.jpg" />
+</p>
+<p>
+⇡これね
+</p>
+</section>
+
+<section>
+
+<p>
+他にうちの部では
+</p>
+<p>
+<img src="static/img/zigorou.jpg" alt="static/img/zigorou.jpg" title="static/img/zigorou.jpg" /> @zigorou
+</p>
+<p>
+<img src="static/img/nekokak.png" alt="static/img/nekokak.png" title="static/img/nekokak.png" /> @nekokak
+</p>
+<p>
+の二人が書いています。
+</p>
+</section>
+
+<section>
+
+<h1>ちなみに</h1>
+
+<p>
+<img src="static/img/zigorou.jpg" alt="static/img/zigorou.jpg" title="static/img/zigorou.jpg" />
+</p>
+<p>
+<img src="static/img/nekokak.png" alt="static/img/nekokak.png" title="static/img/nekokak.png" />
+</p>
+<p>
+<img src="static/img/xaicron.jpg" alt="static/img/xaicron.jpg" title="static/img/xaicron.jpg" />
+</p>
+</section>
+
+<section>
+
+<h1>ちなみに</h1>
+
+<p>
+<img src="static/img/zigorou.jpg" alt="static/img/zigorou.jpg" title="static/img/zigorou.jpg" /> JPA 理事
+</p>
+<p>
+<img src="static/img/nekokak.png" alt="static/img/nekokak.png" title="static/img/nekokak.png" /> JPA 理事
+</p>
+<p>
+<img src="static/img/xaicron.jpg" alt="static/img/xaicron.jpg" title="static/img/xaicron.jpg" /> 路傍の石
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<span style="font-size: 200%">はい</span>
+</p>
+</section>
+
+<section>
+
+<h1>紹介ブログの<span style="color: yellow">名言集</span></h1>
+
+<ul>
+<li>@kazeburo</li>
+<ul>
+<li><span style="color: yellow">35億PV/day の世界では1万回に1回しか起きない事が1秒に8回起きる。100万回に1しか起きないことが1日に3500回起きる</span></li>
+</ul>
+<li>@Yappo</li>
+<ul>
+<li><span style="color: yellow">DeNA のノウハウが12個も馬鹿正直に書いてある</span></li>
+</ul>
+<li>@marqs</li>
+<ul>
+<li><span style="color: yellow">この本の中で個人的にベストだった章は、xaicronさんの書かれた11章でした</span></li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<p>
+marqs さんには<del>寿司</del>ビールをおごろうと思います。
+</p>
+</section>
+
+<section class="center">
+
+<p>
+みんな買ってね♡
+</p>
+<p>
+<img src="static/img/zuttomo-book.jpg" alt="static/img/zuttomo-book.jpg" title="static/img/zuttomo-book.jpg" />
+</p>
+</section>
+
+<section class="center">
+
+<p>
+宣伝終わり
+</p>
+</section>
+
+<section>
+
+<h1>諸注意</h1>
+
+</section>
+
+<section>
+
+<h1>諸注意</h1>
+
+<p>
+発表中に <span style="color: yellow">dankogai</span> ばりにガンガン質問してもらって大丈夫です。
+</p>
+</section>
+
+<section>
+
+<h1>免責</h1>
+
+</section>
+
+<section>
+
+<h1>免責</h1>
+
+<p>
+今日は
+</p>
+</section>
+
+<section>
+
+<h1>免責</h1>
+
+<p>
+今日は
+</p>
+<ul>
+<li>かなしみの <span style="color: yellow">coredump</span></li>
+<li>繰り返す <span style="color: yellow">segv</span></li>
+<li>とまらない <span style="color: yellow">process</span></li>
+<li>さよなら <span style="color: yellow">abrot</span></li>
+<li>そして <span style="color: yellow">PPへ</span></li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>免責</h1>
+
+<p>
+今日は
+</p>
+<ul>
+<li>かなしみの <span style="color: yellow">coredump</span></li>
+<li>繰り返す <span style="color: yellow">segv</span></li>
+<li>とまらない <span style="color: yellow">process</span></li>
+<li>さよなら <span style="color: yellow">abrot</span></li>
+<li>そして <span style="color: yellow">PPへ</span></li>
+</ul>
+
+<p>
+<span style="color: yellow">というような話はしないのでご了承ください</span>
+</p>
+</section>
+
+<section>
+
+<h1>Agenda</h1>
+
+<ul>
+<li>「Mobage を支える技術」の落ち穂拾い</li>
+<ul>
+<li>Parallel::Prefork + Q4M のベストプラクティス的な話</li>
+</ul>
+<li>新しい API の紹介と実装の説明</li>
+<ul>
+<li>Remote Notification API</li>
+<li>Leaderboard API</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>落ち葉拾い的な話</h1>
+
+</section>
+
+<section>
+
+<h1>落ち穂拾い的な話</h1>
+
+<p>
+@Yappo
+</p>
+<p>
+「個人的には <ins>worker でのシグナル処理</ins>入ってて欲しかった。」
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<span style="font-size: 200%">なるほど、</span>
+<br /><span style="font-size: 200%">話しましょう</span>
+</p>
+</section>
+
+<section>
+
+<h1>Worker でのシグナル処理について</h1>
+
+</section>
+
+<section class="center">
+
+<p>
+<span style="font-size: 200%">の前に</span>
+</p>
+</section>
+
+<section>
+
+<h1>Worker のおさらい</h1>
+
+<ul>
+<li>Message Queue に q4m を利用</li>
+<ul>
+<li>q4m は MySQL のストレージエンジンとして実装されている</li>
+<li>DBD::mysql がそのまま使える</li>
+</ul>
+<li>q4m への enqueue</li>
+<ul>
+<li>各種 API や Web コンポーネントなどからやってくる</li>
+</ul>
+<li>ここでいう worker とは</li>
+<ul>
+<li>q4m などから queue を取り出して処理する人</li>
+</ul>
+</ul>
+
+</section>
+
+<section class="center">
+
+<h1>Worker のおさらい</h1>
+
+<p>
+<img src="static/img/worker_introduce.png" alt="static/img/worker_introduce.png" title="static/img/worker_introduce.png" />
+</p>
+</section>
+
+<section>
+
+<h1>Worker のおさらい2</h1>
+
+<ul>
+<li>worker はそれぞれの機能ごとに存在している</li>
+<li>基本的には queue のテーブルと 1:1 である</li>
+<li>複数のプロセスで動作し、スループットを上げている</li>
+<ul>
+<li>Parallel::Prefork を利用</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>まずは愚直に実装してみる</h1>
+
+<p>
+Parallel::Prefork を使った worker の実装例
+</p>
+<pre>
+use strict;
+use warnings;
+use DBI;
+use Parallel::Prefork;
+
+my $queue_table  = &#39;neko_queue&#39;;
+my $connect_info = [ ... ];
+
+my $pm = Parallel::Prefork-&gt;new({
+    max_workers  =&gt; 10,
+    trap_signals =&gt; {
+        TERM =&gt; &#39;TERM&#39;,
+        HUP  =&gt; &#39;TERM&#39;,
+    },
+});
+
+while ($pm-&gt;signal_received ne &#39;TERM&#39;) {
+    $pm-&gt;start(sub {
+        my $q4m = DBI-&gt;connect(@$connect_info);
+        my $index = $q4m-&gt;selectrow_array(
+            &#39;SELECT queue_wait(?)&#39;,
+            undef,
+            $queue_table,
+        );
+        return unless $index; # queue not found
+
+        my $queue = $q4m-&gt;selectrow_hashref(
+            &#39;SELECT * FROM &#39; . $queue_table,
+        );
+        # do something
+
+        $q4m-&gt;do(&#39;SELECT queue_end()&#39;);
+    });
+}
+
+$pm-&gt;wait_all_children;
+</pre>
+
+</section>
+
+<section class="center">
+
+<p>
+やったーできたよー！
+</p>
+</section>
+
+<section class="center">
+
+<p>
+...
+</p>
+</section>
+
+<section class="center">
+
+<p>
+Q. いまのコードの問題点はなにか？
+</p>
+</section>
+
+<section class="center">
+
+<p>
+Q. いまのコードの問題点はなにか？
+</p>
+<p>
+A. シグナルを受け取ると子プロセスが<span style="color: yellow">処理中でも</span>死ぬ
+</p>
+</section>
+
+<section class="center">
+
+<p>
+DEMO
+</p>
+</section>
+
+<section>
+
+<h1>子プロセスでのシグナル処理</h1>
+
+<pre>
+...
+while ($pm-&gt;signal_received ne &#39;TERM&#39;) {
+    $pm-&gt;start(sub {
+        # 追加
+        my $signal_received = 0;
+        $SIG{TERM} = sub {
+            $signal_received = 1;
+        };
+
+        my $q4m = DBI-&gt;connect(@$connect_info);
+        my $index = $q4m-&gt;selectrow_array(
+            &#39;SELECT queue_wait(?)&#39;,
+            undef,
+            $queue_table,
+        );
+        return unless $index; # queue not found
+
+        # シグナルを受け取っていたら終了する
+        return if $signal_received;
+
+        my $queue = $q4m-&gt;selectrow_hashref(
+            &#39;SELECT * FROM &#39; . $queue_table,
+        );
+        # do something
+
+        $q4m-&gt;do(&#39;SELECT queue_end()&#39;);
+    });
+}
+...
+</pre>
+
+</section>
+
+<section class="center">
+
+<p>
+Q. これで問題ないか？
+</p>
+</section>
+
+<section class="center">
+
+<p>
+Q. これで問題ないか？
+</p>
+<p>
+A. 全然ダメですね
+</p>
+</section>
+
+<section>
+
+<h1>いまのコードの問題点</h1>
+
+<ul>
+<li>$SIG{TERM} だと DBI などの C のコードが呼ばれているときに、TRAP 出来ない。</li>
+<li>つまり、queue_wait() 中はずっとシグナル処理されずにブロックする。</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+DEMO
+</p>
+</section>
+
+<section>
+
+<p>
+<span style="color: yellow">→ Sys::SigAction を使うと良い</span>
+</p>
+</section>
+
+<section>
+
+<h1>Sys::SigAction でシグナルトラップ</h1>
+
+<pre>
+use POSIX qw(:signal_h);
+use Sys::SigAction qw(set_sig_handler);
+
+...
+while ($pm-&gt;signal_received ne &#39;TERM&#39;) {
+    $pm-&gt;start(sub {
+        my $signal_received = 0;
+
+        # Sys::SigAction を使う
+        my $h = set_sig_handler(
+            &#39;TERM&#39;,
+            sub {
+                $signal_received = 1;
+            },
+            { flags =&gt; SA_RESTART },
+        );
+
+        my $q4m = DBI-&gt;connect(@$connect_info);
+        my $index = $q4m-&gt;selectrow_array(
+            &#39;SELECT queue_wait(?)&#39;,
+            undef,
+            $queue_table,
+        );
+        return unless $index; # queue not found
+
+        # シグナルを受け取っていたら終了する
+        return if $signal_received;
+
+        my $queue = $q4m-&gt;selectrow_hashref(
+            &#39;SELECT * FROM &#39; . $queue_table,
+        );
+        # do something
+
+        $q4m-&gt;do(&#39;SELECT queue_end()&#39;);
+    });
+}
+...
+</pre>
+
+</section>
+
+<section>
+
+<h1>解説</h1>
+
+<ul>
+<li>Sys::SigAction::set_sig_handler を使うと、C レベルでシグナルトラップが可能になる</li>
+<li>flags に指定している POSIX::SA_RESTART は一旦 シグナルを受け取ると処理が停止するが、シグナルトラップされたあとはもとの処理が再起動する、つまりシグナルとかなかったことのように動くようになる</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+Q. これで完璧か？
+</p>
+</section>
+
+<section class="center">
+
+<p>
+Q. これで完璧か？
+</p>
+<p>
+A. 相変わらず queue_wait() でブロック
+</p>
+</section>
+
+<section class="center">
+
+<p>
+DEMO
+</p>
+</section>
+
+<section>
+
+<h1>やりたいこと</h1>
+
+<ul>
+<li>queue_wait() の時は worker が何もしてないので即死して欲しい</li>
+<li>queue がとれた後は処理が始まっているので死なないでほしい (gracefull restart)</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>正しくシグナルトラップするコード</h1>
+
+<pre>
+...
+while ($pm-&gt;signal_received ne &#39;TERM&#39;) {
+    $pm-&gt;start(sub {
+        my $signal_received = 0;
+
+        my $h = set_sig_handler(
+            &#39;TERM&#39;,
+            sub {
+                $signal_received = 1;
+
+                # 追加
+                my $sth = $DBI::lasth;
+                if ($sth &amp;&amp; $sth-&gt;{Database}{private_in_queue_wait}) {
+                    die &#39;RECEIVED TERM SIGNAL into queue_wait()&#39;;
+                }
+            },
+            { flags =&gt; SA_RESTART },
+        );
+
+        my $q4m = DBI-&gt;connect(@$connect_info);
+
+        $q4m-&gt;{private_in_queue_wait} = 1; # 追加
+        my $index = $q4m-&gt;selectrow_array(
+            &#39;SELECT queue_wait(?)&#39;,
+            undef,
+            $queue_table,
+        );
+        $q4m-&gt;{private_in_queue_wait} = 0; # 追加
+
+        return unless $index; # queue not found
+
+        # シグナルを受け取っていたら終了する
+        return if $signal_received;
+
+        my $queue = $q4m-&gt;selectrow_hashref(
+            &#39;SELECT * FROM &#39; . $queue_table,
+        );
+        # do something
+
+        $q4m-&gt;do(&#39;SELECT queue_end()&#39;);
+    });
+}
+...
+</pre>
+
+</section>
+
+<section>
+
+<h1>解説</h1>
+
+<ul>
+<li>queue_wait() をする直前に、DBハンドルの private 領域にフラグを追加</li>
+<li>queue_wait() が終わったらフラグを削除</li>
+<li>フラグが立っているときにシグナルが来た場合は <span style="color: yellow">die する</span></li>
+<li>queue が取得できた後は、処理が終わるまでは終了しない</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>queue_wait() について</h1>
+
+<p>
+ちなみに、queue_wait('table') はデフォルトでは 60秒で timeout しますが、
+<br />queue_wait('table', 10) とかやると 10秒で timeout します。
+</p>
+</section>
+
+<section class="center">
+
+<p>
+でも俺は即死して欲しいんだ！！！！！１１
+</p>
+</section>
+
+<section class="center">
+
+<p>
+Q. これで完璧か？
+</p>
+</section>
+
+
+<section class="center">
+
+<p>
+Q. これで完璧か？
+</p>
+<p>
+A. まぁまぁいいけど、プロセスのライフサイクルが短すぎる
+</p>
+</section>
+
+<section>
+
+<ul>
+<li>queue がほとんどない状態だと queue_wait() が終わるまでは大体プロセスが生きている</li>
+<li>queue が来まくっている状態だと、queue を一個処理するごとにプロセスが再起動を繰り返す</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+無駄
+</p>
+</section>
+
+<section class="center">
+
+<p>
+無駄
+</p>
+<p>
+無駄
+</p>
+</section>
+
+<section class="center">
+
+<p>
+無駄
+</p>
+<p>
+無駄
+</p>
+<p>
+無駄
+</p>
+</section>
+
+<section class="center">
+
+<p>
+DEMO
+</p>
+</section>
+
+<section>
+
+<h1>やりたいこと</h1>
+
+<ul>
+<li>なるべく同じプロセスを使いまわしたい</li>
+<li>プロセスが死ぬ = q4m と切断されるので永続接続したい</li>
+<li>でも max_requests_per_child 的なこともしたい</li>
+<li>ただし、シグナルを受け取ったら死にたい</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>最終決定版</h1>
+
+<pre>
+# 追加
+my $max_requests_per_child = 10000;
+
+...
+while ($pm-&gt;signal_received ne &#39;TERM&#39;) {
+    $pm-&gt;start(sub {
+        my $signal_received = 0;
+
+        my $h = set_sig_handler(
+            &#39;TERM&#39;,
+            sub {
+                $signal_received = 1;
+
+                my $sth = $DBI::lasth;
+                if ($sth &amp;&amp; $sth-&gt;{Database}{private_in_queue_wait}) {
+                    die &#39;RECEIVED TERM SIGNAL into queue_wait()&#39;;
+                }
+            },
+            { flags =&gt; SA_RESTART },
+        );
+
+        # ここでの接続を使いまわす
+        my $q4m = DBI-&gt;connect(@$connect_info);
+
+        # シグナルを受け取るか、max_requests_per_child までループ
+        my $i = 0;
+        while (!$signal_received &amp;&amp; $max_requests_per_child &gt; $i++) {
+            $q4m-&gt;{private_in_queue_wait} = 1;
+            my $index = $q4m-&gt;selectrow_array(
+                &#39;SELECT queue_wait(?)&#39;,
+                undef,
+                $queue_table,
+            );
+            $q4m-&gt;{private_in_queue_wait} = 0;
+
+            return unless $index; # queue not found
+
+            return if $signal_received;
+
+            my $queue = $q4m-&gt;selectrow_hashref(
+                &#39;SELECT * FROM &#39; . $queue_table,
+            );
+            # do something
+
+            $q4m-&gt;do(&#39;SELECT queue_end()&#39;);
+        }
+    });
+}
+...
+</pre>
+
+</section>
+
+<section>
+
+<h1>解説</h1>
+
+<ul>
+<li>子プロセスの中で更にループを行う</li>
+<ul>
+<li>シグナルを受け取るか、max_requests_per_child までループする</li>
+</ul>
+<li>q4m へのコネクションは ループ前に行う</li>
+<ul>
+<li>接続のコストが減るのでかなり高速に処理できるようになる</li>
+</ul>
+</ul>
+
+</section>
+
+
+<section class="center">
+
+<p>
+というわけで、だいたいこんなかんじで worker を書いて使ってます。
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<span style="font-size: 200%">はい</span>
+</p>
+</section>
+
+<section>
+
+<h1>新しい API の話</h1>
+
+<ul>
+<li>Remote Notification API の裏側</li>
+<li>Leaderboard API の裏側</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+Remote Notification API の裏側
+</p>
+</section>
+
+<section>
+
+<h1>Remote Notification API の概要</h1>
+
+<ul>
+<li>いわゆる iPhone や Android などに送信するプッシュ通知を行う API</li>
+<li>一旦 Mobage の サーバーがリクエストを受け付けて Worker が処理</li>
+<ul>
+<li>APNs / C2DM / GCM などのサーバーに送信する</li>
+<li>それぞれのユーザーのデバイスにメッセージが届く</li>
+</ul>
+</ul>
+
+</section>
+
+<section class="center">
+
+<h1>Remote Notification API の概要</h1>
+
+<p>
+<img src="static/img/remote_notification_introduction.png" alt="static/img/remote_notification_introduction.png" title="static/img/remote_notification_introduction.png" />
+</p>
+</section>
+
+<section class="center">
+
+<p>
+実際の処理の説明の前に
+</p>
+</section>
+
+<section class="center">
+
+<p>
+APNs と GCM (C2DM) の概要
+</p>
+</section>
+
+<section>
+
+<h1>APNs とは</h1>
+
+<ul>
+<li>Apple Push Notification Service の略</li>
+<li>iOS 向けの、プッシュ通知を行うサービス</li>
+<li>独自の <span style="color: yellow">バイナリプロトコル</span></li>
+<li>通信はすべて <span style="color: yellow">SSL クライアント認証</span></li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>APNs とは</h1>
+
+<ul>
+<li>Apple Push Notification Service の略</li>
+<li>iOS 向けの、プッシュ通知を行うサービス</li>
+<li>独自の <span style="color: yellow">バイナリプロトコル</span></li>
+<li>通信はすべて <span style="color: yellow">SSL クライアント認証</span></li>
+<li><del>めんどくさい</del></li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>APNs の利用</h1>
+
+<p>
+いろんなモジュール
+</p>
+<ul>
+<li>Net::APNS</li>
+<li>Net::APNS::Persistent</li>
+<li>AnyEvent::APNS</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>APNs の利用</h1>
+
+<p>
+いろんなモジュール
+</p>
+<ul>
+<li>Net::APNS</li>
+<ul>
+<li>都度接続なのでパフォーマンス出ない</li>
+</ul>
+<li>Net::APNS::Persistent</li>
+<ul>
+<li>永続接続で一番良さそうに見えたが、拡張形式に未対応</li>
+</ul>
+<li>AnyEvent::APNS </li>
+<ul>
+<li>既存の Worker は Prefork なので、ちょっと相性が悪かった</li>
+<li>拡張形式に未対応</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>拡張形式ってなんぞ？</h1>
+
+<ul>
+<li>APNs のプロトコルには単純形式と拡張形式の二種類がある</li>
+<li>拡張形式は、identifier や expiry のなどが指定できる</li>
+<ul>
+<li>さらに <span style="color: yellow">read することでエラー情報が返ってくる</span></li>
+</ul>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+というわけで作りました
+</p>
+</section>
+
+<section>
+
+<h1>Net::APNs::Extended</h1>
+
+<ul>
+<li>基本的に Net::APNS::Persistent のコピペ</li>
+<li>AnyEvent::APNS 風に、文字列超過したら適当に詰める</li>
+<li>send_multi 的なので一気に送信可能</li>
+<li>拡張形式対応</li>
+<ul>
+<li>エラーを取得できる</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Net::APNs::Extended</h1>
+
+<pre>
+use Net::APNs::Extended;
+
+my $device_token = &#39;xxxxxxxxx&#39;; # あとで説明
+
+my $apns = Net::APNs::Extended-&gt;new(
+    is_sandbox =&gt; 1,
+    cert_file  =&gt; &#39;xxx.pem&#39;, # 証明書
+);
+
+my $apns = Net::APNs::Extended-&gt;new(
+    is_sandbox =&gt; 1,
+    cert_file  =&gt; &#39;apns.pem&#39;,
+);
+ 
+# send notification to APNs
+$apns-&gt;send($device_token, {
+    aps =&gt; {
+        alert =&gt; &quot;Hello, APNs!&quot;,
+        badge =&gt; 1,
+        sound =&gt; &quot;default&quot;,
+    },
+    foo =&gt; [qw/bar baz/],
+});
+ 
+# if you want to handle the error
+if (my $error = $apns-&gt;retrive_error) {
+    die Dumper $error;
+}
+</pre>
+
+</section>
+
+<section>
+
+<h1>APNs のむかつくところ</h1>
+
+<ul>
+<li>独自のバイナリプロトコルなので実装がめんどい</li>
+<ul>
+<li>生 TCP なので本当にエラーハンドリングとかだるい</li>
+<li>その上 SSL クライアント認証なので更にだるい</li>
+</ul>
+<li>単純形式だと、エラーが発生すると接続がいきなり切れる</li>
+<li>拡張形式だと、エラーが発生しても即座には切れない</li>
+<ul>
+<li>が、write できなくなる</li>
+<li>write してもエラーにならない (ハーフコネクション状態)</li>
+<li>read が終わると切断される</li>
+<ul>
+<li>recoonect しないといけない</li>
+</ul>
+</ul>
+<li>拡張形式でエラーが発生していないときに read すると何も返ってこないので当然 block する</li>
+<ul>
+<li>select して回避</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>APNs まとめ</h1>
+
+<p>
+なんで HTTP じゃないんや... (帯域とかわかるけどさ...)
+</p>
+</section>
+
+<section>
+
+<h1>GCM について</h1>
+
+</section>
+
+<section class="center">
+
+<p>
+の前に
+</p>
+</section>
+
+<section>
+
+<h1>C2DM について</h1>
+
+<ul>
+<li>Android Cloud to Device Messaging Framework</li>
+<li>Android 向けのプッシュ通知サービス</li>
+<li>みんな大好き HTTPS</li>
+<li>一通ずつしか送れません</li>
+<li>なぜか x-www-form-urlencoded</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+<img src="static/img/deplicate_c2dm.png" alt="static/img/deplicate_c2dm.png" title="static/img/deplicate_c2dm.png" />
+</p>
+<p>
+<span style="color: yellow">今年の Google I/O で突然の終了宣言＼(^o^)／</span>
+</p>
+</section>
+
+<section>
+
+<ul>
+<li>WWW::Google::C2DM</li>
+<li>WWW::Google::ClientLogin</li>
+</ul>
+
+<p>
+とか書いたんだけどね...
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<img src="static/img/GCM_logo.png" alt="static/img/GCM_logo.png" title="static/img/GCM_logo.png" />
+</p>
+<p>
+＿人人人人人人 人人人人人人＿
+<br />＞ <span style="color: yellow">そこで颯爽と GCM の登場</span> ＜
+<br />￣Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣
+</p>
+</section>
+
+<section>
+
+<h1>GCM について</h1>
+
+<ul>
+<li>Google Cloud Messaging for Android</li>
+<li>Android 向けの新しいプッシュ通知サービス</li>
+<li>HTTPS</li>
+<li>JSON 形式対応！ (x-www-form-urlencoded も使える)</li>
+<li>複数のリクエストをまとめて送れる</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+さっそくモジュール書きました
+</p>
+</section>
+
+<section>
+
+<h1>W::G::Cloud::Messaging</h1>
+
+<pre>
+use WWW::Google::Cloud::Messaging;
+ 
+my $api_key = &#39;Your API Key&#39;;
+my $gcm = WWW::Google::Cloud::Messaging-&gt;new(api_key =&gt; $api_key);
+ 
+my $res = $gcm-&gt;send({
+    registration_ids =&gt; [ $reg_id, ... ],
+    collapse_key     =&gt; $collapse_key,
+    data             =&gt; {
+      message =&gt; &#39;blah blah blah&#39;,
+    },
+});
+ 
+die $res-&gt;error unless $res-&gt;is_success;
+ 
+my $results = $res-&gt;results;
+while (my $result = $results-&gt;next) {
+    my $reg_id = $result-&gt;target_reg_id;
+    if ($result-&gt;is_success) {
+        say sprintf &#39;message_id: %s, reg_id: %s&#39;,
+            $result-&gt;message_id, $reg_id;
+    }
+    else {
+        warn sprintf &#39;error: %s, reg_id: %s&#39;,
+            $result-&gt;error, $reg_id;
+    }
+ 
+    if ($result-&gt;has_canonical_id) {
+        say sprintf &#39;reg_id %s is old! refreshed reg_id is %s&#39;,
+            $reg_id, $result-&gt;registration_id;
+    }
+}
+</pre>
+
+</section>
+
+<section>
+
+<h1>W::G::Cloud::Messaging</h1>
+
+<ul>
+<li>C2DM と違って API Key でアクセス</li>
+<li>registration_id (APNs で言うところの device token) を複数指定できる</li>
+<li>それぞれの registration_id ごとに成功の可否が返ってくる</li>
+<ul>
+<li>レスポンスに canonical_id があるときは、registration_id が失効している</li>
+<li>が、ついでにあたらしい registration_id が返ってくるので差し替えが容易</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>GCM のまとめ</h1>
+
+<p>
+HTTP 素晴らしいですね
+</p>
+</section>
+
+<section class="center">
+
+<p>
+APNs と GCM についての説明終わり
+</p>
+</section>
+
+<section class="center">
+
+<h1>ユーザーに通知されるまでの仕組み</h1>
+
+<p>
+↓の図重要
+</p>
+<p>
+<img src="static/img/remote_notification_introduction.png" alt="static/img/remote_notification_introduction.png" title="static/img/remote_notification_introduction.png" />
+</p>
+</section>
+
+<section>
+
+<h1>ユーザーに通知されるまでの仕組み</h1>
+
+<ul>
+<li>device token を Mobage のサーバーに保存</li>
+<li>クライアントアプリ or Game Server から API に リクエスト</li>
+<li>API は q4m に enqueue</li>
+<li>Worker が q4m から dequeue する</li>
+<ul>
+<li>対象のユーザーの device token を調べる</li>
+<li>APNs, GCM (C2DM) 用の q4m に enqueue する</li>
+<li>それぞれに対応した Worker がプロバイダーの API にリクエスト</li>
+</ul>
+<li>ユーザーに通知が届く</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>device token とは</h1>
+
+<ul>
+<li>APNs や GCM が固有のデバイスを識別するためのもの</li>
+<ul>
+<li>APNs は 32byte のバイナリ</li>
+<li>GCM (C2DM) は推測しにくい超長い文字列</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>device token の取得</h1>
+
+<ul>
+<li>まずユーザーがゲームを起動すると、iPhone / Android 向けのそれぞれの SDK が、必要に応じて APNs や GCM のサーバーから device token を取得する</li>
+<li>取得したら、Mobage のサーバーに送って DB に保存する</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>API リクエスト</h1>
+
+<p>
+大まかに、
+</p>
+<ul>
+<li>特定のユーザーへの送信</li>
+<li>全てのユーサーへの送信 (broadcast)</li>
+</ul>
+
+<p>
+の二種類がある。
+</p>
+<p>
+API はここでそれぞれのリクエストに応じて q4m に enqueue する。
+</p>
+</section>
+
+<section class="center">
+
+<h1>特定のユーザーへの送信の場合</h1>
+
+<p>
+<img src="static/img/remote_notificaiton_dispatch_queue.png" alt="static/img/remote_notificaiton_dispatch_queue.png" title="static/img/remote_notificaiton_dispatch_queue.png" />
+</p>
+</section>
+
+<section>
+
+<h1>特定のユーザーへの送信の場合</h1>
+
+<ul>
+<li>API が q4m に enqueue</li>
+<li>Dispatch Worker が dequeue</li>
+<ul>
+<li>ユーザーの device token を元に、GCM と APNs の queue に振り分け</li>
+</ul>
+<li>それぞれに対応した Worker が dequeue して実際に送信</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<h1>Broadcast の場合</h1>
+
+<p>
+<img src="static/img/remote_notification_broadcat_queue.png" alt="static/img/remote_notification_broadcat_queue.png" title="static/img/remote_notification_broadcat_queue.png" />
+</p>
+</section>
+
+<section>
+
+<h1>Broadcast の場合</h1>
+
+<ul>
+<li>API が boradcast 用の q4m に enqueue</li>
+<li>Broadcast Dispatch Worker が dequeue</li>
+<ul>
+<li>アプリをインストールしているユーザーを DB から引いてくる</li>
+<li><span style="color: yellow">特定のユーザーへの送信</span>と同じ形式にして enqueue</li>
+</ul>
+<li>あとは一緒</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>device token の失効について</h1>
+
+<p>
+APNs と GCM でそれぞれ処理が違う
+</p>
+<p>
+APNs
+<ul>
+<li>拡張形式でのエラーで失効だとわかったら DB から削除</li>
+<li>feedbacks service で失効された device token を取得し DB から削除</li>
+</ul>
+</p>
+<p>
+GCM
+<ul>
+<li>レスポンスで失効か無効かなど判断できるのでその場で削除したりリフレッシュしたりする</li>
+</ul>
+</p>
+</section>
+
+<section>
+
+<h1>APNs の feedbacks service</h1>
+
+<p>
+Net::APNs::Extended::Feedback を使うと簡単に無効な device token 一覧が取れる
+</p>
+<pre>
+use Net::APNs::Extended::Feedback;
+
+my $feedback = Net::APNs::Extended::Feedback-&gt;new(
+    is_sandbox =&gt; 1,
+    cert_file   =&gt; &#39;xxx&#39;,
+);
+
+my $feedbacks = $feedback-&gt;retrieve_feedback;
+# [
+#   {
+#     time_t    =&gt; ...,
+#     token_bin =&gt; ...,
+#     token_hex =&gt; ...,
+#   },
+#   {
+#     time_t    =&gt; ...,
+#     token_bin =&gt; ...,
+#     token_hex =&gt; ...,
+#   },
+#   ...
+# ]
+</pre>
+
+</section>
+
+<section>
+
+<h1>Remote Notification API まとめ</h1>
+
+<ul>
+<li>スマフォに簡単にプッシュ通知を送れる</li>
+<li>実際には、Worker とか API とかもっといろんなこと頑張ってます</li>
+<ul>
+<li>いろんなエラーコードがあるのでそれぞれに対応した処理とか</li>
+</ul>
+<li>また、いろんなアプリケーションから送信があるので、Cache::LRU とかつかって良い感じに Net::APNs::Extended とか WWW::Google::Cloud::Messaging のインスタンスを保持したりしてます</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+Remote Notification 終わり
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<span style="font-size: 200%">Leaderboard API の裏側</span>
+</p>
+</section>
+
+<section>
+
+<h1>Leaderboard API の概要</h1>
+
+<ul>
+<li>いわゆるランキング</li>
+<li>リアルタイムにランキングを作れる超便利 API</li>
+<li>バックエンドは Redis + MySQL のハイブリッド</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Redis について</h1>
+
+<ul>
+<li>はやりの No SQL</li>
+<li>ANSI C で書かれているのでいろんな環境で動作</li>
+<li>memcached 程ではないが実用できるレベルで高速</li>
+<li>memcached と違って、ディスクに非同期で書き込むことでデータの消失を最小限に出来る</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Redis について 2</h1>
+
+<ul>
+<li>いろんなデータ型をサポートしている</li>
+<ul>
+<li>リスト型</li>
+<li>セット型</li>
+<li>ソート済みセット型</li>
+<li>ハッシュ型</li>
+</ul>
+<li>アトミックな操作が可能</li>
+<li>いろんな言語でバインディングがある</li>
+<li>レプリケーションの機能がある</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Redis の運用について</h1>
+
+<ul>
+<li>1台のサーバーで複数のインスタンスを立ち上げる</li>
+<ul>
+<li>シングルプロセスなので複数 core 使い切れない</li>
+<li>1台にデータを寄せすぎると再構築とかに時間がかかるので、適度に分割</li>
+</ul>
+</ul>
+
+<ul>
+<li>基本、Master - Slave 構成</li>
+<ul>
+<li>Master にしか参照しない</li>
+<li>Master 壊れたときは Slave 昇格</li>
+<li>MySQL ほど良い感じにならない</li>
+<li>とりあえずいま壊れたことはない (ぇ</li>
+</ul>
+</ul>
+
+<ul>
+<li>レプリ遅延があるので、API は参照も Master しかアクセスしない</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Redis の運用について</h1>
+
+<p>
+@hirose31 さんが書いた<span style="color: yellow">神の書</span>があるので安心
+</p>
+</section>
+
+<section>
+
+<h1>Redis の Perl Binding</h1>
+
+<ul>
+<li>Redis</li>
+<li>Redis::hiredis</li>
+<li>RedisDB</li>
+</ul>
+
+<p>
+などなど大量にある
+</p>
+</section>
+
+<section>
+
+<p>
+最初は Redis::hiredis が高速だったので検討していたが、XS レベルで multi がバグっていた！！
+</p>
+<p>
+<span style="color: yellow">パッチを送ったものの取り込まれない</span>
+</p>
+</section>
+
+<section>
+
+<p>
+仕方ないので、やりたいことが一応全部できる <span style="color: yellow">RedisDB</span> を利用することに
+</p>
+</section>
+
+<section>
+
+<p>
+しかし、当初は RedisDB は PP だったが、<span style="color: yellow">いつの間にか XS に！！</span>
+</p>
+<p>
+<ins>まだ XS 版は使っていません。</ins>
+</p>
+</section>
+
+<section>
+
+<h1>RedisDB の使い方</h1>
+
+<pre>
+use RedisDB;
+
+my $redis = RedisDB-&gt;new(host =&gt; &#39;localhost&#39;, port =&gt; 6379);
+say $redis-&gt;set(foo =&gt; &#39;bar&#39;); # 1
+say $redis-&gt;get(&#39;foo&#39;);        # &#39;bar&#39;
+
+say &#39;-&#39;x80;
+
+say $redis-&gt;send_command(&#39;SET&#39;, foo =&gt; &#39;hoge&#39;); # 1
+say $redis-&gt;send_command(&#39;GET&#39;, &#39;foo&#39;);        # 1
+
+my @results = $redis-&gt;get_all_replies;
+say Dumper \@results; # [ &#39;OK&#39;, &#39;hoge&#39; ]
+</pre>
+
+</section>
+
+<section>
+
+<h1>RedisDB の使い方</h1>
+
+<ul>
+<li>単純な set と get はメソッドが生えている</li>
+<li>いろんなコマンド叩きたい場合は send_command() でぶち込む</li>
+<li>いろいろと戻り値操作方法あるけど、get_all_replies() で一気に取るのが一番楽</li>
+<ul>
+<li>get_all_replies() の戻り値の最後の index が実際に欲しい値</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Leaderboard API の概要</h1>
+
+<ul>
+<li>アプリごとに複数の leaderboard を作成できる</li>
+<li>Leaderboard ごとにユーザーのスコアを登録</li>
+<ul>
+<li>スコアが大きいほうがランキングが上かの設定が可能</li>
+<ul>
+<li>クリア時間が短い = 数値が小さいほうがランキング上位</li>
+<li>獲得ポイントが多い = 数値が大きいほうがランキング上位</li>
+</ul>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Leaderboard API の概要</h1>
+
+<ul>
+<li>ランキングの取得</li>
+<ul>
+<li>leaderboard 全体での順位</li>
+<ul>
+<li>Redis の Sorted Set を利用</li>
+</ul>
+<li>自分の友だち間での順位</li>
+<ul>
+<li>MySQL から引いてきて頑張る</li>
+</ul>
+</ul>
+</ul>
+
+</section>
+
+<section class="center">
+
+<h1>更新機能</h1>
+
+<p>
+新しくスコアを登録したり、更新する場合は Redis と MySQL 両方に
+</p>
+<p>
+<img src="static/img/leaderboard_update.png" alt="static/img/leaderboard_update.png" title="static/img/leaderboard_update.png" />
+</p>
+</section>
+
+<section>
+
+<h1>更新機能</h1>
+
+<p>
+Redis で発行しているコマンド
+</p>
+<pre>
+use RedisDB;
+
+my $redis = RedisDB-&gt;new(...);
+
+$redis-&gt;send_command(&#39;MULTI&#39;);
+$redis-&gt;send_command(&#39;ZADD&#39;, &#39;score&#39;, $score, $user_id);
+# このへんで付加情報的な奴の更新
+$redis-&gt;send_command(&#39;EXEC&#39;);
+</pre>
+
+<p>
+実際は、小さいスコアを許容するかどうかで処理を変えていたりと複雑
+</p>
+<p>
+だけど、基本的には ZADD してるだけです！
+</p>
+</section>
+
+<section>
+
+<h1>個別のユーザーのランキングの取得</h1>
+
+<ul>
+<li>Redis から取得</li>
+</ul>
+
+<pre>
+use RedisDB;
+
+# score が高い人が 1位の場合
+$redis-&gt;send_command(&#39;MULTI&#39;);
+    $redis-&gt;send_command(&#39;ZSCORE&#39;, &#39;score&#39;, $user_id);
+    $redis-&gt;send_command(&#39;ZREVRANK&#39;, &#39;score&#39;, $user_id);
+$redis-&gt;send_command(&#39;EXEC&#39;);
+
+@results = $redis-&gt;get_all_replies;
+say Dumper {
+    score =&gt; $results[-1]-&gt;[0],
+    rank  =&gt; $results[-1]-&gt;[1] + 1,
+};
+</pre>
+
+</section>
+
+<section>
+
+<h1>解説</h1>
+
+<ul>
+<li>ZSCORE で user_id に紐付いた score を取得</li>
+<li>ZREVRANK で score が高い順にソートされたランキングを取得</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>全体のランキングの取得</h1>
+
+<ul>
+<li>Redis から取得</li>
+</ul>
+
+<pre>
+use RedisDB;
+
+my $redis = RedisDB-&gt;new(host =&gt; &#39;localhost&#39;, port =&gt; 6379);
+
+# score が高い人が 1位の場合
+my $start = 1;
+my $end   = 100;
+$redis-&gt;send_command(&#39;MULTI&#39;);
+    $redis-&gt;send_command(&#39;ZCOUNT&#39;, $score_key, &#39;-inf&#39;, &#39;+inf&#39;);
+    $redis-&gt;send_command(&#39;ZREVRANGE&#39;, $score_key, $start, $end, &#39;WITHSCORES&#39;);
+$redis-&gt;send_command(&#39;EXEC&#39;);
+
+@results = $redis-&gt;get_all_replies;
+my $data = $results[0];
+
+my $total = $results[-1][0];
+my $data  = $results[-1][1];
+
+my $rs   = [];
+my $rank = $start;
+for (my $i = 0; $i &lt; @$data; $i += 2) {
+    push @$rs, {
+        rank    =&gt; $rank++,
+        user_id =&gt; $data-&gt;[$i],
+        score   =&gt; $data-&gt;[$i+1],
+    };
+}
+
+say Dumper [ $total, $rs ];
+</pre>
+
+</section>
+
+<section>
+
+<h1>解説</h1>
+
+<ul>
+<li>ZCOUNT でスコア全部の件数を取得</li>
+<ul>
+<li>-inf から +inf とすると全部取れる</li>
+</ul>
+<li>ZREVRANGE で score が高い順にソートされたデータを取得</li>
+<ul>
+<li>$start と $end は LIMIT, OFFSET と同義</li>
+<li>WITHSCORES とすると score も一緒に取れる</li>
+</ul>
+<li>最後に、とれた値を for で回して $start からインクリしていってランクを確定</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>友達間のランキング一覧の取得</h1>
+
+<ul>
+<li>ユーザーの友達一覧を取得</li>
+<li>友達のスコア一覧を MySQL から SELECT</li>
+<li>取得したスコアを普通に sort して、順番をつける</li>
+<li>ランクを確定させて必要な部分だけ返す</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>友達間のランキング一覧の取得</h1>
+
+<ul>
+<li>友達が多いと遅くなる</li>
+<li>一応、「Mobage を支える技術」の 11-3 に書いてある方法で省力化はしている</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Leaderboard まとめ</h1>
+
+<ul>
+<li>Redis いいですね！</li>
+<ul>
+<li>もうちょっといろんな用途に利用できそうで夢が広がりんぐ</li>
+</ul>
+<li>実際には MySQL と Redis 間の不整合を検出するやつとか色々作ってます</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Redis 問題点</h1>
+
+<ul>
+<li>同一得点の人を同じランキングにすることが出来ない</li>
+<li>メモリに収まらなくなると一気にパフォーマンスが劣化する</li>
+<ul>
+<li>常に指標を監視して、賢いシャーディングが求められる</li>
+</ul>
+<li>出来ないこともあるので MySQL に頼る必要がある</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>まとめ</h1>
+
+<ul>
+<li>DBI のシグナル処理とか結構まじめにやろうとすると大変</li>
+<li>APNs や GCM などの外部のシステムに依存しているのでなにかと大変</li>
+<li>Redis 楽しいけどやっぱり万能じゃないのでちゃんと考えて使うべき</li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+<span style="font-size: 200%">ご清聴ありがとうございました。</span>
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<span style="font-size: 200%">Question?</span>
+</p>
+</section>
+
+<div id="dummy"></div>
+<div id="date"></div>
+<div id="page"></div>
+<div id="help">
+<p>j or &rarr;: next</p>
+<p>k or &larr;: prev</p>
+<p>h or &uarr;: list</p>
+<p>l or &darr;: return</p>
+<p>o or &crarr;: open</p>
+<p>? or /: toggle this help</p>
+</div>
+<script type="text/javascript" src="static/js/slide.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="static/js/prettify.js"></script>
+</body>
+<html>

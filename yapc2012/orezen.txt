@@ -1,0 +1,1586 @@
+YAPC 2012 - 続・Mobage を支える技術
+
+->>
+
+@@@@
+<div style="position: relative; top: 30%;">
+@@@@
+= 続・%%yellow:Mobage%% を支える技術 =
+
+YAPC::Asia 2012 - 09/28 at 東京大学
+Yuji Shimada (%%yellow:xaicron%%)
+@@@@
+</div>
+@@@@
+
+<<-
+
+>>>
+
+= Me =
+
+- 嶋田 裕二 (Yuji Shimada)
+- @xaicron
+- ソフトウェアエンジニア
+
+<<<
+
+>>>
+
+= Me =
+
+CPAN Author
+
+[i:static/img/metacpan.png]
+
+<<<
+
+>>>
+
+= Me =
+
+~~デザインセンスがとてもよい~~
+
+[i:static/img/blog.png http://blog.livedoor.jp/xaicron/]
+
+<<<
+
+>>>
+
+= Me =
+
+%%yellow:New!%% 最近ぎっくり腰になりました
+
+<<<
+
+>>>
+
+= Works =
+
+- DeNA Co., Ltd.
+- Mobage オープンプラットフォーム
+ - Mobge API
+ - Gadget Server (Proxy Server)
+
+<<<
+
+>>>
+
+= 宣伝 =
+
+<<<
+
+>>>
+
+= 宣伝 =
+
+春頃に「[http://www.amazon.co.jp/o/ASIN/4774151114/xaicron-22/ Mobage を支える技術]」という本を書きました。
+
+<<<
+
+->>
+
+[i:static/img/zuttomo-book.jpg]
+
+⇡これね
+
+<<-
+
+>>>
+
+他にうちの部では
+
+[i:static/img/zigorou.jpg] @zigorou
+
+[i:static/img/nekokak.png] @nekokak
+
+の二人が書いています。
+
+<<<
+
+>>>
+
+= ちなみに =
+
+[i:static/img/zigorou.jpg]
+
+[i:static/img/nekokak.png]
+
+[i:static/img/xaicron.jpg]
+
+<<<
+
+>>>
+
+= ちなみに =
+
+[i:static/img/zigorou.jpg] JPA 理事
+
+[i:static/img/nekokak.png] JPA 理事
+
+[i:static/img/xaicron.jpg] 路傍の石
+
+<<<
+
+->>
+
+[size:200%:はい]
+
+<<-
+
+>>>
+
+= 紹介ブログの%%yellow:名言集%% =
+
+- @kazeburo
+ - %%yellow:35億PV/day の世界では1万回に1回しか起きない事が1秒に8回起きる。100万回に1しか起きないことが1日に3500回起きる%%
+- @Yappo
+ - %%yellow:DeNA のノウハウが12個も馬鹿正直に書いてある%%
+- @marqs
+ - %%yellow:この本の中で個人的にベストだった章は、xaicronさんの書かれた11章でした%%
+
+<<<
+
+>>>
+
+marqs さんには~~寿司~~ビールをおごろうと思います。
+
+<<<
+
+->>
+
+みんな買ってね♡
+
+[i:static/img/zuttomo-book.jpg]
+
+<<-
+
+->>
+
+宣伝終わり
+
+<<-
+
+>>>
+
+= 諸注意 =
+
+<<<
+
+>>>
+
+= 諸注意 =
+
+発表中に %%yellow:dankogai%% ばりにガンガン質問してもらって大丈夫です。
+
+<<<
+
+>>>
+
+= 免責 =
+
+<<<
+
+>>>
+
+= 免責 =
+
+今日は
+
+<<<
+
+>>>
+
+= 免責 =
+
+今日は
+
+- かなしみの %%yellow:coredump%%
+- 繰り返す %%yellow:segv%%
+- とまらない %%yellow:process%%
+- さよなら %%yellow:abrot%%
+- そして %%yellow:PPへ%%
+
+<<<
+
+>>>
+
+= 免責 =
+
+今日は
+
+- かなしみの %%yellow:coredump%%
+- 繰り返す %%yellow:segv%%
+- とまらない %%yellow:process%%
+- さよなら %%yellow:abrot%%
+- そして %%yellow:PPへ%%
+
+%%yellow:というような話はしないのでご了承ください%%
+
+<<<
+
+>>>
+
+= Agenda =
+
+- 「Mobage を支える技術」の落ち穂拾い
+ - Parallel::Prefork + Q4M のベストプラクティス的な話
+- 新しい API の紹介と実装の説明
+ - Remote Notification API
+ - Leaderboard API
+
+<<<
+
+>>>
+
+= 落ち葉拾い的な話 =
+
+<<<
+
+>>>
+
+= 落ち穂拾い的な話 =
+
+@Yappo
+
+「個人的には --worker でのシグナル処理--入ってて欲しかった。」
+
+<<<
+
+->>
+
+[size:200%:なるほど、]
+[size:200%:話しましょう]
+
+<<-
+
+>>>
+
+= Worker でのシグナル処理について =
+
+<<<
+
+->>
+
+[size:200%:の前に]
+
+<<-
+
+>>>
+
+= Worker のおさらい =
+
+- Message Queue に q4m を利用
+ - q4m は MySQL のストレージエンジンとして実装されている
+ - DBD::mysql がそのまま使える
+- q4m への enqueue
+ - 各種 API や Web コンポーネントなどからやってくる
+- ここでいう worker とは
+ - q4m などから queue を取り出して処理する人
+
+<<<
+
+->>
+
+= Worker のおさらい =
+
+[i:static/img/worker_introduce.png]
+
+<<-
+
+>>>
+
+= Worker のおさらい2 =
+
+- worker はそれぞれの機能ごとに存在している
+- 基本的には queue のテーブルと 1:1 である
+- 複数のプロセスで動作し、スループットを上げている
+ - Parallel::Prefork を利用
+
+<<<
+
+>>>
+
+= まずは愚直に実装してみる =
+
+Parallel::Prefork を使った worker の実装例
+
+{{{
+use strict;
+use warnings;
+use DBI;
+use Parallel::Prefork;
+
+my $queue_table  = 'neko_queue';
+my $connect_info = [ ... ];
+
+my $pm = Parallel::Prefork->new({
+    max_workers  => 10,
+    trap_signals => {
+        TERM => 'TERM',
+        HUP  => 'TERM',
+    },
+});
+
+while ($pm->signal_received ne 'TERM') {
+    $pm->start(sub {
+        my $q4m = DBI->connect(@$connect_info);
+        my $index = $q4m->selectrow_array(
+            'SELECT queue_wait(?)',
+            undef,
+            $queue_table,
+        );
+        return unless $index; # queue not found
+
+        my $queue = $q4m->selectrow_hashref(
+            'SELECT * FROM ' . $queue_table,
+        );
+        # do something
+
+        $q4m->do('SELECT queue_end()');
+    });
+}
+
+$pm->wait_all_children;
+}}}
+
+<<<
+
+->>
+
+やったーできたよー！
+
+<<-
+
+->>
+
+...
+
+<<-
+
+->>
+
+Q. いまのコードの問題点はなにか？
+
+<<-
+
+->>
+
+Q. いまのコードの問題点はなにか？
+
+A. シグナルを受け取ると子プロセスが%%yellow:処理中でも%%死ぬ
+
+<<-
+
+->>
+
+DEMO
+
+<<-
+
+>>>
+
+= 子プロセスでのシグナル処理 =
+
+{{{
+...
+while ($pm->signal_received ne 'TERM') {
+    $pm->start(sub {
+        # 追加
+        my $signal_received = 0;
+        $SIG{TERM} = sub {
+            $signal_received = 1;
+        };
+
+        my $q4m = DBI->connect(@$connect_info);
+        my $index = $q4m->selectrow_array(
+            'SELECT queue_wait(?)',
+            undef,
+            $queue_table,
+        );
+        return unless $index; # queue not found
+
+        # シグナルを受け取っていたら終了する
+        return if $signal_received;
+
+        my $queue = $q4m->selectrow_hashref(
+            'SELECT * FROM ' . $queue_table,
+        );
+        # do something
+
+        $q4m->do('SELECT queue_end()');
+    });
+}
+...
+}}}
+
+<<<
+
+->>
+
+Q. これで問題ないか？
+
+<<-
+
+->>
+
+Q. これで問題ないか？
+
+A. 全然ダメですね
+
+<<-
+
+>>>
+
+= いまのコードの問題点 =
+
+- $SIG{TERM} だと DBI などの C のコードが呼ばれているときに、TRAP 出来ない。
+- つまり、queue_wait() 中はずっとシグナル処理されずにブロックする。
+
+<<<
+
+->>
+
+DEMO
+
+<<-
+
+>>>
+
+%%yellow:→ Sys::SigAction を使うと良い%%
+
+<<<
+
+>>>
+
+= Sys::SigAction でシグナルトラップ =
+
+{{{
+use POSIX qw(:signal_h);
+use Sys::SigAction qw(set_sig_handler);
+
+...
+while ($pm->signal_received ne 'TERM') {
+    $pm->start(sub {
+        my $signal_received = 0;
+
+        # Sys::SigAction を使う
+        my $h = set_sig_handler(
+            'TERM',
+            sub {
+                $signal_received = 1;
+            },
+            { flags => SA_RESTART },
+        );
+
+        my $q4m = DBI->connect(@$connect_info);
+        my $index = $q4m->selectrow_array(
+            'SELECT queue_wait(?)',
+            undef,
+            $queue_table,
+        );
+        return unless $index; # queue not found
+
+        # シグナルを受け取っていたら終了する
+        return if $signal_received;
+
+        my $queue = $q4m->selectrow_hashref(
+            'SELECT * FROM ' . $queue_table,
+        );
+        # do something
+
+        $q4m->do('SELECT queue_end()');
+    });
+}
+...
+}}}
+
+<<<
+
+>>>
+
+= 解説 =
+
+- Sys::SigAction::set_sig_handler を使うと、C レベルでシグナルトラップが可能になる
+- flags に指定している POSIX::SA_RESTART は一旦 シグナルを受け取ると処理が停止するが、シグナルトラップされたあとはもとの処理が再起動する、つまりシグナルとかなかったことのように動くようになる
+
+<<<
+
+->>
+
+Q. これで完璧か？
+
+<<-
+
+->>
+
+Q. これで完璧か？
+
+A. 相変わらず queue_wait() でブロック
+
+<<-
+
+->>
+
+DEMO
+
+<<-
+
+>>>
+
+= やりたいこと =
+
+- queue_wait() の時は worker が何もしてないので即死して欲しい
+- queue がとれた後は処理が始まっているので死なないでほしい (gracefull restart)
+
+<<<
+
+>>>
+
+= 正しくシグナルトラップするコード =
+
+{{{
+...
+while ($pm->signal_received ne 'TERM') {
+    $pm->start(sub {
+        my $signal_received = 0;
+
+        my $h = set_sig_handler(
+            'TERM',
+            sub {
+                $signal_received = 1;
+
+                # 追加
+                my $sth = $DBI::lasth;
+                if ($sth && $sth->{Database}{private_in_queue_wait}) {
+                    die 'RECEIVED TERM SIGNAL into queue_wait()';
+                }
+            },
+            { flags => SA_RESTART },
+        );
+
+        my $q4m = DBI->connect(@$connect_info);
+
+        $q4m->{private_in_queue_wait} = 1; # 追加
+        my $index = $q4m->selectrow_array(
+            'SELECT queue_wait(?)',
+            undef,
+            $queue_table,
+        );
+        $q4m->{private_in_queue_wait} = 0; # 追加
+
+        return unless $index; # queue not found
+
+        # シグナルを受け取っていたら終了する
+        return if $signal_received;
+
+        my $queue = $q4m->selectrow_hashref(
+            'SELECT * FROM ' . $queue_table,
+        );
+        # do something
+
+        $q4m->do('SELECT queue_end()');
+    });
+}
+...
+}}}
+
+<<<
+
+>>>
+
+= 解説 =
+
+- queue_wait() をする直前に、DBハンドルの private 領域にフラグを追加
+- queue_wait() が終わったらフラグを削除
+- フラグが立っているときにシグナルが来た場合は %%yellow:die する%%
+- queue が取得できた後は、処理が終わるまでは終了しない
+
+<<<
+
+>>>
+
+= queue_wait() について =
+
+ちなみに、queue_wait('table') はデフォルトでは 60秒で timeout しますが、
+queue_wait('table', 10) とかやると 10秒で timeout します。
+
+<<<
+
+->>
+
+でも俺は即死して欲しいんだ！！！！！１１
+
+<<-
+
+->>
+
+Q. これで完璧か？
+
+<<-
+
+
+->>
+
+Q. これで完璧か？
+
+A. まぁまぁいいけど、プロセスのライフサイクルが短すぎる
+
+<<-
+
+>>>
+
+- queue がほとんどない状態だと queue_wait() が終わるまでは大体プロセスが生きている
+- queue が来まくっている状態だと、queue を一個処理するごとにプロセスが再起動を繰り返す
+
+<<<
+
+->>
+
+無駄
+
+<<-
+
+->>
+
+無駄
+
+無駄
+
+<<-
+
+->>
+
+無駄
+
+無駄
+
+無駄
+
+<<-
+
+->>
+
+DEMO
+
+<<-
+
+>>>
+
+= やりたいこと =
+
+- なるべく同じプロセスを使いまわしたい
+- プロセスが死ぬ = q4m と切断されるので永続接続したい
+- でも max_requests_per_child 的なこともしたい
+- ただし、シグナルを受け取ったら死にたい
+
+<<<
+
+>>>
+
+= 最終決定版 =
+
+{{{
+# 追加
+my $max_requests_per_child = 10000;
+
+...
+while ($pm->signal_received ne 'TERM') {
+    $pm->start(sub {
+        my $signal_received = 0;
+
+        my $h = set_sig_handler(
+            'TERM',
+            sub {
+                $signal_received = 1;
+
+                my $sth = $DBI::lasth;
+                if ($sth && $sth->{Database}{private_in_queue_wait}) {
+                    die 'RECEIVED TERM SIGNAL into queue_wait()';
+                }
+            },
+            { flags => SA_RESTART },
+        );
+
+        # ここでの接続を使いまわす
+        my $q4m = DBI->connect(@$connect_info);
+
+        # シグナルを受け取るか、max_requests_per_child までループ
+        my $i = 0;
+        while (!$signal_received && $max_requests_per_child > $i++) {
+            $q4m->{private_in_queue_wait} = 1;
+            my $index = $q4m->selectrow_array(
+                'SELECT queue_wait(?)',
+                undef,
+                $queue_table,
+            );
+            $q4m->{private_in_queue_wait} = 0;
+
+            return unless $index; # queue not found
+
+            return if $signal_received;
+
+            my $queue = $q4m->selectrow_hashref(
+                'SELECT * FROM ' . $queue_table,
+            );
+            # do something
+
+            $q4m->do('SELECT queue_end()');
+        }
+    });
+}
+...
+}}}
+
+<<<
+
+>>>
+
+= 解説 =
+
+- 子プロセスの中で更にループを行う
+ - シグナルを受け取るか、max_requests_per_child までループする
+- q4m へのコネクションは ループ前に行う
+ - 接続のコストが減るのでかなり高速に処理できるようになる
+
+<<<
+
+
+->>
+
+というわけで、だいたいこんなかんじで worker を書いて使ってます。
+
+<<-
+
+->>
+
+[size:200%:はい]
+
+<<-
+
+>>>
+
+= 新しい API の話 =
+
+- Remote Notification API の裏側
+- Leaderboard API の裏側
+
+<<<
+
+->>
+
+Remote Notification API の裏側
+
+<<-
+
+>>>
+
+= Remote Notification API の概要 =
+
+- いわゆる iPhone や Android などに送信するプッシュ通知を行う API
+- 一旦 Mobage の サーバーがリクエストを受け付けて Worker が処理
+ - APNs / C2DM / GCM などのサーバーに送信する
+ - それぞれのユーザーのデバイスにメッセージが届く
+
+<<<
+
+->>
+
+= Remote Notification API の概要 =
+
+[i:static/img/remote_notification_introduction.png]
+
+<<-
+
+->>
+
+実際の処理の説明の前に
+
+<<-
+
+->>
+
+APNs と GCM (C2DM) の概要
+
+<<-
+
+>>>
+
+= APNs とは =
+
+- Apple Push Notification Service の略
+- iOS 向けの、プッシュ通知を行うサービス
+- 独自の %%yellow:バイナリプロトコル%%
+- 通信はすべて %%yellow:SSL クライアント認証%%
+
+<<<
+
+>>>
+
+= APNs とは =
+
+- Apple Push Notification Service の略
+- iOS 向けの、プッシュ通知を行うサービス
+- 独自の %%yellow:バイナリプロトコル%%
+- 通信はすべて %%yellow:SSL クライアント認証%%
+- ~~めんどくさい~~
+
+<<<
+
+>>>
+
+= APNs の利用 =
+
+いろんなモジュール
+
+- Net::APNS
+- Net::APNS::Persistent
+- AnyEvent::APNS
+
+<<<
+
+>>>
+
+= APNs の利用 =
+
+いろんなモジュール
+
+- Net::APNS
+ - 都度接続なのでパフォーマンス出ない
+- Net::APNS::Persistent
+ - 永続接続で一番良さそうに見えたが、拡張形式に未対応
+- AnyEvent::APNS 
+ - 既存の Worker は Prefork なので、ちょっと相性が悪かった
+ - 拡張形式に未対応
+
+<<<
+
+>>>
+
+= 拡張形式ってなんぞ？ =
+
+- APNs のプロトコルには単純形式と拡張形式の二種類がある
+- 拡張形式は、identifier や expiry のなどが指定できる
+ - さらに %%yellow:read することでエラー情報が返ってくる%%
+
+<<<
+
+->>
+
+というわけで作りました
+
+<<-
+
+>>>
+
+= Net::APNs::Extended =
+
+- 基本的に Net::APNS::Persistent のコピペ
+- AnyEvent::APNS 風に、文字列超過したら適当に詰める
+- send_multi 的なので一気に送信可能
+- 拡張形式対応
+ - エラーを取得できる
+
+<<<
+
+>>>
+
+= Net::APNs::Extended =
+
+{{{
+use Net::APNs::Extended;
+
+my $device_token = 'xxxxxxxxx'; # あとで説明
+
+my $apns = Net::APNs::Extended->new(
+    is_sandbox => 1,
+    cert_file  => 'xxx.pem', # 証明書
+);
+
+my $apns = Net::APNs::Extended->new(
+    is_sandbox => 1,
+    cert_file  => 'apns.pem',
+);
+ 
+# send notification to APNs
+$apns->send($device_token, {
+    aps => {
+        alert => "Hello, APNs!",
+        badge => 1,
+        sound => "default",
+    },
+    foo => [qw/bar baz/],
+});
+ 
+# if you want to handle the error
+if (my $error = $apns->retrive_error) {
+    die Dumper $error;
+}
+}}}
+
+<<<
+
+>>>
+
+= APNs のむかつくところ =
+
+- 独自のバイナリプロトコルなので実装がめんどい
+ - 生 TCP なので本当にエラーハンドリングとかだるい
+ - その上 SSL クライアント認証なので更にだるい
+- 単純形式だと、エラーが発生すると接続がいきなり切れる
+- 拡張形式だと、エラーが発生しても即座には切れない
+ - が、write できなくなる
+ - write してもエラーにならない (ハーフコネクション状態)
+ - read が終わると切断される
+  - recoonect しないといけない
+- 拡張形式でエラーが発生していないときに read すると何も返ってこないので当然 block する
+ - select して回避
+
+<<<
+
+>>>
+
+= APNs まとめ =
+
+なんで HTTP じゃないんや... (帯域とかわかるけどさ...)
+
+<<<
+
+>>>
+
+= GCM について =
+
+<<<
+
+->>
+
+の前に
+
+<<-
+
+>>>
+
+= C2DM について =
+
+- Android Cloud to Device Messaging Framework
+- Android 向けのプッシュ通知サービス
+- みんな大好き HTTPS
+- 一通ずつしか送れません
+- なぜか x-www-form-urlencoded
+
+<<<
+
+->>
+
+[i:static/img/deplicate_c2dm.png]
+
+%%yellow:今年の Google I/O で突然の終了宣言＼(^o^)／%%
+
+<<-
+
+>>>
+
+- WWW::Google::C2DM
+- WWW::Google::ClientLogin
+
+とか書いたんだけどね...
+
+<<<
+
+->>
+
+[i:static/img/GCM_logo.png]
+
+＿人人人人人人 人人人人人人＿
+＞ %%yellow:そこで颯爽と GCM の登場%% ＜
+￣Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣
+
+<<-
+
+>>>
+
+= GCM について =
+
+- Google Cloud Messaging for Android
+- Android 向けの新しいプッシュ通知サービス
+- HTTPS
+- JSON 形式対応！ (x-www-form-urlencoded も使える)
+- 複数のリクエストをまとめて送れる
+
+<<<
+
+->>
+
+さっそくモジュール書きました
+
+<<-
+
+>>>
+
+= W::G::Cloud::Messaging =
+
+{{{
+use WWW::Google::Cloud::Messaging;
+ 
+my $api_key = 'Your API Key';
+my $gcm = WWW::Google::Cloud::Messaging->new(api_key => $api_key);
+ 
+my $res = $gcm->send({
+    registration_ids => [ $reg_id, ... ],
+    collapse_key     => $collapse_key,
+    data             => {
+      message => 'blah blah blah',
+    },
+});
+ 
+die $res->error unless $res->is_success;
+ 
+my $results = $res->results;
+while (my $result = $results->next) {
+    my $reg_id = $result->target_reg_id;
+    if ($result->is_success) {
+        say sprintf 'message_id: %s, reg_id: %s',
+            $result->message_id, $reg_id;
+    }
+    else {
+        warn sprintf 'error: %s, reg_id: %s',
+            $result->error, $reg_id;
+    }
+ 
+    if ($result->has_canonical_id) {
+        say sprintf 'reg_id %s is old! refreshed reg_id is %s',
+            $reg_id, $result->registration_id;
+    }
+}
+}}}
+
+<<<
+
+>>>
+
+= W::G::Cloud::Messaging =
+
+- C2DM と違って API Key でアクセス
+- registration_id (APNs で言うところの device token) を複数指定できる
+- それぞれの registration_id ごとに成功の可否が返ってくる
+ - レスポンスに canonical_id があるときは、registration_id が失効している
+ - が、ついでにあたらしい registration_id が返ってくるので差し替えが容易
+
+<<<
+
+>>>
+
+= GCM のまとめ =
+
+HTTP 素晴らしいですね
+
+<<<
+
+->>
+
+APNs と GCM についての説明終わり
+
+<<-
+
+->>
+
+= ユーザーに通知されるまでの仕組み =
+
+↓の図重要
+
+[i:static/img/remote_notification_introduction.png]
+
+<<-
+
+>>>
+
+= ユーザーに通知されるまでの仕組み =
+
+- device token を Mobage のサーバーに保存
+- クライアントアプリ or Game Server から API に リクエスト
+- API は q4m に enqueue
+- Worker が q4m から dequeue する
+ - 対象のユーザーの device token を調べる
+ - APNs, GCM (C2DM) 用の q4m に enqueue する
+ - それぞれに対応した Worker がプロバイダーの API にリクエスト
+- ユーザーに通知が届く
+
+<<<
+
+>>>
+
+= device token とは =
+
+- APNs や GCM が固有のデバイスを識別するためのもの
+ - APNs は 32byte のバイナリ
+ - GCM (C2DM) は推測しにくい超長い文字列
+
+<<<
+
+>>>
+
+= device token の取得 =
+
+- まずユーザーがゲームを起動すると、iPhone / Android 向けのそれぞれの SDK が、必要に応じて APNs や GCM のサーバーから device token を取得する
+- 取得したら、Mobage のサーバーに送って DB に保存する
+
+<<<
+
+>>>
+
+= API リクエスト =
+
+大まかに、
+
+- 特定のユーザーへの送信
+- 全てのユーサーへの送信 (broadcast)
+
+の二種類がある。
+
+API はここでそれぞれのリクエストに応じて q4m に enqueue する。
+
+<<<
+
+->>
+
+= 特定のユーザーへの送信の場合 =
+
+[i:static/img/remote_notificaiton_dispatch_queue.png]
+
+<<-
+
+>>>
+
+= 特定のユーザーへの送信の場合 =
+
+- API が q4m に enqueue
+- Dispatch Worker が dequeue
+ - ユーザーの device token を元に、GCM と APNs の queue に振り分け
+- それぞれに対応した Worker が dequeue して実際に送信
+
+<<<
+
+->>
+
+= Broadcast の場合 =
+
+[i:static/img/remote_notification_broadcat_queue.png]
+
+<<-
+
+>>>
+
+= Broadcast の場合 =
+
+- API が boradcast 用の q4m に enqueue
+- Broadcast Dispatch Worker が dequeue
+ - アプリをインストールしているユーザーを DB から引いてくる
+ - %%yellow:特定のユーザーへの送信%%と同じ形式にして enqueue
+- あとは一緒
+
+<<<
+
+>>>
+
+= device token の失効について =
+
+APNs と GCM でそれぞれ処理が違う
+
+APNs
+ - 拡張形式でのエラーで失効だとわかったら DB から削除
+ - feedbacks service で失効された device token を取得し DB から削除
+
+GCM
+ - レスポンスで失効か無効かなど判断できるのでその場で削除したりリフレッシュしたりする
+
+<<<
+
+>>>
+
+= APNs の feedbacks service =
+
+Net::APNs::Extended::Feedback を使うと簡単に無効な device token 一覧が取れる
+
+{{{
+use Net::APNs::Extended::Feedback;
+
+my $feedback = Net::APNs::Extended::Feedback->new(
+    is_sandbox => 1,
+    cert_file   => 'xxx',
+);
+
+my $feedbacks = $feedback->retrieve_feedback;
+# [
+#   {
+#     time_t    => ...,
+#     token_bin => ...,
+#     token_hex => ...,
+#   },
+#   {
+#     time_t    => ...,
+#     token_bin => ...,
+#     token_hex => ...,
+#   },
+#   ...
+# ]
+}}}
+
+<<<
+
+>>>
+
+= Remote Notification API まとめ =
+
+- スマフォに簡単にプッシュ通知を送れる
+- 実際には、Worker とか API とかもっといろんなこと頑張ってます
+ - いろんなエラーコードがあるのでそれぞれに対応した処理とか
+- また、いろんなアプリケーションから送信があるので、Cache::LRU とかつかって良い感じに Net::APNs::Extended とか WWW::Google::Cloud::Messaging のインスタンスを保持したりしてます
+
+<<<
+
+->>
+
+Remote Notification 終わり
+
+<<-
+
+->>
+
+[size:200%:Leaderboard API の裏側]
+
+<<-
+
+>>>
+
+= Leaderboard API の概要 =
+
+- いわゆるランキング
+- リアルタイムにランキングを作れる超便利 API
+- バックエンドは Redis + MySQL のハイブリッド
+
+<<<
+
+>>>
+
+= Redis について =
+
+- はやりの No SQL
+- ANSI C で書かれているのでいろんな環境で動作
+- memcached 程ではないが実用できるレベルで高速
+- memcached と違って、ディスクに非同期で書き込むことでデータの消失を最小限に出来る
+
+<<<
+
+>>>
+
+= Redis について 2 =
+
+- いろんなデータ型をサポートしている
+ - リスト型
+ - セット型
+ - ソート済みセット型
+ - ハッシュ型
+- アトミックな操作が可能
+- いろんな言語でバインディングがある
+- レプリケーションの機能がある
+
+<<<
+
+>>>
+
+= Redis の運用について =
+
+- 1台のサーバーで複数のインスタンスを立ち上げる
+ - シングルプロセスなので複数 core 使い切れない
+ - 1台にデータを寄せすぎると再構築とかに時間がかかるので、適度に分割
+
+- 基本、Master - Slave 構成
+ - Master にしか参照しない
+ - Master 壊れたときは Slave 昇格
+ - MySQL ほど良い感じにならない
+ - とりあえずいま壊れたことはない (ぇ
+
+- レプリ遅延があるので、API は参照も Master しかアクセスしない
+
+<<<
+
+>>>
+
+= Redis の運用について =
+
+@hirose31 さんが書いた%%yellow:神の書%%があるので安心
+
+<<<
+
+>>>
+
+= Redis の Perl Binding =
+
+- Redis
+- Redis::hiredis
+- RedisDB
+
+などなど大量にある
+
+<<<
+
+>>>
+
+最初は Redis::hiredis が高速だったので検討していたが、XS レベルで multi がバグっていた！！
+
+%%yellow:パッチを送ったものの取り込まれない%%
+
+<<<
+
+>>>
+
+仕方ないので、やりたいことが一応全部できる %%yellow:RedisDB%% を利用することに
+
+<<<
+
+>>>
+
+しかし、当初は RedisDB は PP だったが、%%yellow:いつの間にか XS に！！%%
+
+--まだ XS 版は使っていません。--
+
+<<<
+
+>>>
+
+= RedisDB の使い方 =
+
+{{{
+use RedisDB;
+
+my $redis = RedisDB->new(host => 'localhost', port => 6379);
+say $redis->set(foo => 'bar'); # 1
+say $redis->get('foo');        # 'bar'
+
+say '-'x80;
+
+say $redis->send_command('SET', foo => 'hoge'); # 1
+say $redis->send_command('GET', 'foo');        # 1
+
+my @results = $redis->get_all_replies;
+say Dumper \@results; # [ 'OK', 'hoge' ]
+}}}
+
+<<<
+
+>>>
+
+= RedisDB の使い方 =
+
+- 単純な set と get はメソッドが生えている
+- いろんなコマンド叩きたい場合は send_command() でぶち込む
+- いろいろと戻り値操作方法あるけど、get_all_replies() で一気に取るのが一番楽
+ - get_all_replies() の戻り値の最後の index が実際に欲しい値
+
+<<<
+
+>>>
+
+= Leaderboard API の概要 =
+
+- アプリごとに複数の leaderboard を作成できる
+- Leaderboard ごとにユーザーのスコアを登録
+ - スコアが大きいほうがランキングが上かの設定が可能
+  - クリア時間が短い = 数値が小さいほうがランキング上位
+  - 獲得ポイントが多い = 数値が大きいほうがランキング上位
+
+<<<
+
+>>>
+
+= Leaderboard API の概要 =
+
+- ランキングの取得
+ - leaderboard 全体での順位
+  - Redis の Sorted Set を利用
+ - 自分の友だち間での順位
+  - MySQL から引いてきて頑張る
+
+<<<
+
+->>
+
+= 更新機能 =
+
+新しくスコアを登録したり、更新する場合は Redis と MySQL 両方に
+
+[i:static/img/leaderboard_update.png]
+
+<<-
+
+>>>
+
+= 更新機能 =
+
+Redis で発行しているコマンド
+
+{{{
+use RedisDB;
+
+my $redis = RedisDB->new(...);
+
+$redis->send_command('MULTI');
+$redis->send_command('ZADD', 'score', $score, $user_id);
+# このへんで付加情報的な奴の更新
+$redis->send_command('EXEC');
+}}}
+
+実際は、小さいスコアを許容するかどうかで処理を変えていたりと複雑
+
+だけど、基本的には ZADD してるだけです！
+
+<<<
+
+>>>
+
+= 個別のユーザーのランキングの取得 =
+
+- Redis から取得
+
+{{{
+use RedisDB;
+
+# score が高い人が 1位の場合
+$redis->send_command('MULTI');
+    $redis->send_command('ZSCORE', 'score', $user_id);
+    $redis->send_command('ZREVRANK', 'score', $user_id);
+$redis->send_command('EXEC');
+
+@results = $redis->get_all_replies;
+say Dumper {
+    score => $results[-1]->[0],
+    rank  => $results[-1]->[1] + 1,
+};
+}}}
+
+<<<
+
+>>>
+
+= 解説 =
+
+- ZSCORE で user_id に紐付いた score を取得
+- ZREVRANK で score が高い順にソートされたランキングを取得
+
+<<<
+
+>>>
+
+= 全体のランキングの取得 =
+
+- Redis から取得
+
+{{{
+use RedisDB;
+
+my $redis = RedisDB->new(host => 'localhost', port => 6379);
+
+# score が高い人が 1位の場合
+my $start = 1;
+my $end   = 100;
+$redis->send_command('MULTI');
+    $redis->send_command('ZCOUNT', $score_key, '-inf', '+inf');
+    $redis->send_command('ZREVRANGE', $score_key, $start, $end, 'WITHSCORES');
+$redis->send_command('EXEC');
+
+@results = $redis->get_all_replies;
+my $data = $results[0];
+
+my $total = $results[-1][0];
+my $data  = $results[-1][1];
+
+my $rs   = [];
+my $rank = $start;
+for (my $i = 0; $i < @$data; $i += 2) {
+    push @$rs, {
+        rank    => $rank++,
+        user_id => $data->[$i],
+        score   => $data->[$i+1],
+    };
+}
+
+say Dumper [ $total, $rs ];
+}}}
+
+<<<
+
+>>>
+
+= 解説 =
+
+- ZCOUNT でスコア全部の件数を取得
+ - -inf から +inf とすると全部取れる
+- ZREVRANGE で score が高い順にソートされたデータを取得
+ - $start と $end は LIMIT, OFFSET と同義
+ - WITHSCORES とすると score も一緒に取れる
+- 最後に、とれた値を for で回して $start からインクリしていってランクを確定
+
+<<<
+
+>>>
+
+= 友達間のランキング一覧の取得 =
+
+- ユーザーの友達一覧を取得
+- 友達のスコア一覧を MySQL から SELECT
+- 取得したスコアを普通に sort して、順番をつける
+- ランクを確定させて必要な部分だけ返す
+
+<<<
+
+>>>
+
+= 友達間のランキング一覧の取得 =
+
+- 友達が多いと遅くなる
+- 一応、「Mobage を支える技術」の 11-3 に書いてある方法で省力化はしている
+
+<<<
+
+>>>
+
+= Leaderboard まとめ =
+
+- Redis いいですね！
+ - もうちょっといろんな用途に利用できそうで夢が広がりんぐ
+- 実際には MySQL と Redis 間の不整合を検出するやつとか色々作ってます
+
+<<<
+
+>>>
+
+= Redis 問題点 =
+
+- 同一得点の人を同じランキングにすることが出来ない
+- メモリに収まらなくなると一気にパフォーマンスが劣化する
+ - 常に指標を監視して、賢いシャーディングが求められる
+- 出来ないこともあるので MySQL に頼る必要がある
+
+<<<
+
+>>>
+
+= まとめ =
+
+- DBI のシグナル処理とか結構まじめにやろうとすると大変
+- APNs や GCM などの外部のシステムに依存しているのでなにかと大変
+- Redis 楽しいけどやっぱり万能じゃないのでちゃんと考えて使うべき
+
+<<<
+
+->>
+
+[size:200%:ご清聴ありがとうございました。]
+
+<<-
+
+->>
+
+[size:200%:Question?]
+
+<<-
