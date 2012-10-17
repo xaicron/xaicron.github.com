@@ -129,6 +129,7 @@ function gap(a, b) {
 
 (function() {
     var xStart = 0, xEnd = 0, yStart = 0, yEnd = 0;
+    var center = document.width / 2;
     document.addEventListener('touchstart', function(e) {
         xStart = xEnd = e.touches[0].pageX;
         yStart = yEnd = e.touches[0].pageY;
@@ -141,7 +142,15 @@ function gap(a, b) {
 
     document.addEventListener('touchend', function(e) {
         if (!(gap(yStart, yEnd) > 100)) {
-            if ((xStart > xEnd || xStart === xEnd) && slides[current+1]) {
+            if (xStart == xEnd) {
+                if (xStart > center ) {
+                    next();
+                }
+                else {
+                    prev();
+                }
+            }
+            else if (xStart > xEnd && slides[current+1]) {
                 next();
             }
             else if (xStart < xEnd && slides[current-1]) {
