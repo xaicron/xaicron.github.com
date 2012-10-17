@@ -62,10 +62,10 @@ document.onkeydown = function(e) {
     }
     var key = e.keyCode;
     console.log(key);
-    if ((key === KEYBORD.J || key === KEYBORD.Right) && slides[current+1]) {
+    if (key === KEYBORD.J || key === KEYBORD.Right) {
         listView === false ? next() : nextlist();
     }
-    else if ((key === KEYBORD.K || key === KEYBORD.Left) && slides[current-1]) {
+    else if (key === KEYBORD.K || key === KEYBORD.Left) {
         listView === false ? prev() : prevlist();
     }
     else if ((key === KEYBORD.H || key === KEYBORD.Up) && listView === false) {
@@ -143,17 +143,17 @@ function gap(a, b) {
     document.addEventListener('touchend', function(e) {
         if (!(gap(yStart, yEnd) > 100)) {
             if (xStart == xEnd) {
-                if (xStart > center ) {
+                if (xStart > center) {
                     next();
                 }
                 else {
                     prev();
                 }
             }
-            else if (xStart > xEnd && slides[current+1]) {
+            else if (xStart > xEnd) {
                 next();
             }
-            else if (xStart < xEnd && slides[current-1]) {
+            else if (xStart < xEnd) {
                 prev();
             }
         }
@@ -180,16 +180,19 @@ setTimeout(function(){
 
 /* utility functions */
 function next() {
+    if (!slides[current+1]) return;
     replaceClass(slides[current++], [NC, VC], PC);
     replaceClass(slides[current], [PC, NC], VC);
     location.hash = current + 1;
 }
 function prev() {
+    if (!slides[current-1]) return;
     replaceClass(slides[current--], [PC, VC], NC);
     replaceClass(slides[current], [PC, NC], VC);
     location.hash = current + 1;
 }
 function nextlist() {
+    if (!slides[current+1]) return;
     removeClass(slides[current], 'focus');
     stash[current++].class = PC;
     addClass(slides[current], 'focus');
@@ -197,6 +200,7 @@ function nextlist() {
     location.hash = current + 1;
 }
 function prevlist() {
+    if (!slides[current-1]) return;
     removeClass(slides[current], 'focus');
     stash[current--].class = NC;
     addClass(slides[current], 'focus');
