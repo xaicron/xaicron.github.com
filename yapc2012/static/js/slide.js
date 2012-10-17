@@ -123,6 +123,32 @@ document.onkeydown = function(e) {
     }
 };
 
+(function() {
+    var xStrart = 0;
+    var xEnd    = 0;
+    document.addEventListener('touchstart', function(e) {
+        xStrart = e.touches[0].pageX;
+    }, false);
+
+    document.addEventListener('touchmove', function(e) {
+        xEnd = e.touches[0].pageX;
+    }, false);
+
+    document.addEventListener('touchend', function(e) {
+        if (xStrart > xEnd && slides[current+1]) {
+            next();
+        }
+        else if (xStrart < xEnd && slides[current-1]) {
+            prev();
+        }
+        else {
+            // noop
+        }
+
+        xStrart = xEnd = 0;
+    }, false);
+})();
+
 setTimeout(function(){
     var matched;
     document.getElementById('page').style.display = 'block';
