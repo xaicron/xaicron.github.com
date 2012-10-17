@@ -123,29 +123,33 @@ document.onkeydown = function(e) {
     }
 };
 
+function gap(a, b) {
+    return a > b ? a - b : b - a;
+}
+
 (function() {
-    var xStrart = 0;
-    var xEnd    = 0;
+    var xStart = 0, xEnd = 0, yStart = 0, yEnd = 0;
     document.addEventListener('touchstart', function(e) {
-        xStrart = e.touches[0].pageX;
+        xStart = xEnd = e.touches[0].pageX;
+        yStart = yEnd = e.touches[0].pageY;
     }, false);
 
     document.addEventListener('touchmove', function(e) {
         xEnd = e.touches[0].pageX;
+        yEnd = e.touches[0].pageY;
     }, false);
 
     document.addEventListener('touchend', function(e) {
-        if (xStrart > xEnd && slides[current+1]) {
-            next();
-        }
-        else if (xStrart < xEnd && slides[current-1]) {
-            prev();
-        }
-        else {
-            // noop
+        if (!(gap(yStart, yEnd) > 100)) {
+            if ((xStart > xEnd || xStart === xEnd) && slides[current+1]) {
+                next();
+            }
+            else if (xStart < xEnd && slides[current-1]) {
+                prev();
+            }
         }
 
-        xStrart = xEnd = 0;
+        xStart = xEnd = yStart = yEnd = 0;
     }, false);
 })();
 
