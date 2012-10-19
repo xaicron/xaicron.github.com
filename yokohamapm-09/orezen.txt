@@ -1,0 +1,165 @@
+Yokohama.pm #9
+
+->>
+
+@@@@
+<div style="position: relative; top: 30%;">
+@@@@
+= %%yellow:JSON Web Token Introduction%% =
+
+Yokohama.pm #9 - 2012/10/19 横浜某所
+@@@@
+</div>
+@@@@
+
+<<-
+
+>>>
+
+例によって会場に来てからスライド書いてます。
+
+<<<
+
+>>>
+
+= JSON Web Token ってなんぞ =
+
+<<<
+
+>>>
+
+= JSON Web Token ってなんぞ =
+
+http://hdknr.github.com/docs/identity/jwt.html
+
+これを読むと良いです。
+
+<<<
+
+->>
+
+@@@@
+<div style="position: relative; top: 30%;">
+@@@@
+[size:300%:完。]
+@@@@
+</div>
+@@@@
+
+<<-
+
+>>>
+
+すいません嘘です。
+
+<<<
+
+>>>
+
+= どこで使われているか =
+
+Google とかで使われている
+
+https://developers.google.com/accounts/docs/OAuth2ServiceAccount
+
+<<<
+
+>>>
+
+= いろんなスペックを読まないといけない =
+
+- JWA (http://hdknr.github.com/docs/identity/jwa.html)
+ - アルゴリズムの定義
+- JWS (http://hdknr.github.com/docs/identity/jws.html)
+ - JSON Web Signature の定義
+- JWE (http://hdknr.github.com/docs/identity/jwe.html)
+ - JSON Web Encription の定義
+
+<<<
+
+>>>
+
+JWT は JWS と JWE のスーパーセット
+
+<<<
+
+>>>
+
+= 実際にどういうものか =
+
+{{{
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIifQ.dtxWM6MIcgoeMgH87tGvsNDY6cHWL6MGW4LeYvnm1JA
+}}}
+
+みたいな感じの文字列 (実際は一行です)
+
+<<<
+
+>>>
+
+- 基本的に "Header"、"Payload (Claims)"、"Signature" の3つからなる
+- ドット (.) 区切りになっている
+- それぞれ、base64 uri encode された文字列
+
+<<<
+
+>>>
+
+{{{
+# header
+{"alg":"HS256","typ":"JWT"}
+# payload
+{"foo":"bar"}
+# header.payload を sign したもの
+xxxxxxxxxxx
+}}}
+
+これを encode すると
+
+↓
+
+{{{
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIifQ.dtxWM6MIcgoeMgH87tGvsNDY6cHWL6MGW4LeYvnm1JA
+}}}
+
+になります。
+
+<<<
+
+>>>
+
+Java / Ruby / Paython / node.js にはライブラリがあるのに Perl にはない！(いつものこと)
+
+なので JSON::WebToken を適当に書きました。まだまだα版です。
+
+<<<
+
+>>>
+
+DEMO
+
+<<<
+
+>>>
+
+まだ Encription には対応してませんてへぺろー
+
+<<<
+
+>>>
+
+どういう用途で使うかとかは zigorou さんに聞いてください。
+
+<<<
+
+>>>
+
+あと、kazeburo さんにビールを奢ってもらうはずだったのですが、体よく逃げられました。
+
+<<<
+
+>>>
+
+以上、ありがとうございました。
+
+<<<

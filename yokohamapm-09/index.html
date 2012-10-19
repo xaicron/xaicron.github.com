@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.6, user-scalable=no">
+<title>Yokohama.pm #9</title>
+<link rel="stylesheet" href="static/css/style.css" />
+<link rel="stylesheet" href="static/css/pretty.css" />
+</head>
+<body>
+
+<section class="center">
+
+<!-- raw html start -->
+<div style="position: relative; top: 30%;">
+<!-- raw html end -->
+<h1><span style="color: yellow">JSON Web Token Introduction</span></h1>
+
+<p>
+Yokohama.pm #9 - 2012/10/19 横浜某所
+<!-- raw html start -->
+</div>
+<!-- raw html end -->
+</p>
+</section>
+
+<section>
+
+<p>
+例によって会場に来てからスライド書いてます。
+</p>
+</section>
+
+<section>
+
+<h1>JSON Web Token ってなんぞ</h1>
+
+</section>
+
+<section>
+
+<h1>JSON Web Token ってなんぞ</h1>
+
+<p>
+<a href="http://hdknr.github.com/docs/identity/jwt.html">http://hdknr.github.com/docs/identity/jwt.html</a>
+</p>
+<p>
+これを読むと良いです。
+</p>
+</section>
+
+<section class="center">
+
+<!-- raw html start -->
+<div style="position: relative; top: 30%;">
+<!-- raw html end -->
+<p>
+<span style="font-size: 300%">完。</span>
+<!-- raw html start -->
+</div>
+<!-- raw html end -->
+</p>
+</section>
+
+<section>
+
+<p>
+すいません嘘です。
+</p>
+</section>
+
+<section>
+
+<h1>どこで使われているか</h1>
+
+<p>
+Google とかで使われている
+</p>
+<p>
+https://developers.google.com/accounts/docs/OAuth2ServiceAccount
+</p>
+</section>
+
+<section>
+
+<h1>いろんなスペックを読まないといけない</h1>
+
+<ul>
+<li>JWA (<a href="http://hdknr.github.com/docs/identity/jwa.html)">http://hdknr.github.com/docs/identity/jwa.html)</a></li>
+<ul>
+<li>アルゴリズムの定義</li>
+</ul>
+<li>JWS (<a href="http://hdknr.github.com/docs/identity/jws.html)">http://hdknr.github.com/docs/identity/jws.html)</a></li>
+<ul>
+<li>JSON Web Signature の定義</li>
+</ul>
+<li>JWE (<a href="http://hdknr.github.com/docs/identity/jwe.html)">http://hdknr.github.com/docs/identity/jwe.html)</a></li>
+<ul>
+<li>JSON Web Encription の定義</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<p>
+JWT は JWS と JWE のスーパーセット
+</p>
+</section>
+
+<section>
+
+<h1>実際にどういうものか</h1>
+
+<pre>
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIifQ.dtxWM6MIcgoeMgH87tGvsNDY6cHWL6MGW4LeYvnm1JA
+</pre>
+
+<p>
+みたいな感じの文字列 (実際は一行です)
+</p>
+</section>
+
+<section>
+
+<ul>
+<li>基本的に "Header"、"Payload (Claims)"、"Signature" の3つからなる</li>
+<li>ドット (.) 区切りになっている</li>
+<li>それぞれ、base64 uri encode された文字列</li>
+</ul>
+
+</section>
+
+<section>
+
+<pre>
+# header
+{&quot;alg&quot;:&quot;HS256&quot;,&quot;typ&quot;:&quot;JWT&quot;}
+# payload
+{&quot;foo&quot;:&quot;bar&quot;}
+# header.payload を sign したもの
+xxxxxxxxxxx
+</pre>
+
+<p>
+これを encode すると
+</p>
+<p>
+↓
+</p>
+<pre>
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIifQ.dtxWM6MIcgoeMgH87tGvsNDY6cHWL6MGW4LeYvnm1JA
+</pre>
+
+<p>
+になります。
+</p>
+</section>
+
+<section>
+
+<p>
+Java / Ruby / Paython / node.js にはライブラリがあるのに Perl にはない！(いつものこと)
+</p>
+<p>
+なので JSON::WebToken を適当に書きました。まだまだα版です。
+</p>
+</section>
+
+<section>
+
+<p>
+DEMO
+</p>
+</section>
+
+<section>
+
+<p>
+まだ Encription には対応してませんてへぺろー
+</p>
+</section>
+
+<section>
+
+<p>
+どういう用途で使うかとかは zigorou さんに聞いてください。
+</p>
+</section>
+
+<section>
+
+<p>
+あと、kazeburo さんにビールを奢ってもらうはずだったのですが、体よく逃げられました。
+</p>
+</section>
+
+<section>
+
+<p>
+以上、ありがとうございました。
+</p>
+</section>
+
+<div id="dummy"></div>
+<div id="date"></div>
+<div id="page"></div>
+<div id="help">
+<p>j or &rarr;: next</p>
+<p>k or &larr;: prev</p>
+<p>h or &uarr;: list</p>
+<p>l or &darr;: return</p>
+<p>o or &crarr;: open</p>
+<p>? or /: toggle this help</p>
+</div>
+<script type="text/javascript" src="static/js/slide.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="static/js/prettify.js"></script>
+</body>
+<html>
