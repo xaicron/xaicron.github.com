@@ -1,0 +1,240 @@
+Carton Con #1
+
+->>
+
+@@@@
+<div style="position: relative; top: 30%;">
+@@@@
+= %%yellow:ZenPAN%% つくった =
+
+xaicron (2013/02/27)
+@@@@
+</div>
+@@@@
+
+<<-
+
+>>>
+= めんどくさいこと =
+
+社内むけモジュールのかんり
+
+- CPAN に上がってないモジュールをインストールする
+- CPAN に上がってないモジュールが CPAN に上がってないモジュールに依存してる
+
+CPAN に上がってないモジュールって長いので以下「%%yellow:ノラ%%」とします。
+
+<<<
+
+>>>
+= 開発中によくあること =
+
+{{ノラA}} を使ってるんだけど、ある日朝目覚めると
+{{ノラA}} が更新されて {{ノラB}} に依存しました。
+{{ノラB}} は {{ノラC}} に依存しています。
+
+<<<
+
+>>>
+= 開発者のやらないといけないこと =
+
+- {{ノラC}} 入れる
+- {{ノラB}} 入れる
+- {{ノラA}} 入れなおす
+
+<<<
+
+>>>
+= 開発者が追加で知らないといけないこと =
+
+- {{ノラC}} の在り処
+- {{ノラB}} の在り処
+
+<<<
+
+->>
+= ノラA の開発者の気持ち =
+
+%%red:いちいち伝えるの('A`)ﾏﾝﾄﾞｸｾ%%
+
+<<-
+
+>>>
+= Carton で本当はやりたいこと =
+
+- {{cpanfile}} に git の url とか書いたらよしなに入れてほしい
+- {{carton bundle}} で tarball とかよしなに入れてほしい
+
+<<<
+
+>>>
+
+= cpanfile に git の url とか書い (ry =
+
+実は local にインストールするだけだったら可能
+
+{{{
+% cat cpanfile
+requires 'git@github.com:tokuhirom/Furl.git';
+
+% carton install
+...
+}}}
+
+<<<
+
+>>>
+
+= cpanfile に git の url とか書い (ry =
+
+しかし
+
+- 現状 git からのインストールだと {{.meta}} がつくられない
+- {{carton.lock}} は {{.meta}} の情報から生成している
+- git から入れたモジュールが {{carton.lock}} から欠ける
+
+-> %%yellow:cpanm とかの改修が必要なのでいろいろ考えるべき%%
+
+<<<
+
+>>>
+
+= carton bundle で tarball とか (ry =
+
+上記のようなやりかただと git から直接入れちゃってるし tarball がない！！
+
+-> %%yellow:mirror 作って出直してこいボケカス%%
+
+<<<
+
+->>
+
+**／(^o^)＼**
+
+<<-
+
+->>
+
+**というわけで %%yellow:ZenPAN%% です**
+
+<<-
+
+->>
+
+適当に作ったのであれげだよ！
+
+<<-
+
+>>>
+
+= ZenPAN がやること =
+
+- {{cpanfile}} を元に依存モジュールのインストール
+ - {{--savedists}} もする
+- {{cpanfile}} に細工して git からインストールする (くそ)
+ - git からの時は tarball もつくる
+- 全部 tarball 適当に作ったり持ってきて mirror つくる
+ - {{orepan.pl}} + {{orepan-index.pl}}
+- {{carton install}} <- %%yellow:new!%%
+
+<<<
+
+>>>
+
+= cpanfile への細工 =
+
+{{zenapn}} のなかで動いてるとなんか {{ZENPAN_MODE}} っていう環境変数がセットされるのでよしなにする
+
+{{{
+% cat cpanfile
+requires 'MyModule' => do {
+    $ENV{ZENPAN_MODE} ? +{
+        via    => 'git@github.com/xaicron/MyModule.git',
+        author => 'XAICRON', # default DUMMY
+    } : '0.01';
+};
+
+...
+}}}
+
+こんなかんじにすると、環境変数なければ以下のように解釈される
+
+{{{
+requires 'MyModule' => '0.01';
+}}}
+
+まじきもいね！
+
+<<<
+
+>>>
+
+= インストール =
+
+{{{
+% cpanm git@github.com:xaicron/p5-ZenPAN.git
+}}}
+
+<<<
+
+>>>
+
+= mirror を作る =
+
+1. とりあえずさっきいったような {{cpanfile}} を書く
+1. 次に {{add}} コマンド使う
+
+{{{
+% zenpan add -p tmp
+}}}
+
+そしたら勝手に tmp に下に mirror ができた！ﾔｯﾀｰ!!
+
+<<<
+
+>>>
+
+= DEMO =
+
+<<<
+
+>>>
+
+= mirror から carton install =
+
+mirror に必要なモジュール全部あるので、
+そっから {{carton install}} します。
+コマンドは以下
+
+{{{
+% zenpan install -p tmp
+}}}
+
+これで内部的に carton install してくれて、全部 install できた！
+
+# TODO carton bunlde だけど、
+# {{cp -R tmp/authors local/cache}} すれば終わりそう
+
+<<<
+
+>>>
+
+= DEMO =
+
+<<<
+
+>>>
+
+= おまけ =
+
+ruby gem って local に gem ファイルを保存しておいてくれるから、二回目移行のインストールが速い。
+
+cpanm も同じような機能あれば良い気がする！
+
+<<<
+
+->>
+
+== Question ? ==
+
+<<-

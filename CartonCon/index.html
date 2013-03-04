@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Carton Con #1</title>
+<link rel="stylesheet" href="static/css/style.css" />
+<link rel="stylesheet" href="static/css/pretty.css" />
+</head>
+<body>
+
+<section class="center">
+
+<!-- raw html start -->
+<div style="position: relative; top: 30%;">
+<!-- raw html end -->
+<h1><span style="color: yellow">ZenPAN</span> つくった</h1>
+
+<p>
+xaicron (2013/02/27)
+<!-- raw html start -->
+</div>
+<!-- raw html end -->
+</p>
+</section>
+
+<section>
+<h1>めんどくさいこと</h1>
+
+<p>
+社内むけモジュールのかんり
+</p>
+<ul>
+<li>CPAN に上がってないモジュールをインストールする</li>
+<li>CPAN に上がってないモジュールが CPAN に上がってないモジュールに依存してる</li>
+</ul>
+
+<p>
+CPAN に上がってないモジュールって長いので以下「<span style="color: yellow">ノラ</span>」とします。
+</p>
+</section>
+
+<section>
+<h1>開発中によくあること</h1>
+
+<p>
+<code>ノラA</code> を使ってるんだけど、ある日朝目覚めると
+<br /><code>ノラA</code> が更新されて <code>ノラB</code> に依存しました。
+<br /><code>ノラB</code> は <code>ノラC</code> に依存しています。
+</p>
+</section>
+
+<section>
+<h1>開発者のやらないといけないこと</h1>
+
+<ul>
+<li><code>ノラC</code> 入れる</li>
+<li><code>ノラB</code> 入れる</li>
+<li><code>ノラA</code> 入れなおす</li>
+</ul>
+
+</section>
+
+<section>
+<h1>開発者が追加で知らないといけないこと</h1>
+
+<ul>
+<li><code>ノラC</code> の在り処</li>
+<li><code>ノラB</code> の在り処</li>
+</ul>
+
+</section>
+
+<section class="center">
+<h1>ノラA の開発者の気持ち</h1>
+
+<p>
+<span style="color: red">いちいち伝えるの(&#39;A`)ﾏﾝﾄﾞｸｾ</span>
+</p>
+</section>
+
+<section>
+<h1>Carton で本当はやりたいこと</h1>
+
+<ul>
+<li><code>cpanfile</code> に git の url とか書いたらよしなに入れてほしい</li>
+<li><code>carton bundle</code> で tarball とかよしなに入れてほしい</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>cpanfile に git の url とか書い (ry</h1>
+
+<p>
+実は local にインストールするだけだったら可能
+</p>
+<pre>
+% cat cpanfile
+requires &#39;git@github.com:tokuhirom/Furl.git&#39;;
+
+% carton install
+...
+</pre>
+
+</section>
+
+<section>
+
+<h1>cpanfile に git の url とか書い (ry</h1>
+
+<p>
+しかし
+</p>
+<ul>
+<li>現状 git からのインストールだと <code>.meta</code> がつくられない</li>
+<li><code>carton.lock</code> は <code>.meta</code> の情報から生成している</li>
+<li>git から入れたモジュールが <code>carton.lock</code> から欠ける</li>
+</ul>
+
+<p>
+-> <span style="color: yellow">cpanm とかの改修が必要なのでいろいろ考えるべき</span>
+</p>
+</section>
+
+<section>
+
+<h1>carton bundle で tarball とか (ry</h1>
+
+<p>
+上記のようなやりかただと git から直接入れちゃってるし tarball がない！！
+</p>
+<p>
+-> <span style="color: yellow">mirror 作って出直してこいボケカス</span>
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<strong>／(^o^)＼</strong>
+</p>
+</section>
+
+<section class="center">
+
+<p>
+<strong>というわけで <span style="color: yellow">ZenPAN</span> です</strong>
+</p>
+</section>
+
+<section class="center">
+
+<p>
+適当に作ったのであれげだよ！
+</p>
+</section>
+
+<section>
+
+<h1>ZenPAN がやること</h1>
+
+<ul>
+<li><code>cpanfile</code> を元に依存モジュールのインストール</li>
+<ul>
+<li><code>--savedists</code> もする</li>
+</ul>
+<li><code>cpanfile</code> に細工して git からインストールする (くそ)</li>
+<ul>
+<li>git からの時は tarball もつくる</li>
+</ul>
+<li>全部 tarball 適当に作ったり持ってきて mirror つくる</li>
+<ul>
+<li><code>orepan.pl</code> + <code>orepan-index.pl</code></li>
+</ul>
+<li><code>carton install</code> <- <span style="color: yellow">new!</span></li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>cpanfile への細工</h1>
+
+<p>
+<code>zenapn</code> のなかで動いてるとなんか <code>ZENPAN_MODE</code> っていう環境変数がセットされるのでよしなにする
+</p>
+<pre>
+% cat cpanfile
+requires &#39;MyModule&#39; =&gt; do {
+    $ENV{ZENPAN_MODE} ? +{
+        via    =&gt; &#39;git@github.com/xaicron/MyModule.git&#39;,
+        author =&gt; &#39;XAICRON&#39;, # default DUMMY
+    } : &#39;0.01&#39;;
+};
+
+...
+</pre>
+
+<p>
+こんなかんじにすると、環境変数なければ以下のように解釈される
+</p>
+<pre>
+requires &#39;MyModule&#39; =&gt; &#39;0.01&#39;;
+</pre>
+
+<p>
+まじきもいね！
+</p>
+</section>
+
+<section>
+
+<h1>インストール</h1>
+
+<pre>
+% cpanm git@github.com:xaicron/p5-ZenPAN.git
+</pre>
+
+</section>
+
+<section>
+
+<h1>mirror を作る</h1>
+
+<ol>
+<li>とりあえずさっきいったような <code>cpanfile</code> を書く</li>
+<li>次に <code>add</code> コマンド使う</li>
+</ol>
+
+<pre>
+% zenpan add -p tmp
+</pre>
+
+<p>
+そしたら勝手に tmp に下に mirror ができた！ﾔｯﾀｰ!!
+</p>
+</section>
+
+<section>
+
+<h1>DEMO</h1>
+
+</section>
+
+<section>
+
+<h1>mirror から carton install</h1>
+
+<p>
+mirror に必要なモジュール全部あるので、
+<br />そっから <code>carton install</code> します。
+<br />コマンドは以下
+</p>
+<pre>
+% zenpan install -p tmp
+</pre>
+
+<p>
+これで内部的に carton install してくれて、全部 install できた！
+</p>
+<p>
+# TODO carton bunlde だけど、
+<br /># <code>cp -R tmp/authors local/cache</code> すれば終わりそう
+</p>
+</section>
+
+<section>
+
+<h1>DEMO</h1>
+
+</section>
+
+<section>
+
+<h1>おまけ</h1>
+
+<p>
+ruby gem って local に gem ファイルを保存しておいてくれるから、二回目移行のインストールが速い。
+</p>
+<p>
+cpanm も同じような機能あれば良い気がする！
+</p>
+</section>
+
+<section class="center">
+
+<h2>Question ?</h2>
+
+</section>
+
+<div id="dummy"></div>
+<div id="date"></div>
+<div id="page"></div>
+<div id="help">
+<p>j or &rarr;: next</p>
+<p>k or &larr;: prev</p>
+<p>h or &uarr;: list</p>
+<p>l or &darr;: return</p>
+<p>o or &crarr;: open</p>
+<p>? or /: toggle this help</p>
+</div>
+<script type="text/javascript" src="static/js/slide.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="static/js/prettify.js"></script>
+</body>
+<html>
