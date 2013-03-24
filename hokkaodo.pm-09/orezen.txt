@@ -1,0 +1,799 @@
+Hokkaido.pm #9
+
+vvv
+
+= 最近使ってる%%yellow:モジュール%%の話 =
+
+Hokkaido.pm#9 - 2013/03/09 in %%yellow:北海道%%
+xaicron
+
+^^^
+
+>>>
+
+= 自己紹介 =
+
+- twitter
+  - @xaicron
+- works
+  - :DeNA
+- CPAN
+  - https://metacpan.org/author/XAICRON
+
+<<<
+
+->>
+
+= 免責 =
+
+本日発表する内容は、個人的な考えや意見であり、
+所属する組織、会社とは一切関係ありません。
+
+<<-
+
+->>
+
+= 免責 =
+
+本日発表する内容は、個人的な考えや意見であり、
+所属する組織、会社とは一切関係ありません。
+
+**%%yellow:また、スピリチュアルトークはできません。%%**
+
+<<-
+
+>>>
+
+というわけで
+
+<<<
+
+>>>
+
+今日は、最近使ってるモジュールの話とかを中心にまったりやっていこうと思います。
+
+<<<
+
+->>
+
+いきなり本題に入る前に
+
+<<-
+
+->>
+
+自分がどんなふうに使うモジュールを選んでいるのか
+
+<<-
+
+>>>
+
+= CPAN モジュールの選定基準 =
+
+2008年ごろ書かれたいい記事があります。
+
+[http://blog.64p.org/entry/20080520/1211292598 CPANソムリエになる方法]
+
+<<<
+
+>>>
+
+ざっくりまとめると
+
+- 最終更新日時がふるいモジュールは危険
+- テストが超絶少ないモジュールは危険
+- バグレポート溜まってるモジュールは危険
+
+って感じですね。
+
+<<<
+
+>>>
+
+= 俺基準 =
+
+自分の基準としてはプラスして以下のようなところを見てる
+
+<<<
+
+>>>
+
+= 俺基準 (1) =
+
+- 作者が信頼出来る
+ - あの人のつくったモジュールならまぁ問題無いだろう
+
+<<<
+
+>>>
+
+= 俺基準 (2) =
+
+- 依存モジュールが多くない
+ - 依存がおおいとその分ゴツかったり、壊れやすかったりする
+
+<<<
+
+>>>
+
+= 俺基準 (3) =
+
+- Moose 使ってない
+ - このへんは趣味ですが
+ - 特にコマンドラインツールで Moose 使ってるものはストレスフル
+ - 最近は Moo への replace が増えてるので今後良くなりそう
+
+<<<
+
+>>>
+
+= 俺基準 (4) =
+
+- コードがさくっと読める
+ - 重厚長大なモジュールは勘弁
+
+<<<
+
+>>>
+
+= 俺基準 (5) =
+
+- やりたいことがはっきりしてるやつ
+ - あれもこれもやろうとするようなモジュールは破綻することが多いので避ける
+
+<<<
+
+>>>
+
+= 俺基準 (6) =
+
+- 遅そうなモジュールを避ける
+ - 大量にオブジェクト生成したり、for の中でメソッド呼び出ししまくってたり
+ - とはいえ、プロダクションコードでなければそんなに気にしない
+
+<<<
+
+->>
+
+**ただし、全部ケースバイケースです！**
+
+<<-
+
+>>>
+
+= モジュール選定のまとめ =
+
+ミニマルで、やりたいことがはっきりしてて遅くなさそうなモジュールを選ぶ
+
+<<<
+
+>>>
+
+= Any::Moose と Moose と Mouse について =
+
+- Any::Moose は終わりました。使うのをやめましょう。
+- 新規には Moose ではなく Moo または Mouse を使いましょう。
+- Mouse はどれとも混ぜずに Mouse だけを使いましょう。
+
+<<<
+
+>>>
+
+= Moo と Mouse の使い分け =
+
+- Moo は CPAN モジュールとか書くときは世界的に受けが良いでしょう
+- Mouse はプロダクションコードでのみ使ってる
+ - どうせ XS 使うしアクセサなどが高速なので
+
+<<<
+
+>>>
+
+閑話休題
+
+<<<
+
+>>>
+
+というわけで本題。
+
+<<<
+
+>>>
+
+= 自分が使ってるモジュールの紹介 =
+
+<<<
+
+>>>
+
+= 実行中にモジュールを use したい =
+
+いろいろある
+
+- UNIVERSAL::require
+- Module::Load
+- Class::Load
+- Plack::Util#load_class
+
+<<<
+
+>>>
+
+= それぞれの特徴 =
+
+- UNIVERSAL::require
+ - 昔流行った
+ - ただし、使った瞬間に global スコープを汚染するのでイケてない
+- Module::Load
+ - v5.9.4 から core なのでとりあえずこれでよい
+ - ただし、{{load()}} のあとに class 名が返ってこないのでハマる
+- Class::Load
+ - Module::Runtime のラッパー
+ - inner class をロードしても死なない
+ - なんか依存多い...
+ - コードが意外と複雑
+ - {{load_class($class)->new}} とかできて便利
+- Plack::Util#load_class
+ - prefix を指定してロードしたり、{{+Foo::Bar}} したらフル扱いとか便利
+ - Plack に入っているので Plack が必要。Web アプリなら使ってもよいか。
+ - この機能だけ外出ししたモジュールが欲しいことが多々ある予感
+
+<<<
+
+>>>
+
+= 最近 =
+
+大体は {{Module::Runtime#use_module}} でいっかなーって思っているのでそれ使ってる。
+
+Module::Runtime は実は Class::Load が内部的に使っていたりします。
+
+<<<
+
+>>>
+
+= HTTP リクエストしたい =
+
+いろいろある
+
+- LWP::UserAgent
+- HTTP::Tiny
+- Furl
+
+<<<
+
+>>>
+
+= それぞれの特徴 =
+
+- LWP::UserAgent
+ - デファクト
+ - 高機能
+ - いっぱいオブジェクトを中で作るので若干もさいかも
+- HTTP::Tiny
+ - v5.13.9 から core
+ - 依存モジュールない
+ - ポータブルなスクリプトとかで使うのに便利
+- Furl
+ - わりと速い
+ - timeout の指定がちゃんと出来る
+ - 最近また活発に開発されてる
+ - そんなに高機能じゃない
+
+<<<
+
+>>>
+
+= Furl について =
+
+最近また活発に開発されていたんですが、とりあえずまたある程度機能が揃ったので落ち着く予定です。
+
+最近、以下の様な機能が追加されています。
+
+- ssl verify mode の追加
+ - オレオレ証明書とか対策
+ - ついでに proxy まわりも修正
+- basic 認証周りの追加
+ - http://user:pass@example.com/xxxx に対応
+- Internal response の判別がしやすくなった
+ - ヘッダーに X-Internal-Response: 1 が入る
+ - ただし、EXPERIMENTAL
+- Furl::Request の追加
+ - Furl 経由で使えば Furl::Response の中に入ってくるので、LWP と同じように dump とかできて便利
+
+<<<
+
+>>>
+
+= Furl::Request が返るようになった =
+
+LWP とほぼおんなじ感じに使えます。
+
+{{{
+use strict;
+use warnings;
+use v5.16.2;
+use Furl 2.10;
+
+my $furl = Furl->new;
+my $res = $furl->get('http://example.com/');
+
+# リクエストした内容の Furl::Request オブジェクト
+my $req = $res->request;
+
+# HTTP::Request->dump
+say $req->as_http_request->dump;
+
+# HTTP::Response->dump
+say $res->as_http_response->dump;
+}}}
+
+<<<
+
+>>>
+
+= ちゃんとキャプチャしたい場合 =
+
+{{capture_requset}} を有効にすると、Furl::Response から取得できる。
+
+{{{
+my $furl = Furl->new(
+    capture_request => 1, # 実際に送った生 HTTP を保存
+);
+
+my $res = $furl->post(
+    'http://localhost:5000/',
+    [ 'X-Foo' => 1 ],
+    [ foo => 'bar' ],
+);
+say $res->captured_req_headers . $res->captured_req_content;
+}}}
+
+<<<
+
+>>>
+
+= DB に接続したい =
+
+いろいろある
+
+- DBIx::Connector
+- DBIx::Handler
+- DBIx::Sunny
+
+<<<
+
+>>>
+
+= それぞれのモジュールの特徴 =
+
+- DBIx::Connector
+ - DB の処理をコールバックでかけるのでスッキリして良くて使ってた
+ - ちょっとコードが読みづらいし使わない機能とか結構ある
+- DBIx::Handler
+ - DBIx::Connector のもうちょいライトな奴がほしいよねで作った
+ - DBIx::TransactionManager を透過的につかってる
+ - 最近はこれ使ってる
+- DBIx::Sunny
+ - DBI のサブクラス
+ - kazeburo おすすめ設定がされているので安心のクォリティ
+ - DBIx::TransactionManager も使える
+ - query を発行した箇所が SQL に埋め込まれるので、slow log とかにも出てわかりやすい
+
+<<<
+
+>>>
+
+= DBIx::Handler と DBIx::Sunny を組み合わせる =
+
+以下のようにすると組み合わせて使えて捗る
+
+{{{
+use DBIx::Handler;
+
+my $handler = DBIx::Handler->new($dsn, $user, $pass, {
+    RootClass => 'DBIx::Sunny',
+});
+$handler->txn(sub {
+    my $dbh = shift;
+    ...
+    $dbh->do(...); # SQL にコメントもつけてくれる
+    # ここで勝手に commit してくれる
+});
+}}}
+
+<<<
+
+>>>
+
+Q. O/R Mapper がありませんね？
+
+A. すいません、使ってません...
+
+<<<
+
+>>>
+
+= クエリビルダー =
+
+いろいろある
+
+- SQL::Abstruct
+- SQL::Maker
+- SQL::Format
+
+<<<
+
+>>>
+
+= それぞれの特徴 =
+
+- SQL::Abstruct
+ - もとデファクト
+ - 重厚長大で遅いが高機能
+ - DBIx::Class の中で使われてる
+- SQL::Maker
+ - もともと DBIx::Skinny のクエリビルダーだったものを分離した
+ - 結構速い
+ - メソッドチェインでクエリーを書ける
+- SQL::Format
+ - sprintf てきなのりでクエリを組み立てられる
+ - オブジェクトとしてのインターフェイスも提供
+  - SQL::Abstruct と SQL::Maker とほぼ同じように使える
+ - ソースコードを開くとお前は死ぬ
+
+<<<
+
+>>>
+
+= テンプレートエンジン =
+
+いろいろある
+
+- Template::ToolKit
+- Text::Xsalte
+- Text::MicroTemplate
+
+<<<
+
+>>>
+
+= それぞれのモジュールの特徴 =
+
+- Template::ToolKit
+ - いまさら使うメリットない
+ - syntax はよい
+- Text::Xsalte
+ - 基本的にはこれを使う
+ - TT の syntax もある
+ - バグってたら gfx しか直せないリスクはある
+- Text::MicroTemplate
+ - PP で普通に高速
+ - syntax は普通の perl コードなので便利
+ - Text::MicroTemplate::Extended でもっと便利に
+
+<<<
+
+>>>
+
+新規プロジェクトでは Text::Xsalte を使うと良い。
+じぶんはコードジェネレーターとかでも使ってるけど、そのへんは T::MT でもよい。
+
+<<<
+
+>>>
+
+= スクレイピング =
+
+- Web::Scraper
+- Web::Query
+- WWW::Mechanize
+- Selenium::Remote::Driver
+
+<<<
+
+>>>
+
+= それぞれのモジュールの特徴 =
+
+- Web::Scraper
+ - 言わずと知れたデファクトなモジュール
+ - DSL でさっくり掛けて便利
+- Web::Query
+ - jQuery 風の syntax
+ - 最近はこれ使ってる
+- WWW::Mechanize
+ - フォーム入力とかある場合はこれ使う
+ - html のパースしたければ + Web::Query
+- Selenium::Remote::Driver
+ - まだ使ったこと無いけど！
+ - PhantomJS と合わせれば夢が広がりんぐ
+
+<<<
+
+>>>
+
+最近は、JavaScript 使えないと厳しいサイトが多いので Selenium::Remote::Driver + PhantomJS の組み合わせに期待
+
+<<<
+
+>>>
+
+= データをシリアライズしたい =
+
+いろいろある
+
+- Storable
+- YAML
+- JSON
+- Data::MessagePack
+
+<<<
+
+>>>
+
+= それぞれのモジュールの特徴 =
+
+- Storable
+ - perl のデフォルトのシリアライザー
+ - blessed object もシリアライズできる
+ - Storable のバージョン間で互換性がない
+  - プロトコルバージョン 2.6 で作ったものは 2.7 で使えないとか
+- YAML
+ - 昔流行った
+ - すべての仕様を満たしたパーザーがない
+  - YAML
+  - YAML::Syck
+  - YAML::XS
+  - YAML::Tiny
+   - 上記のやつが全部互換性無い
+ - YAML は一定の役割を終えたので今後使うことは無いでしょう
+ - YAML2.0 が流行る可能性は...？
+- JSON
+ - JSON::PP が v5.13.9 から core
+ - ただし、JSON::PP は遅いので普通は JSON::XS 使う。
+- Data::MessagePack
+ - 最近色々ありましたが、使っても大丈夫です！！
+ - データサイズが小さいので、KVS に突っ込む場合によく使っている
+
+<<<
+
+>>>
+
+= モジュールのビルダー =
+
+いろいろある
+
+- ExtUtils::MakeMaker
+- Module::Install
+- Module::Build
+
+<<<
+
+>>>
+
+= それぞれの特徴 =
+
+- ExtUtils::MakeMaker
+ - core だけど書くのがめんどい
+ - make 使う
+- Module::Install
+ - ExtUtils::MakeMaker のラッパー
+ - DSL で書ける
+ - CPAN に上げるときは inc/* に Module::Install 自体を入れるのでインストールする人は Module::Install を入れる必要がない
+ - ただし、cpanfile と相性が悪いよねー
+  - 結局 configure_requires に Module::Install いれといたほうが今後は良いか
+- Module::Build
+ - v5.9.4 から core
+ - make 使わずに perl でビルドする
+ - 大体 Module::Install でできることはできる
+ - 最近は Module::Build::Pluggable::CPANfile を使ってる
+  - Build.PL には何も書かずに cpanfile に書いていく
+
+<<<
+
+>>>
+
+= Module::Build::Pluggable::CPANfile の例 =
+
+{{{
+$ cat Build.PL
+
+use strict;
+use warnings;
+use Module::Build::Pluggable qw(CPANfile);
+
+my $build = Module::Build::Pluggable->new(
+    license        => 'perl',
+    dynamic_config => 0,
+
+    configure_requires => {},
+    build_requires     => {},
+    requires           => {
+        perl => '5.008001',
+    },
+
+    no_index    => { 'directory' => [ 'inc' ] },
+    name        => 'Foo-Bar',
+    module_name => 'Foo::Bar',
+
+    # script_files => [''],
+
+    test_files           => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
+    recursive_test_files => 1,
+
+    meta_merge => {
+        resources => {
+            repository => 'https://github.com/xaicron/p5-Foo-Bar',
+            bugtracker => 'https://github.com/xaicron/p5-Foo-Bar/issues',
+        },
+    },
+
+    create_readme  => 1,
+    create_license => 1,
+);
+
+$build->create_build_script();
+}}}
+
+{{{
+$ cat cpanfile
+
+# requires 'Foo::Bar' => '0.01';
+
+on configure => sub {
+    requires 'Module::Build'                      => '0.40';
+    requires 'Module::Build::Pluggable::CPANfile' => '0.02';
+};
+
+on test => sub {
+    requires 'Test::More'     => '0.98';
+    requires 'Test::Requires' => '0.06';
+};
+
+on develop => sub {
+    requires 'Test::Pretty'         => '0.22';
+    requires 'Test::Name::FromLine' => '0.09';
+};
+}}}
+
+<<<
+
+>>>
+
+ちなみに、いまあらたな toolchain がもりもりと作られているので乞うご期待
+
+<<<
+
+>>>
+
+= ファイル操作まわり =
+
+いろいろある
+
+- File::Spec
+- Path::Class
+- Path::Tiny
+
+<<<
+
+>>>
+
+= それぞれの特徴 =
+
+- File::Spec
+ - core だし、ひと通りのことができる
+- Path::Class
+ - 現在のデファクト
+ - ちょっと生々しい箇所がチラホラあるかも
+  - binmode 周りとか
+- Path::Tiny
+ - Tiny とは Yet Another の意味です！
+ - 必要な機能はひと通り揃っているし、便利なので最近使ってる
+
+<<<
+
+>>>
+
+= 並列処理したい =
+
+いろいろある
+
+- ithread
+- Parallel::ForkManager
+- AnyEvent
+- Coro
+
+<<<
+
+>>>
+
+= それぞれの特徴 =
+
+- ithread
+ - core だけど使うのやめましょう！
+ - fork が動かない Windows では使わざるを得ないか？
+- Parallel::ForkManager
+ - fork のラッパー
+ - 処理ごとに fork して全部終わるまで待てて便利
+- AnyEvent
+ - イベントドリブンでコードを書ける
+ - 手続き型とだいぶ趣がかわるので、AE 向けのコーディングスタイルを身につける必要がある
+ - Windows でも PP 版を使うことである程度動く
+- Coro
+ - async { ... } とかでくるむと良い感じにそこが非同期になる！
+ - 普通にコード書いてる感じで OK
+ - ちゃんと結果を受け取ったり、並列数を調整したりするにはそれぞれの作法に従う必要はある
+
+<<<
+
+>>>
+
+= Log を吐きたい =
+
+いろいろある
+
+- Log::Dispatcher
+- Log::Handler
+- Log::Minimal
+
+<<<
+
+>>>
+
+= それぞれの特徴 =
+
+- Log::Dispatcher
+ - デファクト
+ - 高機能だが、遅い
+- Log::Handler
+ - Log::Dispatcher のライト版
+ - Log::Dispatcher から乗り換えるには便利
+ - なぜか mail とかも送れる
+- Log::Minimal
+ - use すると、いろいろと関数がエクスポートされるので手軽
+ - コマンドラインツールなどではとても便利。色もつく。
+ - Web アプリだと OO として使いたいケースがあるが、デフォではサポートしてない
+
+<<<
+
+>>>
+
+= メールを送りたい =
+
+Email::Send はもうメンテされていないので Email::Sender を使いましょう。
+
+長らく Moose で遅かった Email::Sender は Moo になったので起動も高速になりました。
+これでコマンドラインでも安心して使えますね！
+
+<<<
+
+>>>
+
+= Test モジュール =
+
+[http://www.amazon.co.jp/Perl-%E3%83%86%E3%82%B9%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0-%E3%83%8F%E3%83%B3%E3%83%89%E3%83%96%E3%83%83%E3%82%AF-ebook/dp/B00A5Q6EM2/ref=sr_1_1?ie=UTF8&qid=1364128208&sr=8-1 Perl テスティング ハンドブック] があるじゃないですか！
+
+<<<
+
+>>>
+
+= まとめ =
+
+そういえば、むかし [http://e8y.net/mag/ 今日のCPANモジュール] というページがあってこれがすごい参考になってよく見てたのを思い出しました。
+
+というわけで、最近みんながなんかこういうの使ってるよ的な話があんまりまとまってなかったので、そういう内容にしてみました。
+
+それ [http://www.amazon.co.jp/o/ASIN/486267108X/ CPANモジュールガイド] で！という話もありますが、とりあえず今回は一度も開かずに、使ってる or 使おうと思っているものだけを紹介しました。
+
+まぁ、なんというか好きなモジュール使えばいいんですけどね！
+
+
+<<<
+
+->>
+
+Fin.
+
+<<-
