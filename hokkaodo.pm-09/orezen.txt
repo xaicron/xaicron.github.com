@@ -582,8 +582,7 @@ A. すいません、使ってません...
  - ExtUtils::MakeMaker のラッパー
  - DSL で書ける
  - CPAN に上げるときは inc/* に Module::Install 自体を入れるのでインストールする人は Module::Install を入れる必要がない
- - ただし、cpanfile と相性が悪いよねー
-  - 結局 configure_requires に Module::Install いれといたほうが今後は良いか
+ - git から入れるときとかに Module::Install::* を探すのが面倒
 - Module::Build
  - v5.9.4 から core
  - make 使わずに perl でビルドする
