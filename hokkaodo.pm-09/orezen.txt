@@ -873,6 +873,14 @@ Email::Send はもうメンテされていないので Email::Sender を使い�
 
 >>>
 
+= 例外処理 =
+
+[http://yappo.github.io/talks/20130329-perlcasual7-exception/#/title] をご覧あれ！
+
+<<<
+
+>>>
+
 = まとめ =
 
 そういえば、むかし [http://e8y.net/mag/ 今日のCPANモジュール] というページがあってこれがすごい参考になってよく見てたのを思い出しました。
