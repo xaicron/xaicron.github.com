@@ -47,7 +47,7 @@ my $html = Text::MicroTemplate::File->new(
 if ($opts->{regen}) {
     my $flavor = OreZen::Flavor->load($opts->{flavor});
     print "regen from $flavor\n";
-    $flavor->gen();
+    $flavor->gen(excludes => ['static/css/custom.css']);
 }
 
 OreZen::Util->write('index.html', $html);
