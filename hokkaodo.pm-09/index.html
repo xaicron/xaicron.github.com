@@ -726,7 +726,11 @@ A. すいません、使ってません...
 <li>JSON</li>
 <ul>
 <li>JSON::PP が v5.13.9 から core</li>
-<li>ただし、JSON::PP は遅いので普通は JSON::XS 使う。</li>
+<li>ただし、JSON::PP は遅いので普通は JSON::XS をインスコしましょう</li>
+<li>JSON.pm は JSON::XS が入っていたらそっち、入ってなかったら JSON::PP というようにバックエンドを自動で切り替えます</li>
+<ul>
+<li>スクリプトやモジュールでは  JSON.pm を使っとくとよいですね</li>
+</ul>
 </ul>
 <li>Data::MessagePack</li>
 <ul>
@@ -773,6 +777,7 @@ A. すいません、使ってません...
 <li>インターフェースは Larry が原案</li>
 <li>そこそこ速い</li>
 <li>現在の主流</li>
+<li>若干 %z 周りが腐っているか <a href="http://blog.64p.org/entry/2013/03/01/112510">http://blog.64p.org/entry/2013/03/01/112510</a></li>
 </ul>
 <li>POSIX::strftime()</li>
 <ul>
