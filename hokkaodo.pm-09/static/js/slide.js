@@ -11,8 +11,18 @@ var fontTimer = setInterval(function(){
         }
     }
 }, 100);
+var startTime = (new Date()).getTime();
 var dateTimer = setInterval(function() {
-    document.getElementById('date').innerHTML = (new Date()).toLocaleString();
+    var elasped = Math.floor(((new Date()).getTime() - startTime) / 1000);
+    var seconds = elasped % 60;
+    var minutes = Math.floor(elasped / 60);
+    if (seconds.toString().length == 1) {
+      seconds = '0' + seconds;
+    }
+    if (minutes.toString().length == 1) {
+      minutes = '0' + minutes;
+    }
+    document.getElementById('date').innerHTML = minutes + ':' + seconds;
 }, 100);
 
 var slides = [];
@@ -52,10 +62,10 @@ document.onkeydown = function(e) {
     }
     var key = e.keyCode;
     console.log(key);
-    if ((key === KEYBORD.J || key === KEYBORD.Right) && slides[current+1]) {
+    if (key === KEYBORD.J || key === KEYBORD.Right) {
         listView === false ? next() : nextlist();
     }
-    else if ((key === KEYBORD.K || key === KEYBORD.Left) && slides[current-1]) {
+    else if (key === KEYBORD.K || key === KEYBORD.Left) {
         listView === false ? prev() : prevlist();
     }
     else if ((key === KEYBORD.H || key === KEYBORD.Up) && listView === false) {
@@ -115,6 +125,45 @@ document.onkeydown = function(e) {
     }
 };
 
+function gap(a, b) {
+    return a > b ? a - b : b - a;
+}
+
+(function() {
+    var xStart = 0, xEnd = 0, yStart = 0, yEnd = 0;
+    var center = document.width / 2;
+    document.addEventListener('touchstart', function(e) {
+        xStart = xEnd = e.touches[0].pageX;
+        yStart = yEnd = e.touches[0].pageY;
+    }, false);
+
+    document.addEventListener('touchmove', function(e) {
+        xEnd = e.touches[0].pageX;
+        yEnd = e.touches[0].pageY;
+    }, false);
+
+    document.addEventListener('touchend', function(e) {
+        if (!(gap(yStart, yEnd) > 100)) {
+            if (xStart == xEnd) {
+                if (xStart > center) {
+                    next();
+                }
+                else {
+                    prev();
+                }
+            }
+            else if (xStart > xEnd) {
+                next();
+            }
+            else if (xStart < xEnd) {
+                prev();
+            }
+        }
+
+        xStart = xEnd = yStart = yEnd = 0;
+    }, false);
+})();
+
 setTimeout(function(){
     var matched;
     document.getElementById('page').style.display = 'block';
@@ -133,16 +182,19 @@ setTimeout(function(){
 
 /* utility functions */
 function next() {
+    if (!slides[current+1]) return;
     replaceClass(slides[current++], [NC, VC], PC);
     replaceClass(slides[current], [PC, NC], VC);
     location.hash = current + 1;
 }
 function prev() {
+    if (!slides[current-1]) return;
     replaceClass(slides[current--], [PC, VC], NC);
     replaceClass(slides[current], [PC, NC], VC);
     location.hash = current + 1;
 }
 function nextlist() {
+    if (!slides[current+1]) return;
     removeClass(slides[current], 'focus');
     stash[current++].class = PC;
     addClass(slides[current], 'focus');
@@ -150,6 +202,7 @@ function nextlist() {
     location.hash = current + 1;
 }
 function prevlist() {
+    if (!slides[current-1]) return;
     removeClass(slides[current], 'focus');
     stash[current--].class = NC;
     addClass(slides[current], 'focus');
