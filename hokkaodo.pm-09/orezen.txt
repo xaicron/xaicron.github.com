@@ -561,6 +561,98 @@ A. すいません、使ってません...
 
 >>>
 
+= 日付処理をしたい =
+
+いろいろある
+
+- DateTime
+- Time::Piece
+- POSIX::strftime()
+
+<<<
+
+>>>
+
+= それぞれの特徴 =
+
+- DateTime
+ - 元デファクト
+ - 相当高機能だが、いかんせん遅い。
+  - Web アプリではボトルネックになるレベルだったんだけど、速くなったのだろうか。
+ - overload を駆使しているので中二病的に使えたりする
+ - DateTime::* などにいろいろと便利なモジュールが上がっているので凝ったことをやりたいならこれ。
+- Time::Piece
+ - 5.10 から core に入った日付処理モジュール
+ - インターフェースは Larry が原案
+ - そこそこ速い
+ - 現在の主流
+- POSIX::strftime()
+ - 速いので速度が必要なときは迷わずこれ
+ - ただし、POSIX なのでインターフェースはそういう感じ。
+
+<<<
+
+>>>
+
+= 日付処理の適当なベンチマーク =
+
+単純に、ISO8601 な形式の文字列を現在時刻から得るコードのベンチ
+
+{{{
+use strict;
+use warnings;
+use feature 'say';
+use Config;
+use Benchmark qw(cmpthese :hireswallclock);
+
+use DateTime ();
+use Time::Piece::ISO ();
+use Time::Local ();
+use POSIX ();
+
+say "perl-$Config{version} ($Config{archname})";
+say "DateTime    : $DateTime::VERSION";
+say "Time::Piece : $Time::Piece::VERSION";
+say "POSIX       : $POSIX::VERSION";
+
+my $time = CORE::time;
+say DateTime->from_epoch(epoch => $time)->iso8601;
+say Time::Piece::gmtime($time)->datetime;
+say POSIX::strftime('%Y-%m-%dT%H:%M:%S' => gmtime($time));
+
+cmpthese -1 => {
+    'DateTime' => sub {
+        DateTime->from_epoch(epoch => $time)->iso8601;
+    },
+    'Time::Piece' => sub {
+        Time::Piece::gmtime($time)->datetime;
+    },
+    'POSIX::strftime' => sub {
+        POSIX::strftime('%Y-%m-%dT%H:%M:%S' => gmtime($time));
+    },
+}, 'all';
+
+__END__
+perl-5.16.2 (darwin-2level)
+DateTime    : 1.01
+Time::Piece : 1.20_01
+POSIX       : 1.30
+Benchmark: running DateTime, POSIX::strftime, Time::Piece for at least 1 CPU seconds...
+  DateTime: 1.10119 wallclock secs ( 1.10 usr  0.01 sys +  0.00 cusr  0.00 csys =  1.11 CPU) @ 13837.84/s (n=15360)
+POSIX::strftime: 1.08495 wallclock secs ( 1.08 usr  0.00 sys +  0.00 cusr  0.00 csys =  1.08 CPU) @ 217738.89/s (n=235158)
+Time::Piece: 1.11906 wallclock secs ( 1.12 usr  0.01 sys +  0.00 cusr  0.00 csys =  1.13 CPU) @ 58553.98/s (n=66166)
+                    Rate        DateTime     Time::Piece POSIX::strftime
+DateTime         13838/s              --            -76%            -94%
+Time::Piece      58554/s            323%              --            -73%
+POSIX::strftime 217739/s           1474%            272%              --
+}}}
+
+だいたいこんな感じ。
+
+<<<
+
+>>>
+
 = モジュールのビルダー =
 
 いろいろある

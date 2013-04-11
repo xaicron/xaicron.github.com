@@ -739,6 +739,113 @@ A. すいません、使ってません...
 
 <section>
 
+<h1>日付処理をしたい</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>DateTime</li>
+<li>Time::Piece</li>
+<li>POSIX::strftime()</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>DateTime</li>
+<ul>
+<li>元デファクト</li>
+<li>相当高機能だが、いかんせん遅い。</li>
+<ul>
+<li>Web アプリではボトルネックになるレベルだったんだけど、速くなったのだろうか。</li>
+</ul>
+<li>overload を駆使しているので中二病的に使えたりする</li>
+<li>DateTime::* などにいろいろと便利なモジュールが上がっているので凝ったことをやりたいならこれ。</li>
+</ul>
+<li>Time::Piece</li>
+<ul>
+<li>5.10 から core に入った日付処理モジュール</li>
+<li>インターフェースは Larry が原案</li>
+<li>そこそこ速い</li>
+<li>現在の主流</li>
+</ul>
+<li>POSIX::strftime()</li>
+<ul>
+<li>速いので速度が必要なときは迷わずこれ</li>
+<li>ただし、POSIX なのでインターフェースはそういう感じ。</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>日付処理の適当なベンチマーク</h1>
+
+<p>
+単純に、ISO8601 な形式の文字列を現在時刻から得るコードのベンチ
+</p>
+<pre>
+use strict;
+use warnings;
+use feature &#39;say&#39;;
+use Config;
+use Benchmark qw(cmpthese :hireswallclock);
+
+use DateTime ();
+use Time::Piece::ISO ();
+use Time::Local ();
+use POSIX ();
+
+say &quot;perl-$Config{version} ($Config{archname})&quot;;
+say &quot;DateTime    : $DateTime::VERSION&quot;;
+say &quot;Time::Piece : $Time::Piece::VERSION&quot;;
+say &quot;POSIX       : $POSIX::VERSION&quot;;
+
+my $time = CORE::time;
+say DateTime-&gt;from_epoch(epoch =&gt; $time)-&gt;iso8601;
+say Time::Piece::gmtime($time)-&gt;datetime;
+say POSIX::strftime(&#39;%Y-%m-%dT%H:%M:%S&#39; =&gt; gmtime($time));
+
+cmpthese -1 =&gt; {
+    &#39;DateTime&#39; =&gt; sub {
+        DateTime-&gt;from_epoch(epoch =&gt; $time)-&gt;iso8601;
+    },
+    &#39;Time::Piece&#39; =&gt; sub {
+        Time::Piece::gmtime($time)-&gt;datetime;
+    },
+    &#39;POSIX::strftime&#39; =&gt; sub {
+        POSIX::strftime(&#39;%Y-%m-%dT%H:%M:%S&#39; =&gt; gmtime($time));
+    },
+}, &#39;all&#39;;
+
+__END__
+perl-5.16.2 (darwin-2level)
+DateTime    : 1.01
+Time::Piece : 1.20_01
+POSIX       : 1.30
+Benchmark: running DateTime, POSIX::strftime, Time::Piece for at least 1 CPU seconds...
+  DateTime: 1.10119 wallclock secs ( 1.10 usr  0.01 sys +  0.00 cusr  0.00 csys =  1.11 CPU) @ 13837.84/s (n=15360)
+POSIX::strftime: 1.08495 wallclock secs ( 1.08 usr  0.00 sys +  0.00 cusr  0.00 csys =  1.08 CPU) @ 217738.89/s (n=235158)
+Time::Piece: 1.11906 wallclock secs ( 1.12 usr  0.01 sys +  0.00 cusr  0.00 csys =  1.13 CPU) @ 58553.98/s (n=66166)
+                    Rate        DateTime     Time::Piece POSIX::strftime
+DateTime         13838/s              --            -76%            -94%
+Time::Piece      58554/s            323%              --            -73%
+POSIX::strftime 217739/s           1474%            272%              --
+</pre>
+
+<p>
+だいたいこんな感じ。
+</p>
+</section>
+
+<section>
+
 <h1>モジュールのビルダー</h1>
 
 <p>
