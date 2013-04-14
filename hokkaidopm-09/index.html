@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Hokkaido.pm #9</title>
+<link rel="stylesheet" href="static/css/style.css" />
+<link rel="stylesheet" href="static/css/pretty.css" />
+<link rel="stylesheet" href="static/css/custom.css" />
+<meta name="viewport" content="width=devide-width,initial-scale=0.8,user-scalable=no" />
+</head>
+<body>
+
+<section class="center"><div class="align-center">
+
+<h1>最近使ってる<span style="color: yellow">モジュール</span>の話</h1>
+
+<p>
+Hokkaido.pm#9 - 2013/03/09 in <span style="color: yellow">北海道</span>
+<br />xaicron
+</p>
+</div></section>
+
+<section>
+
+<h1>自己紹介</h1>
+
+<ul>
+<li>twitter</li>
+<ul>
+<li>@xaicron</li>
+</ul>
+<li>works</li>
+<ul>
+<li>:DeNA</li>
+</ul>
+<li>CPAN</li>
+<ul>
+<li><a href="https://metacpan.org/author/XAICRON">https://metacpan.org/author/XAICRON</a></li>
+</ul>
+</ul>
+
+</section>
+
+<section class="center">
+
+<h1>免責</h1>
+
+<p>
+本日発表する内容は、個人的な考えや意見であり、
+<br />所属する組織、会社とは一切関係ありません。
+</p>
+</section>
+
+<section class="center">
+
+<h1>免責</h1>
+
+<p>
+本日発表する内容は、個人的な考えや意見であり、
+<br />所属する組織、会社とは一切関係ありません。
+</p>
+<p>
+<strong><span style="color: yellow">また、スピリチュアルトークはできません。</span></strong>
+</p>
+</section>
+
+<section>
+
+<p>
+というわけで
+</p>
+</section>
+
+<section>
+
+<p>
+今日は、最近使ってるモジュールの話とかを中心にまったりやっていこうと思います。
+</p>
+</section>
+
+<section class="center">
+
+<p>
+いきなり本題に入る前に
+</p>
+</section>
+
+<section class="center">
+
+<p>
+自分がどんなふうに使うモジュールを選んでいるのか
+</p>
+</section>
+
+<section>
+
+<h1>CPAN モジュールの選定基準</h1>
+
+<p>
+2008年ごろ書かれたいい記事があります。
+</p>
+<p>
+<a href="http://blog.64p.org/entry/20080520/1211292598">CPANソムリエになる方法</a>
+</p>
+</section>
+
+<section>
+
+<p>
+ざっくりまとめると
+</p>
+<ul>
+<li>最終更新日時がふるいモジュールは危険</li>
+<li>テストが超絶少ないモジュールは危険</li>
+<li>バグレポート溜まってるモジュールは危険</li>
+</ul>
+
+<p>
+って感じですね。
+</p>
+</section>
+
+<section>
+
+<h1>俺基準</h1>
+
+<p>
+自分の基準としてはプラスして以下のようなところを見てる
+</p>
+</section>
+
+<section>
+
+<h1>俺基準 (1)</h1>
+
+<ul>
+<li>作者が信頼出来る</li>
+<ul>
+<li>あの人のつくったモジュールならまぁ問題無いだろう</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>俺基準 (2)</h1>
+
+<ul>
+<li>依存モジュールが多くない</li>
+<ul>
+<li>依存がおおいとその分ゴツかったり、壊れやすかったりする</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>俺基準 (3)</h1>
+
+<ul>
+<li>Moose 使ってない</li>
+<ul>
+<li>このへんは趣味ですが</li>
+<li>特にコマンドラインツールで Moose 使ってるものはストレスフル</li>
+<li>最近は Moo への replace が増えてるので今後良くなりそう</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>俺基準 (4)</h1>
+
+<ul>
+<li>コードがさくっと読める</li>
+<ul>
+<li>重厚長大なモジュールは勘弁</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>俺基準 (5)</h1>
+
+<ul>
+<li>やりたいことがはっきりしてるやつ</li>
+<ul>
+<li>あれもこれもやろうとするようなモジュールは破綻することが多いので避ける</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>俺基準 (6)</h1>
+
+<ul>
+<li>遅そうなモジュールを避ける</li>
+<ul>
+<li>大量にオブジェクト生成したり、for の中でメソッド呼び出ししまくってたり</li>
+<li>とはいえ、プロダクションコードでなければそんなに気にしない</li>
+</ul>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+<strong>ただし、全部ケースバイケースです！</strong>
+</p>
+</section>
+
+<section>
+
+<h1>モジュール選定のまとめ</h1>
+
+<p>
+ミニマルで、やりたいことがはっきりしてて遅くなさそうなモジュールを選ぶ
+</p>
+</section>
+
+<section>
+
+<h1>Any::Moose と Moose と Mouse について</h1>
+
+<ul>
+<li>Any::Moose は終わりました。使うのをやめましょう。</li>
+<li>新規には Moose ではなく Moo または Mouse を使いましょう。</li>
+<li>Mouse はどれとも混ぜずに Mouse だけを使いましょう。</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Moo と Mouse の使い分け</h1>
+
+<ul>
+<li>Moo は CPAN モジュールとか書くときは世界的に受けが良いでしょう</li>
+<li>Mouse はプロダクションコードでのみ使ってる</li>
+<ul>
+<li>どうせ XS 使うしアクセサなどが高速なので</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<p>
+閑話休題
+</p>
+</section>
+
+<section>
+
+<p>
+というわけで本題。
+</p>
+</section>
+
+<section>
+
+<h1>自分が使ってるモジュールの紹介</h1>
+
+</section>
+
+<section>
+
+<h1>実行中にモジュールを use したい</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>UNIVERSAL::require</li>
+<li>Module::Load</li>
+<li>Class::Load</li>
+<li>Plack::Util#load_class</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>UNIVERSAL::require</li>
+<ul>
+<li>昔流行った</li>
+<li>ただし、使った瞬間に global スコープを汚染するのでイケてない</li>
+</ul>
+<li>Module::Load</li>
+<ul>
+<li>v5.9.4 から core なのでとりあえずこれでよい</li>
+<li>ただし、<code>load()</code> のあとに class 名が返ってこないのでハマる</li>
+</ul>
+<li>Class::Load</li>
+<ul>
+<li>Module::Runtime のラッパー</li>
+<li>inner class をロードしても死なない</li>
+<li>なんか依存多い...</li>
+<li>コードが意外と複雑</li>
+<li><code>load_class($class)-&gt;new</code> とかできて便利</li>
+</ul>
+<li>Plack::Util#load_class</li>
+<ul>
+<li>prefix を指定してロードしたり、<code>+Foo::Bar</code> したらフル扱いとか便利</li>
+<li>Plack に入っているので Plack が必要。Web アプリなら使ってもよいか。</li>
+<li>この機能だけ外出ししたモジュールが欲しいことが多々ある予感</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>最近</h1>
+
+<p>
+大体は <code>Module::Runtime#use_module</code> でいっかなーって思っているのでそれ使ってる。
+</p>
+<p>
+Module::Runtime は実は Class::Load が内部的に使っていたりします。
+</p>
+</section>
+
+<section>
+
+<h1>HTTP リクエストしたい</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>LWP::UserAgent</li>
+<li>HTTP::Tiny</li>
+<li>Furl</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>LWP::UserAgent</li>
+<ul>
+<li>デファクト</li>
+<li>高機能</li>
+<li>いっぱいオブジェクトを中で作るので若干もさいかも</li>
+</ul>
+<li>HTTP::Tiny</li>
+<ul>
+<li>v5.13.9 から core</li>
+<li>依存モジュールない</li>
+<li>ポータブルなスクリプトとかで使うのに便利</li>
+</ul>
+<li>Furl</li>
+<ul>
+<li>わりと速い</li>
+<li>timeout の指定がちゃんと出来る</li>
+<li>最近また活発に開発されてる</li>
+<li>そんなに高機能じゃない</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Furl について</h1>
+
+<p>
+最近また活発に開発されていたんですが、とりあえずまたある程度機能が揃ったので落ち着く予定です。
+</p>
+<p>
+最近、以下の様な機能が追加されています。
+</p>
+<ul>
+<li>ssl verify mode の追加</li>
+<ul>
+<li>オレオレ証明書とか対策</li>
+<li>ついでに proxy まわりも修正</li>
+</ul>
+<li>basic 認証周りの追加</li>
+<ul>
+<li><a href="http://user:">http://user:</a>pass@example.com/xxxx に対応</li>
+</ul>
+<li>Internal response の判別がしやすくなった</li>
+<ul>
+<li>ヘッダーに X-Internal-Response: 1 が入る</li>
+<li>ただし、EXPERIMENTAL</li>
+</ul>
+<li>Furl::Request の追加</li>
+<ul>
+<li>Furl 経由で使えば Furl::Response の中に入ってくるので、LWP と同じように dump とかできて便利</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Furl::Request が返るようになった</h1>
+
+<p>
+LWP とほぼおんなじ感じに使えます。
+</p>
+<pre>
+use strict;
+use warnings;
+use v5.16.2;
+use Furl 2.10;
+
+my $furl = Furl-&gt;new;
+my $res = $furl-&gt;get(&#39;http://example.com/&#39;);
+
+# リクエストした内容の Furl::Request オブジェクト
+my $req = $res-&gt;request;
+
+# HTTP::Request-&gt;dump
+say $req-&gt;as_http_request-&gt;dump;
+
+# HTTP::Response-&gt;dump
+say $res-&gt;as_http_response-&gt;dump;
+</pre>
+
+</section>
+
+<section>
+
+<h1>ちゃんとキャプチャしたい場合</h1>
+
+<p>
+<code>capture_requset</code> を有効にすると、Furl::Response から取得できる。
+</p>
+<pre>
+my $furl = Furl-&gt;new(
+    capture_request =&gt; 1, # 実際に送った生 HTTP を保存
+);
+
+my $res = $furl-&gt;post(
+    &#39;http://localhost:5000/&#39;,
+    [ &#39;X-Foo&#39; =&gt; 1 ],
+    [ foo =&gt; &#39;bar&#39; ],
+);
+say $res-&gt;captured_req_headers . $res-&gt;captured_req_content;
+</pre>
+
+</section>
+
+<section>
+
+<h1>DB に接続したい</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>DBIx::Connector</li>
+<li>DBIx::Handler</li>
+<li>DBIx::Sunny</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれのモジュールの特徴</h1>
+
+<ul>
+<li>DBIx::Connector</li>
+<ul>
+<li>DB の処理をコールバックでかけるのでスッキリして良くて使ってた</li>
+<li>ちょっとコードが読みづらいし使わない機能とか結構ある</li>
+</ul>
+<li>DBIx::Handler</li>
+<ul>
+<li>DBIx::Connector のもうちょいライトな奴がほしいよねで作った</li>
+<li>DBIx::TransactionManager を透過的につかってる</li>
+<li>最近はこれ使ってる</li>
+</ul>
+<li>DBIx::Sunny</li>
+<ul>
+<li>DBI のサブクラス</li>
+<li>kazeburo おすすめ設定がされているので安心のクォリティ</li>
+<li>DBIx::TransactionManager も使える</li>
+<li>query を発行した箇所が SQL に埋め込まれるので、slow log とかにも出てわかりやすい</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>DBIx::Handler と DBIx::Sunny を組み合わせる</h1>
+
+<p>
+以下のようにすると組み合わせて使えて捗る
+</p>
+<pre>
+use DBIx::Handler;
+
+my $handler = DBIx::Handler-&gt;new($dsn, $user, $pass, {
+    RootClass =&gt; &#39;DBIx::Sunny&#39;,
+});
+$handler-&gt;txn(sub {
+    my $dbh = shift;
+    ...
+    $dbh-&gt;do(...); # SQL にコメントもつけてくれる
+    # ここで勝手に commit してくれる
+});
+</pre>
+
+</section>
+
+<section>
+
+<p>
+Q. O/R Mapper がありませんね？
+</p>
+<p>
+A. すいません、使ってません...
+</p>
+</section>
+
+<section>
+
+<h1>クエリビルダー</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>SQL::Abstruct</li>
+<li>SQL::Maker</li>
+<li>SQL::Format</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>SQL::Abstruct</li>
+<ul>
+<li>もとデファクト</li>
+<li>重厚長大で遅いが高機能</li>
+<li>DBIx::Class の中で使われてる</li>
+</ul>
+<li>SQL::Maker</li>
+<ul>
+<li>もともと DBIx::Skinny のクエリビルダーだったものを分離した</li>
+<li>結構速い</li>
+<li>メソッドチェインでクエリーを書ける</li>
+</ul>
+<li>SQL::Format</li>
+<ul>
+<li>sprintf てきなのりでクエリを組み立てられる</li>
+<li>オブジェクトとしてのインターフェイスも提供</li>
+<ul>
+<li>SQL::Abstruct と SQL::Maker とほぼ同じように使える</li>
+</ul>
+<li>ソースコードを開くとお前は死ぬ</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>テンプレートエンジン</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>Template::ToolKit</li>
+<li>Text::Xsalte</li>
+<li>Text::MicroTemplate</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれのモジュールの特徴</h1>
+
+<ul>
+<li>Template::ToolKit</li>
+<ul>
+<li>いまさら使うメリットない</li>
+<li>syntax はよい</li>
+</ul>
+<li>Text::Xsalte</li>
+<ul>
+<li>基本的にはこれを使う</li>
+<li>TT の syntax もある</li>
+<li>バグってたら gfx しか直せないリスクはある</li>
+</ul>
+<li>Text::MicroTemplate</li>
+<ul>
+<li>PP で普通に高速</li>
+<li>syntax は普通の perl コードなので便利</li>
+<li>Text::MicroTemplate::Extended でもっと便利に</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<p>
+新規プロジェクトでは Text::Xsalte を使うと良い。
+<br />じぶんはコードジェネレーターとかでも使ってるけど、そのへんは T::MT でもよい。
+</p>
+</section>
+
+<section>
+
+<h1>スクレイピング</h1>
+
+<ul>
+<li>Web::Scraper</li>
+<li>Web::Query</li>
+<li>WWW::Mechanize</li>
+<li>Selenium::Remote::Driver</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれのモジュールの特徴</h1>
+
+<ul>
+<li>Web::Scraper</li>
+<ul>
+<li>言わずと知れたデファクトなモジュール</li>
+<li>DSL でさっくり掛けて便利</li>
+</ul>
+<li>Web::Query</li>
+<ul>
+<li>jQuery 風の syntax</li>
+<li>最近はこれ使ってる</li>
+</ul>
+<li>WWW::Mechanize</li>
+<ul>
+<li>フォーム入力とかある場合はこれ使う</li>
+<li>html のパースしたければ + Web::Query</li>
+</ul>
+<li>Selenium::Remote::Driver</li>
+<ul>
+<li>まだ使ったこと無いけど！</li>
+<li>PhantomJS と合わせれば夢が広がりんぐ</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<p>
+最近は、JavaScript 使えないと厳しいサイトが多いので Selenium::Remote::Driver + PhantomJS の組み合わせに期待
+</p>
+</section>
+
+<section>
+
+<h1>データをシリアライズしたい</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>Storable</li>
+<li>YAML</li>
+<li>JSON</li>
+<li>Data::MessagePack</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれのモジュールの特徴</h1>
+
+<ul>
+<li>Storable</li>
+<ul>
+<li>perl のデフォルトのシリアライザー</li>
+<li>blessed object もシリアライズできる</li>
+<li>Storable のバージョン間で互換性がない</li>
+<ul>
+<li>プロトコルバージョン 2.6 で作ったものは 2.7 で使えないとか</li>
+</ul>
+</ul>
+<li>YAML</li>
+<ul>
+<li>昔流行った</li>
+<li>すべての仕様を満たしたパーザーがない</li>
+<ul>
+<li>YAML</li>
+<li>YAML::Syck</li>
+<li>YAML::XS</li>
+<li>YAML::Tiny</li>
+<ul>
+<li>上記のやつが全部互換性無い</li>
+</ul>
+</ul>
+<li>YAML は一定の役割を終えたので今後使うことは無いでしょう</li>
+<li>YAML2.0 が流行る可能性は...？</li>
+</ul>
+<li>JSON</li>
+<ul>
+<li>JSON::PP が v5.13.9 から core</li>
+<li>ただし、JSON::PP は遅いので普通は JSON::XS をインスコしましょう</li>
+<li>JSON.pm は JSON::XS が入っていたらそっち、入ってなかったら JSON::PP というようにバックエンドを自動で切り替えます</li>
+<ul>
+<li>スクリプトやモジュールでは  JSON.pm を使っとくとよいですね</li>
+</ul>
+</ul>
+<li>Data::MessagePack</li>
+<ul>
+<li>最近色々ありましたが、使っても大丈夫です！！</li>
+<li>データサイズが小さいので、KVS に突っ込む場合によく使っている</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>日付処理をしたい</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>DateTime</li>
+<li>Time::Piece</li>
+<li>POSIX::strftime()</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>DateTime</li>
+<ul>
+<li>元デファクト</li>
+<li>相当高機能だが、いかんせん遅い。</li>
+<ul>
+<li>Web アプリではボトルネックになるレベルだったんだけど、速くなったのだろうか。</li>
+</ul>
+<li>overload を駆使しているので中二病的に使えたりする</li>
+<li>DateTime::* などにいろいろと便利なモジュールが上がっているので凝ったことをやりたいならこれ。</li>
+</ul>
+<li>Time::Piece</li>
+<ul>
+<li>5.10 から core に入った日付処理モジュール</li>
+<li>インターフェースは Larry が原案</li>
+<li>そこそこ速い</li>
+<li>現在の主流</li>
+<li>若干 %z 周りが腐っているか <a href="http://blog.64p.org/entry/2013/03/01/112510">http://blog.64p.org/entry/2013/03/01/112510</a></li>
+</ul>
+<li>POSIX::strftime()</li>
+<ul>
+<li>速いので速度が必要なときは迷わずこれ</li>
+<li>ただし、POSIX なのでインターフェースはそういう感じ。</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>日付処理の適当なベンチマーク</h1>
+
+<p>
+単純に、ISO8601 な形式の文字列を現在時刻から得るコードのベンチ
+</p>
+<pre>
+use strict;
+use warnings;
+use feature &#39;say&#39;;
+use Config;
+use Benchmark qw(cmpthese :hireswallclock);
+
+use DateTime ();
+use Time::Piece::ISO ();
+use Time::Local ();
+use POSIX ();
+
+say &quot;perl-$Config{version} ($Config{archname})&quot;;
+say &quot;DateTime    : $DateTime::VERSION&quot;;
+say &quot;Time::Piece : $Time::Piece::VERSION&quot;;
+say &quot;POSIX       : $POSIX::VERSION&quot;;
+
+my $time = CORE::time;
+say DateTime-&gt;from_epoch(epoch =&gt; $time)-&gt;iso8601;
+say Time::Piece::gmtime($time)-&gt;datetime;
+say POSIX::strftime(&#39;%Y-%m-%dT%H:%M:%S&#39; =&gt; gmtime($time));
+
+cmpthese -1 =&gt; {
+    &#39;DateTime&#39; =&gt; sub {
+        DateTime-&gt;from_epoch(epoch =&gt; $time)-&gt;iso8601;
+    },
+    &#39;Time::Piece&#39; =&gt; sub {
+        Time::Piece::gmtime($time)-&gt;datetime;
+    },
+    &#39;POSIX::strftime&#39; =&gt; sub {
+        POSIX::strftime(&#39;%Y-%m-%dT%H:%M:%S&#39; =&gt; gmtime($time));
+    },
+}, &#39;all&#39;;
+
+__END__
+perl-5.16.2 (darwin-2level)
+DateTime    : 1.01
+Time::Piece : 1.20_01
+POSIX       : 1.30
+Benchmark: running DateTime, POSIX::strftime, Time::Piece for at least 1 CPU seconds...
+  DateTime: 1.10119 wallclock secs ( 1.10 usr  0.01 sys +  0.00 cusr  0.00 csys =  1.11 CPU) @ 13837.84/s (n=15360)
+POSIX::strftime: 1.08495 wallclock secs ( 1.08 usr  0.00 sys +  0.00 cusr  0.00 csys =  1.08 CPU) @ 217738.89/s (n=235158)
+Time::Piece: 1.11906 wallclock secs ( 1.12 usr  0.01 sys +  0.00 cusr  0.00 csys =  1.13 CPU) @ 58553.98/s (n=66166)
+                    Rate        DateTime     Time::Piece POSIX::strftime
+DateTime         13838/s              --            -76%            -94%
+Time::Piece      58554/s            323%              --            -73%
+POSIX::strftime 217739/s           1474%            272%              --
+</pre>
+
+<p>
+だいたいこんな感じ。
+</p>
+</section>
+
+<section>
+
+<h1>モジュールのビルダー</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>ExtUtils::MakeMaker</li>
+<li>Module::Install</li>
+<li>Module::Build</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>ExtUtils::MakeMaker</li>
+<ul>
+<li>core だけど書くのがめんどい</li>
+<li>make 使う</li>
+</ul>
+<li>Module::Install</li>
+<ul>
+<li>ExtUtils::MakeMaker のラッパー</li>
+<li>DSL で書ける</li>
+<li>CPAN に上げるときは inc/* に Module::Install 自体を入れるのでインストールする人は Module::Install を入れる必要がない</li>
+<li>git から入れるときとかに Module::Install::* を探すのが面倒</li>
+</ul>
+<li>Module::Build</li>
+<ul>
+<li>v5.9.4 から core</li>
+<li>make 使わずに perl でビルドする</li>
+<li>大体 Module::Install でできることはできる</li>
+<li>最近は Module::Build::Pluggable::CPANfile を使ってる</li>
+<ul>
+<li>Build.PL には何も書かずに cpanfile に書いていく</li>
+</ul>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Module::Build::Pluggable::CPANfile の例</h1>
+
+<pre>
+$ cat Build.PL
+
+use strict;
+use warnings;
+use Module::Build::Pluggable qw(CPANfile);
+
+my $build = Module::Build::Pluggable-&gt;new(
+    license        =&gt; &#39;perl&#39;,
+    dynamic_config =&gt; 0,
+
+    configure_requires =&gt; {},
+    build_requires     =&gt; {},
+    requires           =&gt; {
+        perl =&gt; &#39;5.008001&#39;,
+    },
+
+    no_index    =&gt; { &#39;directory&#39; =&gt; [ &#39;inc&#39; ] },
+    name        =&gt; &#39;Foo-Bar&#39;,
+    module_name =&gt; &#39;Foo::Bar&#39;,
+
+    # script_files =&gt; [&#39;&#39;],
+
+    test_files           =&gt; (-d &#39;.git&#39; || $ENV{RELEASE_TESTING}) ? &#39;t/ xt/&#39; : &#39;t/&#39;,
+    recursive_test_files =&gt; 1,
+
+    meta_merge =&gt; {
+        resources =&gt; {
+            repository =&gt; &#39;https://github.com/xaicron/p5-Foo-Bar&#39;,
+            bugtracker =&gt; &#39;https://github.com/xaicron/p5-Foo-Bar/issues&#39;,
+        },
+    },
+
+    create_readme  =&gt; 1,
+    create_license =&gt; 1,
+);
+
+$build-&gt;create_build_script();
+</pre>
+
+<pre>
+$ cat cpanfile
+
+# requires &#39;Foo::Bar&#39; =&gt; &#39;0.01&#39;;
+
+on configure =&gt; sub {
+    requires &#39;Module::Build&#39;                      =&gt; &#39;0.40&#39;;
+    requires &#39;Module::Build::Pluggable::CPANfile&#39; =&gt; &#39;0.02&#39;;
+};
+
+on test =&gt; sub {
+    requires &#39;Test::More&#39;     =&gt; &#39;0.98&#39;;
+    requires &#39;Test::Requires&#39; =&gt; &#39;0.06&#39;;
+};
+
+on develop =&gt; sub {
+    requires &#39;Test::Pretty&#39;         =&gt; &#39;0.22&#39;;
+    requires &#39;Test::Name::FromLine&#39; =&gt; &#39;0.09&#39;;
+};
+</pre>
+
+</section>
+
+<section>
+
+<p>
+ちなみに、いまあらたな toolchain がもりもりと作られているので乞うご期待
+</p>
+</section>
+
+<section>
+
+<h1>ファイル操作まわり</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>File::Spec</li>
+<li>Path::Class</li>
+<li>Path::Tiny</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>File::Spec</li>
+<ul>
+<li>core だし、ひと通りのことができる</li>
+</ul>
+<li>Path::Class</li>
+<ul>
+<li>現在のデファクト</li>
+<li>ちょっと生々しい箇所がチラホラあるかも</li>
+<ul>
+<li>binmode 周りとか</li>
+</ul>
+</ul>
+<li>Path::Tiny</li>
+<ul>
+<li>Tiny とは Yet Another の意味です！</li>
+<li>必要な機能はひと通り揃っているし、便利なので最近使ってる</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>並列処理したい</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>ithread</li>
+<li>Parallel::ForkManager</li>
+<li>AnyEvent</li>
+<li>Coro</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>ithread</li>
+<ul>
+<li>core だけど使うのやめましょう！</li>
+<li>fork が動かない Windows では使わざるを得ないか？</li>
+</ul>
+<li>Parallel::ForkManager</li>
+<ul>
+<li>fork のラッパー</li>
+<li>処理ごとに fork して全部終わるまで待てて便利</li>
+</ul>
+<li>AnyEvent</li>
+<ul>
+<li>イベントドリブンでコードを書ける</li>
+<li>手続き型とだいぶ趣がかわるので、AE 向けのコーディングスタイルを身につける必要がある</li>
+<li>Windows でも PP 版を使うことである程度動く</li>
+</ul>
+<li>Coro</li>
+<ul>
+<li>async { ... } とかでくるむと良い感じにそこが非同期になる！</li>
+<li>普通にコード書いてる感じで OK</li>
+<li>ちゃんと結果を受け取ったり、並列数を調整したりするにはそれぞれの作法に従う必要はある</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Log を吐きたい</h1>
+
+<p>
+いろいろある
+</p>
+<ul>
+<li>Log::Dispatcher</li>
+<li>Log::Handler</li>
+<li>Log::Minimal</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>それぞれの特徴</h1>
+
+<ul>
+<li>Log::Dispatcher</li>
+<ul>
+<li>デファクト</li>
+<li>高機能だが、遅い</li>
+</ul>
+<li>Log::Handler</li>
+<ul>
+<li>Log::Dispatcher のライト版</li>
+<li>Log::Dispatcher から乗り換えるには便利</li>
+<li>なぜか mail とかも送れる</li>
+</ul>
+<li>Log::Minimal</li>
+<ul>
+<li>use すると、いろいろと関数がエクスポートされるので手軽</li>
+<li>コマンドラインツールなどではとても便利。色もつく。</li>
+<li>Web アプリだと OO として使いたいケースがあるが、デフォではサポートしてない</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+
+<h1>メールを送りたい</h1>
+
+<p>
+Email::Send はもうメンテされていないので Email::Sender を使いましょう。
+</p>
+<p>
+長らく Moose で遅かった Email::Sender は Moo になったので起動も高速になりました。
+<br />これでコマンドラインでも安心して使えますね！
+</p>
+</section>
+
+<section>
+
+<h1>Test モジュール</h1>
+
+<p>
+<a href="http://www.amazon.co.jp/Perl-%E3%83%86%E3%82%B9%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0-%E3%83%8F%E3%83%B3%E3%83%89%E3%83%96%E3%83%83%E3%82%AF-ebook/dp/B00A5Q6EM2/ref=sr_1_1?ie=UTF8&amp;qid=1364128208&amp;sr=8-1">Perl テスティング ハンドブック</a> があるじゃないですか！
+</p>
+</section>
+
+<section>
+
+<h1>例外処理</h1>
+
+<p>
+<a href="http://yappo.github.io/talks/20130329-perlcasual7-exception/#/title">http://yappo.github.io/talks/20130329-perlcasual7-exception/#/title</a> をご覧あれ！
+</p>
+</section>
+
+<section>
+
+<h1>まとめ</h1>
+
+<p>
+そういえば、むかし <a href="http://e8y.net/mag/">今日のCPANモジュール</a> というページがあってこれがすごい参考になってよく見てたのを思い出しました。
+</p>
+<p>
+というわけで、最近みんながなんかこういうの使ってるよ的な話があんまりまとまってなかったので、そういう内容にしてみました。
+</p>
+<p>
+それ <a href="http://www.amazon.co.jp/o/ASIN/486267108X/">CPANモジュールガイド</a> で！という話もありますが、とりあえず今回は一度も開かずに、使ってる or 使おうと思っているものだけを紹介しました。
+</p>
+<p>
+まぁ、なんというか好きなモジュール使えばいいんですけどね！
+</p>
+
+</section>
+
+<section class="center">
+
+<p>
+Fin.
+</p>
+</section>
+
+<div id="dummy"></div>
+<div id="date"></div>
+<div id="page"></div>
+<div id="help">
+<p>j or &rarr;: next</p>
+<p>k or &larr;: prev</p>
+<p>h or &uarr;: list</p>
+<p>l or &darr;: return</p>
+<p>o or &crarr;: open</p>
+<p>? or /: toggle this help</p>
+</div>
+<script type="text/javascript" src="static/js/slide.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="static/js/prettify.js"></script>
+</body>
+<html>
