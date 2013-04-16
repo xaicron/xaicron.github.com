@@ -1,8 +1,0 @@
-/* your custom style */
-body {
-    background-color: #69a;
-}
-
-body > section {
-    background: rgba(48,48,48,0.3);
-}
