@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>MySQL Casual #04</title>
+<link rel="stylesheet" href="static/css/style.css" />
+<link rel="stylesheet" href="static/css/pretty.css" />
+<link rel="stylesheet" href="static/css/custom.css" />
+<meta name="viewport" content="width=devide-width,initial-scale=0.8,user-scalable=no" />
+</head>
+<body>
+
+<section class="center"><div class="align-center">
+
+<h1><span style="color: yellow">mysqlenv 作った(仮)</span></h1>
+<p>
+〜 第一部 ファントムブラッド 〜
+</p>
+<p>
+@xaicron
+</p>
+<p>
+<ins>2013/04/17 MySQL Casual #04 (日本オラクル)</ins>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 400%">ズキュウウゥン</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 200%">おまえは今までビルドした MySQL の回数をおぼえているのか？</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 200%">・・・</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 400%">はい</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+みなさん、手元の開発環境で MySQL をどうやってインストールしていますか？
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<!-- raw html start -->
+<div align="left">
+<!-- raw html end -->
+
+<ul>
+<li>公式のバイナリ入れる</li>
+<li>ソースから自力でビルドやで！</li>
+<li>MySQL::Sandbox 1択</li>
+<li>mysql-build (c) kamipo を使う！</li>
+</ul>
+
+<!-- raw html start -->
+</div>
+<!-- raw html end -->
+
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 400%">貧弱！貧弱ゥ！</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+というわけで <span style="color: yellow">mysqlenv</span> というコマンドを作ったので
+<br />それの話をします。
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 400%">と思ったら</span></strong>
+</p>
+</div></section>
+
+<section>
+
+<!-- raw html start -->
+<div align="center">
+<!-- raw html end -->
+
+<p>
+全く同じ物を作っているヒトが...ッ！！
+</p>
+<p>
+<img src="./static/img/shim0mura001.png" alt="./static/img/shim0mura001.png" title="./static/img/shim0mura001.png" />
+</p>
+<p>
+<a href="https://github.com/shim0mura/mysqlenv">https://github.com/shim0mura/mysqlenv</a>
+</p>
+<!-- raw html start -->
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 300%">＼(^o^)／</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<del>ぼ、僕のほうが 2日早く作り始めたんだからねっ！！</del>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+カジュアルなので被りました
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 200%">第一部・完</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+...
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+気を取り直して
+</p>
+</div></section>
+
+<section>
+
+<h1>mysqlenv とはッ！</h1>
+
+<p>
+なんか rbenv とか plenv みたいな奴で、いろんなバージョンの MySQL を切り替えたり、特定のディレクトリ以降で使用する MySQL のバージョンを固定したりするやつ
+</p>
+</section>
+
+<section>
+
+<h1>インストールッ！</h1>
+
+<p>
+以下のコマンドでパツイチ
+</p>
+<pre>
+$ curl -kL https://raw.github.com/xaicron/mysqlenv/master/script/mysqlenv-install | bash
+</pre>
+
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 300%">デモ</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong>簡単☺</strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+さて、お気づきの方もいらっしゃるかと思いますが
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+バックエンドに <strong><span style="color: yellow">mysql-build (c) kamipo</span></strong> を使っていますね！
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 400%">メメタア</span></strong>
+</p>
+</div></section>
+
+<section>
+
+<h1>MySQL のインストールッ！</h1>
+
+<p>
+以下のコマンドでサポートしてる version 一覧が出ます。
+</p>
+<pre>
+$ mysqlenv available
+3.23.58
+4.0.30
+4.1.25
+5.0.95
+5.1.68
+5.5.14-spider-3.0
+5.5.30
+5.6.10
+mariadb-5.5.29
+percona-5.5.29
+twitter-5.5.29.t10
+</pre>
+
+</section>
+
+<section>
+
+<h1>MySQL のインストールッ！</h1>
+
+<p>
+そしてすかさずインストールッ！！
+</p>
+<pre>
+$ mysqlenv install 5.6.10
+</pre>
+
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 300%">デモ</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+Now installing...
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 150%">Ｌｕｃｋ！（幸運を）</span></strong>
+<br /><strong><span style="font-size: 150%">ＰＬＵＣＫ（勇気をッ！）</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 200%">第一部・完</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+To Be Continued...
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 300%">そして時は流れるッ！</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 300%">ゴオオオォォォォォォ....</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<h1><span style="color: yellow">mysqlenv 作った(仮)</span></h1>
+<p>
+〜 第二部 戦闘潮流 〜
+</p>
+<p>
+@xaicron
+</p>
+<p>
+<ins>2013/04/17 MySQL Casual #04 (日本オラクル)</ins>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 400%">はい</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+無事にビルドが終わったので
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+それぞれのコマンドについてざっくばらんにやっていきます。
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 400%">タコス</span></strong>
+</p>
+</div></section>
+
+<section>
+
+<h1>help</h1>
+
+<p>
+ヘルプッ！
+</p>
+<pre>
+$ mysqlenv              # == mysqlenv help or mysqlenv -h
+$ mysqlenv help install # install コマンドのヘルプ
+</pre>
+
+</section>
+
+<section>
+
+<h1>available</h1>
+
+<p>
+インストールできる mysql の一覧
+</p>
+<p>
+mysql-build を叩いてるだけ
+</p>
+<pre>
+$ mysqlenv available
+</pre>
+
+</section>
+
+<section>
+
+<h1>install</h1>
+
+<p>
+--as とかで別名でインストールできる
+</p>
+<pre>
+$ mysqlenv install -v --as kamipo 5.6.10
+</pre>
+
+<p>
+でもいまは mysql-build にビルドオプション渡せないのであんまり意味なかった＼(^o^)／
+</p>
+<p>
+<del>誰か直して</del>
+</p>
+</section>
+
+<section>
+
+<h1>list</h1>
+
+<p>
+今入ってる version の一覧を表示
+</p>
+<pre>
+$ mysqlenv list
+</pre>
+
+</section>
+
+<section>
+
+<h1>global</h1>
+
+<p>
+デフォルトで使う mysql のバージョンを固定
+</p>
+<pre>
+$ mysqlenv global 5.6.10
+# ... シェルを起動し直す
+$ mysql -V
+mysql  Ver 14.14 Distrib 5.6.10, for osx10.8 (x86_64) using  EditLine wrapper
+</pre>
+
+</section>
+
+<section>
+
+<h1>local</h1>
+
+<p>
+特定のディレクトリ以降でバージョンを固定
+</p>
+<pre>
+$ cd /path/to/project
+$ mysqlenv local 5.1.60
+</pre>
+
+</section>
+
+<section>
+
+<h1>exec</h1>
+
+<p>
+現在の lcoal の環境でコマンドを実行する。
+</p>
+<p>
+PATH が通ってないとき用かな？よくわからない。
+</p>
+<pre>
+$ mysqlenv exec mysql -uroot test
+</pre>
+
+</section>
+
+<section>
+
+<h1>which</h1>
+
+<p>
+いまの環境の実際のコマンドのパスを表示
+</p>
+<pre>
+$ mysqlenv which mysql
+</pre>
+
+</section>
+
+<section>
+
+<h1>rehash</h1>
+
+<p>
+shims とかいうアレなファイルを作り直す
+<br />基本的に install 後にやるので叩く必要なし
+</p>
+<pre>
+$ mysqlenv rehash
+</pre>
+
+</section>
+
+<section>
+
+<h1>version</h1>
+
+<p>
+現在の version を表示する
+</p>
+<pre>
+$ mysqlenv version
+</pre>
+
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 200%">ウィンウインウィン ウィンウィン ウィンウィンウィン</span></strong>
+</p>
+</div></section>
+
+<section>
+
+<h1>TODO</h1>
+
+<ul>
+<li>もうちょっとコマンド追加する</li>
+<li>mysql-build に依存してるけど、やめる？</li>
+<ul>
+<li>mysql-build は kamipo さん使ってないっていうし！</li>
+<li>MySQL::Sandbox をバックエンドにしたほうがいいかも</li>
+</ul>
+<li><span style="color: yellow">ちゃんと自分でつかう</span></li>
+<li>Q4M 入れたりとかしたい</li>
+<li>my.cnf とかも色々切り替えられるようにしたい？</li>
+<li>同じバージョンで複数起動したい</li>
+<ul>
+<li>テストの並列処理したいけど、毎回立ち上げるんじゃなくて最初からたちあげたい</li>
+</ul>
+</ul>
+
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<strong><span style="font-size: 200%">我らがオラクルの MySQL は世界一ィィィ！</span></strong>
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+ご清聴ありがとうございました。
+</p>
+</div></section>
+
+<div id="dummy"></div>
+<div id="date"></div>
+<div id="page"></div>
+<div id="help">
+<p>j or &rarr;: next</p>
+<p>k or &larr;: prev</p>
+<p>h or &uarr;: list</p>
+<p>l or &darr;: return</p>
+<p>o or &crarr;: open</p>
+<p>? or /: toggle this help</p>
+</div>
+<script type="text/javascript" src="static/js/slide.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="static/js/prettify.js"></script>
+</body>
+<html>

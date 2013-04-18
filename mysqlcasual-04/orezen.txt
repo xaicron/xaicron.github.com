@@ -1,0 +1,463 @@
+MySQL Casual #04
+
+vvv
+
+= %%yellow:mysqlenv 作った(仮)%% =
+〜 第一部 ファントムブラッド 〜
+
+@xaicron
+
+--2013/04/17 MySQL Casual #04 (日本オラクル)--
+
+^^^
+
+vvv
+
+**[size:400%:ズキュウウゥン]**
+
+^^^
+
+vvv
+
+**[size:200%:おまえは今までビルドした MySQL の回数をおぼえているのか？]**
+
+^^^
+
+vvv
+
+**[size:200%:・・・]**
+
+^^^
+
+vvv
+
+**[size:400%:はい]**
+
+^^^
+
+vvv
+
+みなさん、手元の開発環境で MySQL をどうやってインストールしていますか？
+
+^^^
+
+vvv
+
+@@@@
+<div align="left">
+@@@@
+
+- 公式のバイナリ入れる
+- ソースから自力でビルドやで！
+- MySQL::Sandbox 1択
+- mysql-build (c) kamipo を使う！
+
+@@@@
+</div>
+@@@@
+
+^^^
+
+vvv
+
+**[size:400%:貧弱！貧弱ゥ！]**
+
+^^^
+
+vvv
+
+というわけで %%yellow:mysqlenv%% というコマンドを作ったので
+それの話をします。
+
+^^^
+
+vvv
+
+**[size:400%:と思ったら]**
+
+^^^
+
+>>>
+
+@@@@
+<div align="center">
+@@@@
+
+全く同じ物を作っているヒトが...ッ！！
+
+[i:./static/img/shim0mura001.png]
+
+https://github.com/shim0mura/mysqlenv
+
+@@@@
+</div>
+@@@@
+
+<<<
+
+vvv
+
+**[size:300%:＼(^o^)／]**
+
+^^^
+
+vvv
+
+~~ぼ、僕のほうが 2日早く作り始めたんだからねっ！！~~
+
+^^^
+
+vvv
+
+カジュアルなので被りました
+
+^^^
+
+vvv
+
+**[size:200%:第一部・完]**
+
+^^^
+
+vvv
+
+...
+
+^^^
+
+vvv
+
+気を取り直して
+
+^^^
+
+>>>
+
+= mysqlenv とはッ！ =
+
+なんか rbenv とか plenv みたいな奴で、いろんなバージョンの MySQL を切り替えたり、特定のディレクトリ以降で使用する MySQL のバージョンを固定したりするやつ
+
+<<<
+
+>>>
+
+= インストールッ！ =
+
+以下のコマンドでパツイチ
+
+{{{
+$ curl -kL https://raw.github.com/xaicron/mysqlenv/master/script/mysqlenv-install | bash
+}}}
+
+<<<
+
+vvv
+
+**[size:300%:デモ]**
+
+^^^
+
+vvv
+
+**簡単☺**
+
+^^^
+
+vvv
+
+さて、お気づきの方もいらっしゃるかと思いますが
+
+^^^
+
+vvv
+
+バックエンドに **%%yellow:mysql-build (c) kamipo%%** を使っていますね！
+
+^^^
+
+vvv
+
+**[size:400%:メメタア]**
+
+^^^
+
+>>>
+
+= MySQL のインストールッ！ =
+
+以下のコマンドでサポートしてる version 一覧が出ます。
+
+{{{
+$ mysqlenv available
+3.23.58
+4.0.30
+4.1.25
+5.0.95
+5.1.68
+5.5.14-spider-3.0
+5.5.30
+5.6.10
+mariadb-5.5.29
+percona-5.5.29
+twitter-5.5.29.t10
+}}}
+
+<<<
+
+>>>
+
+= MySQL のインストールッ！ =
+
+そしてすかさずインストールッ！！
+
+{{{
+$ mysqlenv install 5.6.10
+}}}
+
+<<<
+
+vvv
+
+**[size:300%:デモ]**
+
+^^^
+
+vvv
+
+Now installing...
+
+^^^
+
+vvv
+
+**[size:150%:Ｌｕｃｋ！（幸運を）]**
+**[size:150%:ＰＬＵＣＫ（勇気をッ！）]**
+
+^^^
+
+vvv
+
+**[size:200%:第一部・完]**
+
+^^^
+
+vvv
+
+To Be Continued...
+
+^^^
+
+vvv
+
+**[size:300%:そして時は流れるッ！]**
+
+^^^
+
+vvv
+
+**[size:300%:ゴオオオォォォォォォ....]**
+
+^^^
+
+vvv
+
+= %%yellow:mysqlenv 作った(仮)%% =
+〜 第二部 戦闘潮流 〜
+
+@xaicron
+
+--2013/04/17 MySQL Casual #04 (日本オラクル)--
+
+^^^
+
+vvv
+
+**[size:400%:はい]**
+
+^^^
+
+vvv
+
+無事にビルドが終わったので
+
+^^^
+
+vvv
+
+それぞれのコマンドについてざっくばらんにやっていきます。
+
+^^^
+
+vvv
+
+**[size:400%:タコス]**
+
+^^^
+
+>>>
+
+= help =
+
+ヘルプッ！
+
+{{{
+$ mysqlenv              # == mysqlenv help or mysqlenv -h
+$ mysqlenv help install # install コマンドのヘルプ
+}}}
+
+<<<
+
+>>>
+
+= available =
+
+インストールできる mysql の一覧
+
+mysql-build を叩いてるだけ
+
+{{{
+$ mysqlenv available
+}}}
+
+<<<
+
+>>>
+
+= install =
+
+--as とかで別名でインストールできる
+
+{{{
+$ mysqlenv install -v --as kamipo 5.6.10
+}}}
+
+でもいまは mysql-build にビルドオプション渡せないのであんまり意味なかった＼(^o^)／
+
+~~誰か直して~~
+
+<<<
+
+>>>
+
+= list =
+
+今入ってる version の一覧を表示
+
+{{{
+$ mysqlenv list
+}}}
+
+<<<
+
+>>>
+
+= global =
+
+デフォルトで使う mysql のバージョンを固定
+
+{{{
+$ mysqlenv global 5.6.10
+# ... シェルを起動し直す
+$ mysql -V
+mysql  Ver 14.14 Distrib 5.6.10, for osx10.8 (x86_64) using  EditLine wrapper
+}}}
+
+<<<
+
+>>>
+
+= local =
+
+特定のディレクトリ以降でバージョンを固定
+
+{{{
+$ cd /path/to/project
+$ mysqlenv local 5.1.60
+}}}
+
+<<<
+
+>>>
+
+= exec =
+
+現在の lcoal の環境でコマンドを実行する。
+
+PATH が通ってないとき用かな？よくわからない。
+
+{{{
+$ mysqlenv exec mysql -uroot test
+}}}
+
+<<<
+
+>>>
+
+= which =
+
+いまの環境の実際のコマンドのパスを表示
+
+{{{
+$ mysqlenv which mysql
+}}}
+
+<<<
+
+>>>
+
+= rehash =
+
+shims とかいうアレなファイルを作り直す
+基本的に install 後にやるので叩く必要なし
+
+{{{
+$ mysqlenv rehash
+}}}
+
+<<<
+
+>>>
+
+= version =
+
+現在の version を表示する
+
+{{{
+$ mysqlenv version
+}}}
+
+<<<
+
+vvv
+
+**[size:200%:ウィンウインウィン ウィンウィン ウィンウィンウィン]**
+
+^^^
+
+>>>
+
+= TODO =
+
+- もうちょっとコマンド追加する
+- mysql-build に依存してるけど、やめる？
+ - mysql-build は kamipo さん使ってないっていうし！
+ - MySQL::Sandbox をバックエンドにしたほうがいいかも
+- %%yellow:ちゃんと自分でつかう%%
+- Q4M 入れたりとかしたい
+- my.cnf とかも色々切り替えられるようにしたい？
+- 同じバージョンで複数起動したい
+ - テストの並列処理したいけど、毎回立ち上げるんじゃなくて最初からたちあげたい
+
+<<<
+
+vvv
+
+**[size:200%:我らがオラクルの MySQL は世界一ィィィ！]**
+
+^^^
+
+vvv
+
+ご清聴ありがとうございました。
+
+^^^
