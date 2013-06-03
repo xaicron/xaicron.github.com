@@ -1,0 +1,155 @@
+What's pm-uninstall
+
+vvv
+
+= %%yellow:What's pm-uninstall?%% =
+
+Yuji Shimada (xaicron)
+
+YAPC::NA 2013 Lightning Talk
+
+^^^
+
+vvv
+
+[size:200%:こんにちは!]
+(Hello!)
+
+^^^
+
+>>>
+
+= Me =
+
+- Twitter: [twitter:@xaicron]
+- PAUSE: [https://metacpan.org/xaicron XAICORN]
+- Github: https://github.com/xaicron
+- Blog: http://blog.livedoor.jp/xaicron/
+
+<<<
+
+->>
+
+I from %%yellow:TOKYO%%, Japan
+
+[i:./static/img/kaminarimon.jpg]
+
+<<-
+
+->>
+
+WE HAVE PERL %%yellow:NINJA%%
+
+[i:http://farm5.staticflickr.com/4129/5090736237_7515cef69f_z.jpg]
+
+<<-
+
+->>
+
+Works at %%yellow::DeNA%%
+
+[i:./static/img/screenshot_2013-06-03-11.18.28.png]
+
+<<-
+
+vvv
+
+Mobage is Social Game Platform.
+
+About %%yellow:35 million PV/day!!%%
+
+All Web Applications, run on Plack.
+
+^^^
+
+>>>
+
+= What's pm-uninstall? =
+
+%%yellow:pm-uninstall%% is Perl Modules uninstaller.
+
+[i:./static/img/destroy.jpg]
+
+<<<
+
+vvv
+
+[size:200%:pm-uninstall features]
+
+^^^
+
+>>>
+
+= Uninstall modules =
+
+{{{
+$ pm-uninstall Foo
+}}}
+
+<<<
+
+>>>
+
+= Display the list of dependency =
+
+{{{
+$ pm-uninstall Plack
+}}}
+
+<<<
+
+>>>
+
+= Traget to local::lib modules =
+
+{{{
+$ pm-uninstall -L local Plack
+}}}
+
+<<<
+
+>>>
+
+So, very easy uninstalling some modules.
+
+<<<
+
+vvv
+
+[size:200%:But, We got `cpanm -U` !!]
+(I implemented it)
+
+^^^
+
+>>>
+
+OK. Uninstall pm-uninstall.
+
+{{{
+$ pm-uninstall App::pmuninstall
+}}}
+
+<<<
+
+>>>
+
+And next step
+
+{{{
+$ echo "alias pm-uninstall=cpanm -U" >> ~/.zshrc
+}}}
+
+<<<
+
+vvv
+
+:)
+
+^^^
+
+vvv
+
+[size:200%:Thank you]
+
+^^^
+

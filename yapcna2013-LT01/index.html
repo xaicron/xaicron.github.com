@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>What&#39;s pm-uninstall</title>
+<link rel="stylesheet" href="static/css/style.css" />
+<link rel="stylesheet" href="static/css/pretty.css" />
+<link rel="stylesheet" href="static/css/custom.css" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Montserrat+Alternates" />
+<style>
+* {
+    font-family: 'Montserrat Alternates'
+}
+</style>
+<meta name="viewport" content="width=devide-width,initial-scale=0.8,user-scalable=no" />
+</head>
+<body>
+
+<section class="center"><div class="align-center">
+
+<h1><span style="color: yellow">What&#39;s pm-uninstall?</span></h1>
+
+<p>
+Yuji Shimada (xaicron)
+</p>
+<p>
+YAPC::NA 2013 Lightning Talk
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<span style="font-size: 200%">こんにちは!</span>
+<br />(Hello!)
+</p>
+</div></section>
+
+<section>
+
+<h1>Me</h1>
+
+<ul>
+<li>Twitter: <a href="http://twitter.com/xaicron">@xaicron</a></li>
+<li>PAUSE: <a href="https://metacpan.org/xaicron">XAICORN</a></li>
+<li>Github: <a href="https://github.com/xaicron">https://github.com/xaicron</a></li>
+<li>Blog: <a href="http://blog.livedoor.jp/xaicron/">http://blog.livedoor.jp/xaicron/</a></li>
+</ul>
+
+</section>
+
+<section class="center">
+
+<p>
+I from <span style="color: yellow">TOKYO</span>, Japan
+</p>
+<p>
+<img src="./static/img/kaminarimon.jpg" alt="./static/img/kaminarimon.jpg" title="./static/img/kaminarimon.jpg" />
+</p>
+</section>
+
+<section class="center">
+
+<p>
+WE HAVE PERL <span style="color: yellow">NINJA</span>
+</p>
+<p>
+<img src="http://farm5.staticflickr.com/4129/5090736237_7515cef69f_z.jpg" alt="http://farm5.staticflickr.com/4129/5090736237_7515cef69f_z.jpg" title="http://farm5.staticflickr.com/4129/5090736237_7515cef69f_z.jpg" />
+</p>
+</section>
+
+<section class="center">
+
+<p>
+Works at <span style="color: yellow">:DeNA</span>
+</p>
+<p>
+<img src="./static/img/screenshot_2013-06-03-11.18.28.png" alt="./static/img/screenshot_2013-06-03-11.18.28.png" title="./static/img/screenshot_2013-06-03-11.18.28.png" />
+</p>
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+Mobage is Social Game Platform.
+</p>
+<p>
+About <span style="color: yellow">35 million PV/day!!</span>
+</p>
+<p>
+All Web Applications, run on Plack.
+</p>
+</div></section>
+
+<section>
+
+<h1>What's pm-uninstall?</h1>
+
+<p>
+<span style="color: yellow">pm-uninstall</span> is Perl Modules uninstaller.
+</p>
+<p>
+<img src="./static/img/destroy.jpg" alt="./static/img/destroy.jpg" title="./static/img/destroy.jpg" />
+</p>
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<span style="font-size: 200%">pm-uninstall features</span>
+</p>
+</div></section>
+
+<section>
+
+<h1>Uninstall modules</h1>
+
+<pre>
+$ pm-uninstall Foo
+</pre>
+
+</section>
+
+<section>
+
+<h1>Display the list of dependency</h1>
+
+<pre>
+$ pm-uninstall Plack
+</pre>
+
+</section>
+
+<section>
+
+<h1>Traget to local::lib modules</h1>
+
+<pre>
+$ pm-uninstall -L local Plack
+</pre>
+
+</section>
+
+<section>
+
+<p>
+So, very easy uninstalling some modules.
+</p>
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<span style="font-size: 200%">But, We got `cpanm -U` !!</span>
+<br />(I implemented it)
+</p>
+</div></section>
+
+<section>
+
+<p>
+OK. Uninstall pm-uninstall.
+</p>
+<pre>
+$ pm-uninstall App::pmuninstall
+</pre>
+
+</section>
+
+<section>
+
+<p>
+And next step
+</p>
+<pre>
+$ echo &quot;alias pm-uninstall=cpanm -U&quot; &gt;&gt; ~/.zshrc
+</pre>
+
+</section>
+
+<section class="center"><div class="align-center">
+
+<p>
+:)
+</p>
+</div></section>
+
+<section class="center"><div class="align-center">
+
+<p>
+<span style="font-size: 200%">Thank you</span>
+</p>
+</div></section>
+
+<div id="dummy"></div>
+<div id="date"></div>
+<div id="page"></div>
+<div id="help">
+<p>j or &rarr;: next</p>
+<p>k or &larr;: prev</p>
+<p>h or &uarr;: list</p>
+<p>l or &darr;: return</p>
+<p>o or &crarr;: open</p>
+<p>? or /: toggle this help</p>
+</div>
+<script type="text/javascript" src="static/js/slide.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="static/js/prettify.js"></script>
+</body>
+<html>
