@@ -1,0 +1,46 @@
+* {
+    color: yellow;
+    text-shadow: 2px 2px #333;
+}
+
+a {
+    color: lightseagreen;
+    text-decoration: none;
+}
+
+body {
+    background-color: black;
+}
+
+#container {
+}
+
+#container > header {
+    text-align: center;
+}
+
+#content {
+    border-top: 1px gray dashed;
+    border-bottom: 1px gray dashed;
+    width: 800px;
+    margin: 0 auto;
+    padding: 0 100px;
+}
+
+li {
+    list-style: none;
+}
+
+li.none:before {
+    content: "";
+}
+
+li:before {
+    color: white;
+    content: "✰ ";
+    text-shadow: none;
+}
+
+footer {
+    text-align: center;
+}
