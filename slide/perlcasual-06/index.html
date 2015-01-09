@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Perl-Casual #6</title>
+<link rel="stylesheet" href="static/css/style.css" />
+<link rel="stylesheet" href="static/css/pretty.css" />
+<link rel="stylesheet" href="static/css/custom.css" />
+<meta name="viewport" content="width=devide-width,initial-scale=0.8,user-scalable=no" />
+</head>
+<body>
+
+<section class="center"><div class="align-center">
+
+<h1>ハッカドールで使ってる<br />いくつかの一般的な技術の話</h1>
+
+<p>
+@xaicron
+<br />2014/10/24 perlcasual#6
+</p>
+</div></section>
+
+<section>
+<h1>自己紹介</h1>
+
+<ul>
+<li>Twitter: @xaicron</li>
+<li>Blog: <a href="http://blog.livedoor.jp/xaicron/">http://blog.livedoor.jp/xaicron/</a></li>
+<li>CPAN: <a href="https://metacpan.org/author/XAICRON">https://metacpan.org/author/XAICRON</a></li>
+</ul>
+
+</section>
+
+<section>
+<h1>自己紹介</h1>
+
+<p>
+最近の様子
+</p>
+<ul>
+<li><a href="http://app.famitsu.com/20140920_444851/">http://app.famitsu.com/20140920_444851/</a></li>
+<li><a href="http://gigazine.net/news/20141012-hackadoll-machiasobi-13/">http://gigazine.net/news/20141012-hackadoll-machiasobi-13/</a></li>
+</ul>
+
+</section>
+
+<section>
+
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+はい
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+<h1>ハッカドールについて</h1>
+
+<p>
+ハッカドール知ってる人〜？
+</p>
+</section>
+
+<section>
+<h1>ハッカドールについて</h1>
+
+<p>
+これね↓
+<br /><img src="static/img/hackadoll_lp.png" alt="static/img/hackadoll_lp.png" title="static/img/hackadoll_lp.png" />
+</p>
+</section>
+
+<section>
+<h1>ハッカドールについて</h1>
+
+<ul>
+<li>オタク向けのニュースアプリ</li>
+<li>ハッカドールちゃん達と戯れることができる</li>
+</ul>
+
+</section>
+
+<section>
+<h1>ハッカドールについて</h1>
+
+<ul>
+<li>何故か<span style="color: yellow">アニメ PV</span> 作っちゃった</li>
+<li>何故か<span style="color: yellow">フルボイスADV</span> 作っちゃった</li>
+<li>気付いたら中の人たちの<span style="color: yellow">歌とダンス</span>ができちゃってた</li>
+</ul>
+
+</section>
+
+<section>
+<h1>ハッカドール PV</h1>
+
+<p>
+<br />
+</p>
+<!-- raw html start -->
+<div style="text-align: center">
+<iframe width="560" height="315" src="//www.youtube.com/embed/eZUPz5iZ9FM" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/OMscZqJCyqM" frameborder="0" allowfullscreen></iframe>
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+
+<h1>ハッカドールの資料</h1>
+
+<p>
+<br />
+</p>
+<!-- raw html start -->
+<div style="text-align: center">
+<iframe src="//www.slideshare.net/slideshow/embed_code/40136577" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+はい
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+
+<!-- raw html start -->
+<div style="text-align: center; font-size: 180%">
+そろそろ Perl の話をしますよっ！
+</div>
+<!-- raw html end -->
+
+
+</section>
+
+<section>
+
+<h1>今日のアジェンダ</h1>
+
+<ul>
+<li>たのしいスクレイピング</li>
+<li>いい感じの画像を表示したい</li>
+</ul>
+
+</section>
+
+
+<section>
+<h1>たのしいスクレイピング</h1>
+
+<p>
+スクレイピングってなんでしょうか？
+</p>
+</section>
+
+<section>
+<h1>スクレイピングとは</h1>
+
+<ul>
+<li>いい感じにウェブサイトからコンテンツを抽出する技術のこと</li>
+<li>ほとんどのケースにおいて HTML に対して行う</li>
+</ul>
+
+</section>
+
+<section>
+<h1>スクレイピングに必要な知識</h1>
+
+<ul>
+<li>HTTP</li>
+<ul>
+<li>Cookie</li>
+<li>Referer</li>
+</ul>
+<li>DOM</li>
+<ul>
+<li>XPath</li>
+<li>CSS Selectors</li>
+</ul>
+</ul>
+
+</section>
+
+<section>
+<h1>よく使われるやつ</h1>
+
+<ul>
+<li>Web::Scraper</li>
+<li>Web::Query</li>
+<li>WWW::Mechanize</li>
+</ul>
+
+</section>
+
+<section>
+<h1>自分が最近つかうやつ</h1>
+
+<ul>
+<li>Web::Query</li>
+<li>WWW::Mechanize</li>
+<li>HTML::Entities</li>
+<li>HTML::Filter::Callbacks</li>
+</ul>
+
+</section>
+
+<section>
+<h1>Web::Query</h1>
+
+<p>
+jQuery っぽい感じで HTML をほげほげできる便利なやつ。
+</p>
+<pre>
+use Data::Dumper;
+use Web::Query qw(wq);
+
+my $links = [];
+wq(&#39;https://metacpan.org/author/XAICRON&#39;)-&gt;find(&#39;#author_releases a&#39;)-&gt;each(sub {
+    my ($i, $e) = @_;
+    push @$links, $e-&gt;attr(&#39;href&#39;);
+});
+
+warn Dumper $links;
+</pre>
+
+<p>
+みたいにやると、リンクの一覧が取れちゃう！
+</p>
+<p>
+<code>wq()</code> に URL を指定しているけども、ここは HTML の文字列か HTML::Element オブジェクトでもよい。
+</p>
+<p>
+上記の <code>each()</code> のところの <code>$e</code> は Web::Query のオブジェクトなので、再帰的に処理することもできて便利。
+</p>
+</section>
+
+<section>
+<h1>Web::Query</h1>
+
+<p>
+最近 <code>next()</code> と <code>prev()</code> が追加されたので、nextSibling 的なことも簡単にできて便利ですね。
+</p>
+</section>
+
+<section>
+<h1>WWW::Mechanize</h1>
+
+<p>
+cookie を保持できるクライアントじゃないとリダイレクトされちゃうページとかがあってめんどいので、デフォルトでその辺めんどうみてくれる WWW::Mechanize を使っている。
+</p>
+<pre>
+use Data::Dumper;
+use WWW::Mechanize;
+use Web::Query qw(wq);
+
+my $mech = WWW::Mechanize-&gt;new;
+my $res  = $mech-&gt;get(&#39;https://metacpan.org/author/XAICRON&#39;);
+
+my $links = [];
+wq($res-&gt;decoded_content)-&gt;find(&#39;#author_releases a&#39;)-&gt;each(sub {
+    my ($i, $e) = @_;
+    push @$links, $e-&gt;attr(&#39;href&#39;);
+});
+
+warn Dumper $links;
+</pre>
+
+</section>
+
+<section>
+<h1>HTML::Entities</h1>
+
+<p>
+HTML の中身が <code>&amp;#xxx</code> みたいになっていることがあるので前処理として一発かませておくと便利ですね。
+</p>
+<pre>
+use HTML::Entities (decode_entities);
+
+$html = decode_entities $html;
+</pre>
+
+</section>
+
+<section>
+<h1>HTML::Filter::Callbacks を使う</h1>
+
+<p>
+より詳細に HTML を操作したい場合に利用する。
+<br />たとえば、HTML コメントを取り除きたかったり、<code>&lt;br /&gt;</code> タグを全部改行に変えたいなど、あらゆる用途に利用可能。
+<br />実際にはこれだけでスクレイピングすることも不可能ではないが、わりと低レベルな操作を求められるので局所的につかうことをおすすめ。
+</p>
+<pre>
+use HTML::Filter::Callbacks;
+
+my $filter = HTML::Filter::Callbacks-&gt;new;
+$filter-&gt;handler(comment =&gt; []); # HTML コメントは削除
+# br を改行に変更
+$filter-&gt;add_callbacks(
+    br =&gt; {
+        start =&gt; sub {
+            my $tag = shift;
+            $tag-&gt;remove_tag;
+            $tag-&gt;text($tag-&gt;text =~ s/^\s+|\s+$//mgr);
+            $tag-&gt;append(&quot;\n&quot;);
+        },
+    },
+);
+
+my $filtered_html = $filter-&gt;process($html);
+</pre>
+
+</section>
+
+<section>
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+デモ
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+はい
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+<h1>いい感じの画像を表示したい</h1>
+
+<p>
+とあるサービスでブログとかで出てくる画像のなかでそれなりにいいやつを選択したいこととががあるようないような気がしますね。
+</p>
+</section>
+
+<section>
+<h1>いい感じの画像を表示したい</h1>
+
+<p>
+画像のサイズとか、色数とかをそこそこ取得してなんとなくいいかんじに使えば良さそうですね！
+</p>
+</section>
+
+<section>
+<h1>画像の情報取得でよくつかうやつ</h1>
+
+<ul>
+<li>Image::Magick</li>
+<li>Imager</li>
+</ul>
+
+<p>
+今回は Imager をつかってみます。
+</p>
+</section>
+
+<section>
+<h1>画像の情報取得</h1>
+
+<pre>
+use Imager;
+use Image::Info qw(image_type); # 画像の種類を取得する奴
+
+my $data = $ua-&gt;get(&#39;http://example.com/sample.png&#39;)-&gt;content;
+my $img  = Imager-&gt;new(data =&gt; $data); # raw data が食える
+
+my $file_type = lc(image_type(\$data)-&gt;{file_type} || &#39;&#39;);
+my $height    = $img-&gt;getheight;
+my $width     = $img-&gt;getwidth;
+my $bits      = $img-&gt;bits;
+my $colors    = $img-&gt;getcolorcount;
+my $channels  = $img-&gt;getchannels;
+my $file_size = length $data;
+</pre>
+
+</section>
+
+<section>
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+デモ
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+<h1>画像の情報取得</h1>
+
+<p>
+こんなかんじでとっても簡単に画像の詳細を取得できますね。
+</p>
+<p>
+あとはピクセル数とか色数とかのしきい値をきめていい感じな画像を選択すればよいですね。
+</p>
+</section>
+
+<section>
+
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+はい
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+そろそろ話すネタが切れてきましたね。
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+というわけで Perl-Casual の想い出を振り返ってみましょう。
+</div>
+<!-- raw html end -->
+
+</section>
+
+<section>
+
+<h1>Perl-Casual の想い出</h1>
+
+<ul>
+<li>Perl-Casual #1</li>
+<li>Perl-Casual #2</li>
+<li>Perl-Casual #3</li>
+<li>Perl-Casual #4</li>
+<li>Perl-Casual #5</li>
+</ul>
+
+</section>
+
+<section>
+
+<h1>Perl-Casual #1</h1>
+
+<p>
+生まれて初めてプログラミングの勉強会というもので発表することになった。
+</p>
+<p>
+当初 15分枠だったため、それなりにスライドを書いたがのちに参加者の増加にともなって 5分に変更になった。
+</p>
+<p>
+ちなみにその時のスライドは驚異の 150枚超。
+<br />初めての発表からスライドすっ飛ばし芸は存在していたようだ。
+</p>
+<p>
+余談ですが、ここで <a href="http://twitter.com/hidek">@hidek</a> さんに初めて会って紆余曲折あって DeNA に入ることになったのであった。
+</p>
+</section>
+
+<section>
+
+<h1>Perl-Casual #2</h1>
+
+<p>
+<a href="http://blog.livedoor.jp/xaicron/archives/51053533.html">http://blog.livedoor.jp/xaicron/archives/51053533.html</a>
+</p>
+<p>
+フレッシュマンとして参加して、Dan さんにサインを貰ったらしい！
+</p>
+</section>
+
+<section>
+
+<h1>Perl-Casual #3</h1>
+
+<p>
+<a href="http://blog.livedoor.jp/xaicron/archives/51135723.html">http://blog.livedoor.jp/xaicron/archives/51135723.html</a>
+</p>
+<p>
+みんなだいすき Encode の話をしたっぽいですね！
+</p>
+</section>
+
+<section>
+
+<h1>Perl-Casual #4</h1>
+
+<p>
+ジュンク堂書店 池袋本店で開催された会。
+</p>
+<p>
+池袋は心の距離が遠く、断念。
+</p>
+</section>
+
+<section>
+
+<h1>Perl-Casual #5</h1>
+
+<p>
+二次元からログアウトできなくなっていた
+</p>
+</section>
+
+<section>
+
+<h1>Perl-Casual #6</h1>
+
+<p>
+<a href="http://twitter.com/bayashi">@bayashi</a> さんに突然
+</p>
+<p>
+「お前、基調講演だから。」
+</p>
+<p>
+と言われる。冗談だと思っていたらマジだったので、当日に資料を作り始めるて発表。 <- イマココ
+</p>
+</section>
+
+<section>
+
+<p>
+というわけで Perl-Casual は良いイベントなので #100 ぐらいまで続いたりすると良いですね。
+</p>
+</section>
+
+<section>
+
+<!-- raw html start -->
+<div style="text-align: center; font-size: 200%">
+おしまい
+</div>
+<!-- raw html end -->
+
+</section>
+
+<div id="dummy"></div>
+<div id="date"></div>
+<div id="page"></div>
+<div id="help">
+<p>j or &rarr;: next</p>
+<p>k or &larr;: prev</p>
+<p>h or &uarr;: list</p>
+<p>l or &darr;: return</p>
+<p>o or &crarr;: open</p>
+<p>? or /: toggle this help</p>
+</div>
+<script type="text/javascript" src="static/js/slide.js"></script>
+<script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js"></script>
+<script type="text/javascript" src="static/js/prettify.js"></script>
+</body>
+<html>

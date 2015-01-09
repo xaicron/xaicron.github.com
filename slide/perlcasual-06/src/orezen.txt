@@ -1,0 +1,480 @@
+Perl-Casual #6
+
+vvv
+
+= ハッカドールで使ってる<br />いくつかの一般的な技術の話 =
+
+@xaicron
+2014/10/24 perlcasual#6
+
+^^^
+
+>>>
+= 自己紹介 =
+
+- Twitter: @xaicron
+- Blog: http://blog.livedoor.jp/xaicron/
+- CPAN: https://metacpan.org/author/XAICRON
+
+<<<
+
+>>>
+= 自己紹介 =
+
+最近の様子
+
+- http://app.famitsu.com/20140920_444851/
+- http://gigazine.net/news/20141012-hackadoll-machiasobi-13/
+
+<<<
+
+>>>
+
+@@@@
+<div style="text-align: center; font-size: 200%">
+はい
+</div>
+@@@@
+
+<<<
+
+>>>
+= ハッカドールについて =
+
+ハッカドール知ってる人〜？
+
+<<<
+
+>>>
+= ハッカドールについて =
+
+これね↓
+[i:static/img/hackadoll_lp.png]
+
+<<<
+
+>>>
+= ハッカドールについて =
+
+- オタク向けのニュースアプリ
+- ハッカドールちゃん達と戯れることができる
+
+<<<
+
+>>>
+= ハッカドールについて =
+
+- 何故か%%yellow:アニメ PV%% 作っちゃった
+- 何故か%%yellow:フルボイスADV%% 作っちゃった
+- 気付いたら中の人たちの%%yellow:歌とダンス%%ができちゃってた
+
+<<<
+
+>>>
+= ハッカドール PV =
+
+<br />
+
+@@@@
+<div style="text-align: center">
+<iframe width="560" height="315" src="//www.youtube.com/embed/eZUPz5iZ9FM" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube.com/embed/OMscZqJCyqM" frameborder="0" allowfullscreen></iframe>
+</div>
+@@@@
+
+<<<
+
+>>>
+
+= ハッカドールの資料 =
+
+<br />
+
+@@@@
+<div style="text-align: center">
+<iframe src="//www.slideshare.net/slideshow/embed_code/40136577" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+</div>
+@@@@
+
+<<<
+
+>>>
+
+@@@@
+<div style="text-align: center; font-size: 200%">
+はい
+</div>
+@@@@
+
+<<<
+
+>>>
+
+@@@@
+<div style="text-align: center; font-size: 180%">
+そろそろ Perl の話をしますよっ！
+</div>
+@@@@
+
+
+<<<
+
+>>>
+
+= 今日のアジェンダ =
+
+- たのしいスクレイピング
+- いい感じの画像を表示したい
+
+<<<
+
+
+>>>
+= たのしいスクレイピング =
+
+スクレイピングってなんでしょうか？
+
+<<<
+
+>>>
+= スクレイピングとは =
+
+- いい感じにウェブサイトからコンテンツを抽出する技術のこと
+- ほとんどのケースにおいて HTML に対して行う
+
+<<<
+
+>>>
+= スクレイピングに必要な知識 =
+
+- HTTP
+  - Cookie
+  - Referer
+- DOM
+  - XPath
+  - CSS Selectors
+
+<<<
+
+>>>
+= よく使われるやつ =
+
+- Web::Scraper
+- Web::Query
+- WWW::Mechanize
+
+<<<
+
+>>>
+= 自分が最近つかうやつ =
+
+- Web::Query
+- WWW::Mechanize
+- HTML::Entities
+- HTML::Filter::Callbacks
+
+<<<
+
+>>>
+= Web::Query =
+
+jQuery っぽい感じで HTML をほげほげできる便利なやつ。
+
+{{{
+use Data::Dumper;
+use Web::Query qw(wq);
+
+my $links = [];
+wq('https://metacpan.org/author/XAICRON')->find('#author_releases a')->each(sub {
+    my ($i, $e) = @_;
+    push @$links, $e->attr('href');
+});
+
+warn Dumper $links;
+}}}
+
+みたいにやると、リンクの一覧が取れちゃう！
+
+{{wq()}} に URL を指定しているけども、ここは HTML の文字列か HTML::Element オブジェクトでもよい。
+
+上記の {{each()}} のところの {{$e}} は Web::Query のオブジェクトなので、再帰的に処理することもできて便利。
+
+<<<
+
+>>>
+= Web::Query =
+
+最近 {{next()}} と {{prev()}} が追加されたので、nextSibling 的なことも簡単にできて便利ですね。
+
+<<<
+
+>>>
+= WWW::Mechanize =
+
+cookie を保持できるクライアントじゃないとリダイレクトされちゃうページとかがあってめんどいので、デフォルトでその辺めんどうみてくれる WWW::Mechanize を使っている。
+
+{{{
+use Data::Dumper;
+use WWW::Mechanize;
+use Web::Query qw(wq);
+
+my $mech = WWW::Mechanize->new;
+my $res  = $mech->get('https://metacpan.org/author/XAICRON');
+
+my $links = [];
+wq($res->decoded_content)->find('#author_releases a')->each(sub {
+    my ($i, $e) = @_;
+    push @$links, $e->attr('href');
+});
+
+warn Dumper $links;
+}}}
+
+<<<
+
+>>>
+= HTML::Entities =
+
+HTML の中身が {{&#xxx}} みたいになっていることがあるので前処理として一発かませておくと便利ですね。
+
+{{{
+use HTML::Entities (decode_entities);
+
+$html = decode_entities $html;
+}}}
+
+<<<
+
+>>>
+= HTML::Filter::Callbacks を使う =
+
+より詳細に HTML を操作したい場合に利用する。
+たとえば、HTML コメントを取り除きたかったり、{{<br />}} タグを全部改行に変えたいなど、あらゆる用途に利用可能。
+実際にはこれだけでスクレイピングすることも不可能ではないが、わりと低レベルな操作を求められるので局所的につかうことをおすすめ。
+
+{{{
+use HTML::Filter::Callbacks;
+
+my $filter = HTML::Filter::Callbacks->new;
+$filter->handler(comment => []); # HTML コメントは削除
+# br を改行に変更
+$filter->add_callbacks(
+    br => {
+        start => sub {
+            my $tag = shift;
+            $tag->remove_tag;
+            $tag->text($tag->text =~ s/^\s+|\s+$//mgr);
+            $tag->append("\n");
+        },
+    },
+);
+
+my $filtered_html = $filter->process($html);
+}}}
+
+<<<
+
+>>>
+@@@@
+<div style="text-align: center; font-size: 200%">
+デモ
+</div>
+@@@@
+
+<<<
+
+>>>
+
+@@@@
+<div style="text-align: center; font-size: 200%">
+はい
+</div>
+@@@@
+
+<<<
+
+>>>
+= いい感じの画像を表示したい =
+
+とあるサービスでブログとかで出てくる画像のなかでそれなりにいいやつを選択したいこととががあるようないような気がしますね。
+
+<<<
+
+>>>
+= いい感じの画像を表示したい =
+
+画像のサイズとか、色数とかをそこそこ取得してなんとなくいいかんじに使えば良さそうですね！
+
+<<<
+
+>>>
+= 画像の情報取得でよくつかうやつ =
+
+- Image::Magick
+- Imager
+
+今回は Imager をつかってみます。
+
+<<<
+
+>>>
+= 画像の情報取得 =
+
+{{{
+use Imager;
+use Image::Info qw(image_type); # 画像の種類を取得する奴
+
+my $data = $ua->get('http://example.com/sample.png')->content;
+my $img  = Imager->new(data => $data); # raw data が食える
+
+my $file_type = lc(image_type(\$data)->{file_type} || '');
+my $height    = $img->getheight;
+my $width     = $img->getwidth;
+my $bits      = $img->bits;
+my $colors    = $img->getcolorcount;
+my $channels  = $img->getchannels;
+my $file_size = length $data;
+}}}
+
+<<<
+
+>>>
+@@@@
+<div style="text-align: center; font-size: 200%">
+デモ
+</div>
+@@@@
+
+<<<
+
+>>>
+= 画像の情報取得 =
+
+こんなかんじでとっても簡単に画像の詳細を取得できますね。
+
+あとはピクセル数とか色数とかのしきい値をきめていい感じな画像を選択すればよいですね。
+
+<<<
+
+>>>
+
+@@@@
+<div style="text-align: center; font-size: 200%">
+はい
+</div>
+@@@@
+
+<<<
+
+>>>
+
+@@@@
+<div style="text-align: center; font-size: 200%">
+そろそろ話すネタが切れてきましたね。
+</div>
+@@@@
+
+<<<
+
+>>>
+
+@@@@
+<div style="text-align: center; font-size: 200%">
+というわけで Perl-Casual の想い出を振り返ってみましょう。
+</div>
+@@@@
+
+<<<
+
+>>>
+
+= Perl-Casual の想い出 =
+
+- Perl-Casual #1
+- Perl-Casual #2
+- Perl-Casual #3
+- Perl-Casual #4
+- Perl-Casual #5
+
+<<<
+
+>>>
+
+= Perl-Casual #1 =
+
+生まれて初めてプログラミングの勉強会というもので発表することになった。
+
+当初 15分枠だったため、それなりにスライドを書いたがのちに参加者の増加にともなって 5分に変更になった。
+
+ちなみにその時のスライドは驚異の 150枚超。
+初めての発表からスライドすっ飛ばし芸は存在していたようだ。
+
+余談ですが、ここで [twitter:hidek] さんに初めて会って紆余曲折あって DeNA に入ることになったのであった。
+
+<<<
+
+>>>
+
+= Perl-Casual #2 =
+
+http://blog.livedoor.jp/xaicron/archives/51053533.html
+
+フレッシュマンとして参加して、Dan さんにサインを貰ったらしい！
+
+<<<
+
+>>>
+
+= Perl-Casual #3 =
+
+http://blog.livedoor.jp/xaicron/archives/51135723.html
+
+みんなだいすき Encode の話をしたっぽいですね！
+
+<<<
+
+>>>
+
+= Perl-Casual #4 =
+
+ジュンク堂書店 池袋本店で開催された会。
+
+池袋は心の距離が遠く、断念。
+
+<<<
+
+>>>
+
+= Perl-Casual #5 =
+
+二次元からログアウトできなくなっていた
+
+<<<
+
+>>>
+
+= Perl-Casual #6 =
+
+[twitter:bayashi] さんに突然
+
+「お前、基調講演だから。」
+
+と言われる。冗談だと思っていたらマジだったので、当日に資料を作り始めるて発表。 <- イマココ
+
+<<<
+
+>>>
+
+というわけで Perl-Casual は良いイベントなので #100 ぐらいまで続いたりすると良いですね。
+
+<<<
+
+>>>
+
+@@@@
+<div style="text-align: center; font-size: 200%">
+おしまい
+</div>
+@@@@
+
+<<<
