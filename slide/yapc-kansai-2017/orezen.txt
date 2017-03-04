@@ -1,0 +1,1001 @@
+YAPC::Kansai 2017 - Elasticsearch 超入門
+
+vvv
+
+@@@@
+<div style="position: relative; top: 30%;">
+@@@@
+
+= Elasticsearch 超入門 =
+
+YAPC::Kansai 2017.03.04 Sat @MOTEXホール
+Yuji Shimada (%%yellow:@xaicron%%)
+@@@@
+</div>
+@@@@
+
+^^^
+
+vvv
+
+**[size:200%:こんにちはこんにちは]**
+
+^^^
+
+vvv
+
+きょうはとーっても便利なミドルウェアであるところの
+Elasticsearch を紹介します
+
+^^^
+
+>>>
+
+= 今日のアジェンダ =
+
+- Elasticsearchってなに？
+- Elasticsearchで全文検索をサクッと実現
+
+<<<
+
+>>>
+
+= 今日はなさないこと =
+
+- Elasticsearchをつかってレコメンドを実現！
+- Elasticsearchをつかってリアルタイムランキングを実現！
+- Elasticsearchでログ分析してリアルタイムにグラフを書いちゃおう！
+- Elasticsearchをつかって異常検知してアラートとばすぞ！
+
+<<<
+
+vvv
+
+**[size:200%:はい]**
+
+^^^
+
+vvv
+
+**[size:200%:Elasticsearchってなに？]**
+
+^^^
+
+>>>
+
+= Elasticsearchってなに？ =
+
+- Elastic社が開発している%%yellow:リアルタイムデータ検索・分析%%を実現するミドルウェア
+ - いわゆるデータストアの位置づけ
+ - 現在の最新バージョンは5.2.x
+
+<<<
+
+>>>
+
+= Elasticsearchってなに？ =
+
+- Elastic社が提供しているソフトウェアは他に「%%yellow:Kibana%%」「%%yellow:Logstash%%」「%%yellow:Beats%%」などがある
+ - このあたりの総称を「%%yellow:Elastic Stack%%」と呼んでいる模様
+ - 更に、「%%yellow:X-Pack%%」という運用管理向けのプラグインや「%%yellow:Elastic Cloud%%」というクラウドサービスもある
+ - 関係図は本家サイトが詳しい
+  - [https://www.elastic.co/jp/products]
+
+<<<
+
+>>>
+
+= Elasticsearchってなに？ =
+
+- Elastic社が提供しているソフトウェアは他に「%%yellow:Kibana%%」「%%yellow:Logstash%%」「%%yellow:Beats%%」などがある
+ - このあたりの総称を「%%yellow:Elastic Stack%%」と呼んでいる模様
+ - 更に、「%%yellow:X-Pack%%」という運用管理向けのプラグインや「%%yellow:Elastic Cloud%%」というクラウドサービスもある
+ - 関係図は本家サイトが詳しい
+  - [https://www.elastic.co/jp/products]
+- Elastic Stackすべてのソフトウェアのバージョンを揃えるために、Elasticsearchは2.xから5.x系にいきなり上がったという経緯がある
+
+<<<
+
+>>>
+
+= ただのデータストアではない！ =
+
+- 単一ノードから数百ノード以上まで自動的に分散して協調動作する
+ - 実際に社内で百台以上のノードで動いている実績がある
+
+<<<
+
+>>>
+
+= ただのデータストアではない！ =
+
+以下はほんの一部です
+
+- あらゆるデータ型に対応
+ - string,date,long,double,boolean,ipなどのプリミティブ型
+ - JSONのような構造を持ったデータのためのobject,nested型
+- 豊富なインデックス形式
+ - 全文検索のための転置インデックス
+ - 数値や位置情報などのためのBkd Tree
+ - 前方一致のためのcompletion
+
+<<<
+
+>>>
+
+= ただのデータストアではない！ =
+
+- スキーマレス、自動ですべてのデータがインデックスされる
+ - 突っ込んだデータの型を推測していい感じのマッピングを作成する
+  - この自動マッピングのルールも設定可能
+ - もちろんスキーマを作成することもできる
+- ただし、あとでマッピングを変えるのは結構めんどくさい
+ - 5.x系からはreindxが使えるようになったので前よりは楽になった
+
+<<<
+
+>>>
+
+= ただのデータストアではない！ =
+
+- RESTFul APIなので様々なプログラミング言語から容易にアクセスできる
+ - JSONで記述するDLSを使いこなす必要はある
+
+<<<
+
+vvv
+
+なんか夢の技術っぽいですね！！！
+
+^^^
+
+vvv
+
+もちろんそんなことはなくて、ちゃんとパフォーマンス出るようにしたり、安定運用するにはそれなりの準備が必要です。
+
+この辺は語ると長いので今回は省略
+
+^^^
+
+vvv
+
+**[size:200%:はい]**
+
+^^^
+
+vvv
+
+**[size:200%:Elasticsearchで]**
+**[size:200%:全文検索をサクッと実現]**
+
+^^^
+
+vvv
+
+**[size:200%:する前に]**
+
+^^^
+
+vvv
+
+**[size:200%:そもそも全文検索ってなんぞや]**
+
+^^^
+
+>>>
+
+= 全文検索とは =
+
+- ある複数の文章の中から特定の文字列を含む（または含まない）ものを見つけること
+ - grep も全文検索の一種
+
+<<<
+
+>>>
+
+= 全文検索とは =
+
+- 適切にインデックスを作成したり、文章の正規化を行わないといい感じに検索することが出来ない
+ - ngram、形態素解析、完全一致、前方一致、etc...
+- 日本語で**%%yellow:まともな%%**検索を作るのはかなり難しいのにも関わらず、少し出来ないことがあるだけで、ユーザーや関係各所から総ツッコミを受ける
+ - エンジニア同士であれば辛さがわかるので慰め合いは可能
+  - ただし、ユーザーは幸せになっていない！！
+
+<<<
+
+vvv
+
+**[size:200%:つらい😂]**
+
+^^^
+
+vvv
+
+**[size:200%:そこでElasticsearchですよ！]**
+
+^^^
+
+>>>
+
+= Elasticsearchの全文検索 =
+
+- Luceneをバックエンドにした全文検索システム
+ - LuceneはJavaで書かれたライブラリー
+ - Luceneをバックエンドにした全文検索システムは他にSolrなどがあるがここでは割愛
+
+<<<
+
+>>>
+
+= Elasticsearchの全文検索 =
+
+- 高速に検索するためにはインデックスを作成する必要がある
+- まずは文章にがどのようなものなのかを解析して、適切な形に変換してインデックスを作る必要がある
+ - このルールを analyzer として設定する
+- 通常、1文字毎にインデックスをつくっていたら効率が悪いので、n文字単位だったり単語単位でインデックスを作成する
+ - analyzer の設定の１つとして tokenizer を設定する
+
+<<<
+
+vvv
+
+そろそろ文字ばっかりで疲れてきたと思うので実際に試してみましょう！！
+
+^^^
+
+>>>
+
+= Elasticsearchをつかってみる =
+
+- とりあえず手元でElasticsearchを立ち上げると、localhost:9200でアクセスできるようになる
+
+{{{
+$ elasticsearch # 立ち上げる
+$ curl localhost:9200
+}}}
+
+<<<
+
+>>>
+
+= Elasticsearchをつかってみる =
+
+ここでElasticsearch頻出ワードの紹介
+
+- index: RDBMSでいうところのdatabaseのようなもの
+- type: RDBMSでいうところのtableのようなもの
+- document: DRBMSでいうところのレコード
+- field: RDBMSでいうところのcolumnのようなもの
+
+と思っておいてください！実際にはだいぶ違うんですが...
+
+<<<
+
+>>>
+
+= Elasticsearchをつかってみる =
+
+APIでは以下のようなURLで値を更新したり、アクセスしたりできる
+
+{{{
+# indexの情報を取得
+$ curl localhost:9200/{index}
+
+# type配下のdocumentの検索
+$ curl localhost:9200/{index}/{type}/_search
+
+# 特定のdocumentにアクセス
+$ curl localhost:9200/{index}/{type}/{id}
+}}}
+
+<<<
+
+>>>
+
+= Elasticsearchをつかってみる =
+
+スキーマレスなので、いきなり適当にデータをぶっこんでも動く
+
+{{{
+# documentのidを指定しない場合、自動的にidが振られる
+$ curl -XPUT localhost:9200/mytest/user/100 -d '{
+    "user_name":"xaicron",
+    "user_id":100
+}'
+}}}
+
+これでいきなり作成できるし取得も可能
+
+{{{
+# pretty をつけるとみやすいよ！
+$ curl "localhost:9200/mytest/user/100?pretty"
+{
+  "_index" : "mytest",
+  "_type" : "user",
+  "_id" : "100",
+  "_version" : 1,
+  "found" : true,
+  "_source" : {
+    "user_name" : "xaicron",
+    "user_id" : 100
+  }
+}
+}}}
+
+<<<
+
+>>>
+
+これでこんな感じで検索することが出来ます
+
+{{{
+$ curl localhost:9200/mytest/user/_search -d '{
+  "query": {
+    "match": {
+      "user_name": "xai"
+    }
+  }
+}'
+
+{
+  "took" : 9,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 5,
+    "successful" : 5,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1,
+    "max_score" : 0.2876821,
+    "hits" : [
+      {
+        "_index" : "mytest",
+        "_type" : "user",
+        "_id" : "100",
+        "_score" : 0.2876821,
+        "_source" : {
+          "user_name" : "xaicron",
+          "user_id" : 100
+        }
+      }
+    ]
+  }
+}
+}}}
+
+<<<
+
+vvv
+
+**[size:200%:簡単ですね！！]**
+
+^^^
+
+>>>
+
+ただし、何も設定しない状態だといい感じの全文検索ができない
+
+{{{
+# xai で検索してみるとマッチしない
+$ curl 'localhost:9200/mytest/user/_search?q=user_name:xai'
+{
+  "took": 4,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 0,
+    "max_score": null,
+    "hits": []
+  }
+}
+}}}
+
+<<<
+
+>>>
+
+自動的に作られた設定がどうなっているかみてみる
+
+{{{
+$ curl 'localhost:9200/mytest/_mapping/user'
+{
+  "mytest": {
+    "mappings": {
+      "user": {
+        "properties": {
+          "user_id": {
+            "type": "long"
+          },
+          # typeがテキストでインデックスがkeywordになっていることが分かる
+          "user_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+}}}
+
+<<<
+
+>>>
+
+というわけで、設定をしていきます
+実際にはもうちょっとちゃんとした日本語の文章を検索したいのでデータを用意しつつ、必要なプラグインをインストール
+
+今回は、形態素解析ライブラリーの１つであるところのkuromojiを使ってみるので、以下のコマンドでサクッとインストールします
+
+{{{
+$ elasticsearch-plugin install analysis-kuromoji
+}}}
+
+<<<
+
+>>>
+
+次にAnalyzerの設定をします。
+本当は、小文字に全て置換したり、かな変換したりするフィルターもここで設定できるのですが、今回はとりあえずtoknizerのみ設定しておきます。
+Analyzerの設定はindexに対して行いますが、一度作成したら基本的には変更不可能なのでちゃんと設計してから実行しましょう。
+
+{{{
+$ curl -XPUT localhost:9200/kuromoji_test -d '{
+  "index": {
+    "analysis": {
+      "tokenizer": {
+        "kuromoji": {
+          "type": "kuromoji_tokenizer"
+        }
+      },
+      "analyzer": {
+        "analyzer": {
+          "type": "custom",
+          "tokenizer": "kuromoji"
+        }
+      }
+    }
+  }
+}'
+}}}
+
+<<<
+
+>>>
+
+これでちゃんとkuromojiが使えるようになっているのかテストしてみます。
+indexに対して、_analyzeというAPIを叩くと、結果がわかります。
+まずはなにも指定しないパターンだと、全部1文字ずつに分割されてしまっているのがわかります。
+
+{{{
+$ curl -XPOST localhost:9200/kuromoji_test/_analyze -d 'すもももももももものうち'
+{
+  "tokens": [
+    {
+      "token": "す",
+      "start_offset": 0,
+      "end_offset": 1,
+      "type": "<HIRAGANA>",
+      "position": 0
+    },
+    {
+      "token": "も",
+      "start_offset": 1,
+      "end_offset": 2,
+      "type": "<HIRAGANA>",
+      "position": 1
+    },
+    {
+      "token": "も",
+      "start_offset": 2,
+      "end_offset": 3,
+      "type": "<HIRAGANA>",
+      "position": 2
+    },
+    {
+      "token": "も",
+      "start_offset": 3,
+      "end_offset": 4,
+      "type": "<HIRAGANA>",
+      "position": 3
+    },
+    {
+      "token": "も",
+      "start_offset": 4,
+      "end_offset": 5,
+      "type": "<HIRAGANA>",
+      "position": 4
+    },
+    {
+      "token": "も",
+      "start_offset": 5,
+      "end_offset": 6,
+      "type": "<HIRAGANA>",
+      "position": 5
+    },
+    {
+      "token": "も",
+      "start_offset": 6,
+      "end_offset": 7,
+      "type": "<HIRAGANA>",
+      "position": 6
+    },
+    {
+      "token": "も",
+      "start_offset": 7,
+      "end_offset": 8,
+      "type": "<HIRAGANA>",
+      "position": 7
+    },
+    {
+      "token": "も",
+      "start_offset": 8,
+      "end_offset": 9,
+      "type": "<HIRAGANA>",
+      "position": 8
+    },
+    {
+      "token": "の",
+      "start_offset": 9,
+      "end_offset": 10,
+      "type": "<HIRAGANA>",
+      "position": 9
+    },
+    {
+      "token": "う",
+      "start_offset": 10,
+      "end_offset": 11,
+      "type": "<HIRAGANA>",
+      "position": 10
+    },
+    {
+      "token": "ち",
+      "start_offset": 11,
+      "end_offset": 12,
+      "type": "<HIRAGANA>",
+      "position": 11
+    }
+  ]
+}
+}}}
+
+<<<
+
+>>>
+
+つぎにkuromojiを指定したパターンだと、ちゃんと形態素解析されている風なのがわかります！やったー！
+
+{{{
+$ curl -XPOST "localhost:9200/kuromoji_test/_analyze?analyzer=kuromoji" -d 'すもももももももものうち'
+{
+  "tokens": [
+    {
+      "token": "すもも",
+      "start_offset": 0,
+      "end_offset": 3,
+      "type": "word",
+      "position": 0
+    },
+    {
+      "token": "も",
+      "start_offset": 3,
+      "end_offset": 4,
+      "type": "word",
+      "position": 1
+    },
+    {
+      "token": "もも",
+      "start_offset": 4,
+      "end_offset": 6,
+      "type": "word",
+      "position": 2
+    },
+    {
+      "token": "も",
+      "start_offset": 6,
+      "end_offset": 7,
+      "type": "word",
+      "position": 3
+    },
+    {
+      "token": "もも",
+      "start_offset": 7,
+      "end_offset": 9,
+      "type": "word",
+      "position": 4
+    },
+    {
+      "token": "の",
+      "start_offset": 9,
+      "end_offset": 10,
+      "type": "word",
+      "position": 5
+    },
+    {
+      "token": "うち",
+      "start_offset": 10,
+      "end_offset": 12,
+      "type": "word",
+      "position": 6
+    }
+  ]
+}
+}}}
+
+<<<
+
+>>>
+
+ここまででkuromojiが使えるようになったので次はデータ型の設定をしましょう
+Elasticsearchはスキーマレスなので適当にいれるとデフォルトのanalyzerや型が使われちゃうので、ちゃんと設定してあげる必要があります
+
+<<<
+
+>>>
+
+_mappingというAPIを利用することで、事前に設定しておくことが出来ます
+今回は、wikipediaからてきとうに取ってきたアニメタイトルを使うので以下のような感じにしました
+
+{{{
+$ curl -XPUT localhost:9200/kuromoji_test/_mapping/anime_title -d'
+{
+  "properties": {
+    "title": {
+      "type": "string",
+      "index": "analyzed",
+      "analyzer": "kuromoji"
+    }
+  }
+}'
+}}}
+
+<<<
+
+>>>
+
+_bulk APIで一気にデータを流し込めるので、以下のようなJSONを用意してぶっこみましょう
+
+{{{
+$ cat anime_title.json
+{"index":{}}
+{"title":"イーグルサム"}
+{"index":{}}
+{"title":"家なき子"}
+{"index":{}}
+{"title":"家なき子レミ"}
+{"index":{}}
+{"title":"伊賀野カバ丸"}
+{"index":{}}
+{"title":"いきなりダゴン"}
+{"index":{}}
+{"title":"イクシオン サーガ DT"}
+...
+
+$ curl -XPOST localhost:9200/kuromoji_test/anime_lists/_bulk --data-binary @anime_title.json
+}}}
+
+<<<
+
+>>>
+
+ためしにヴァンパイアで検索してみるとこんな感じに！
+
+{{{
+$ curl localhost:9200/kuromoji_test/anime_title/_search -d '{
+  "query" : {
+    "match" : { "title" : "ヴァンパイア" }
+  }
+}'
+
+{
+  "took": 13,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 3,
+    "max_score": 9.377503,
+    "hits": [
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzhkeMwOqfvLAY0",
+        "_score": 9.377503,
+        "_source": {
+          "id": 48,
+          "title": "ヴァンパイア騎士 ヴァンパイア騎士 Guilty"
+        }
+      },
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzhkeMwOqfvLAY1",
+        "_score": 7.0457544,
+        "_source": {
+          "id": 49,
+          "title": "ヴァンパイア騎士 Guilty"
+        }
+      },
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzhkeMwOqfvLAY2",
+        "_score": 5.0536017,
+        "_source": {
+          "id": 50,
+          "title": "吸血姫美夕（ヴァンパイアみゆ）"
+        }
+      }
+    ]
+  }
+}
+}}}
+
+<<<
+
+>>>
+
+つぎは「ご注文」でやってみると...
+
+{{{
+$ curl localhost:9200/kuromoji_test/anime_title/_search -d '{
+  "query" : {
+    "match" : { "title" : "ご注文" }
+  }
+}'
+
+{
+  "took": 12,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 12,
+    "max_score": 9.386059,
+    "hits": [
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzjkeMwOqfvLAiF",
+        "_score": 9.386059,
+        "_source": {
+          "id": 641,
+          "title": "ご注文はうさぎですか??"
+        }
+      },
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzjkeMwOqfvLAiE",
+        "_score": 9.313047,
+        "_source": {
+          "id": 640,
+          "title": "ご注文はうさぎですか? ご注文はうさぎですか??"
+        }
+      },
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzikeMwOqfvLAhz",
+        "_score": 6.1055107,
+        "_source": {
+          "id": 623,
+          "title": "ご近所物語"
+        }
+      },
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzmkeMwOqfvLAy2",
+        "_score": 5.5830846,
+        "_source": {
+          "id": 1714,
+          "title": "姫様ご用心"
+        }
+      },
+...
+}}}
+
+<<<
+
+>>>
+
+上位二件は良さそうだけど、なんか下の方が変...？
+
+こういうときは analyzer をためしてみる
+まずはうまく行った「ヴァンパイア」
+これは良さそう
+
+{{{
+$ curl "localhost:9200/kuromoji_test/_analyze?analyzer=kuromoji" -d 'ヴァンパイア'
+{
+  "tokens": [
+    {
+      "token": "ヴァンパイア",
+      "start_offset": 0,
+      "end_offset": 6,
+      "type": "word",
+      "position": 0
+    }
+  ]
+}
+}}}
+
+<<<
+
+>>>
+
+つぎは「ご注文」をやってみると、「ご」と「注文」に分かれていることが分かる！
+
+{{{
+$ curl "localhost:9200/kuromoji_test/_analyze?analyzer=kuromoji" -d 'ご注文'
+{
+  "tokens": [
+    {
+      "token": "ご",
+      "start_offset": 0,
+      "end_offset": 1,
+      "type": "word",
+      "position": 0
+    },
+    {
+      "token": "注文",
+      "start_offset": 1,
+      "end_offset": 3,
+      "type": "word",
+      "position": 1
+    }
+  ]
+}
+}}}
+
+<<<
+
+>>>
+
+query の match だと、トークン毎にマッチしたものをスコアリングして、関連度が高そうなものを検索するのでこのようなことになった。
+さっきの例だと「ご」がトークンになっているタイトルがひっかかっていた。
+
+<<<
+
+>>>
+
+実際に関連度の高さで検索したいケースもままあるが、今回のケースだと「入力した文字列」が含まれるものにマッチしてほしい。
+
+<<<
+
+>>>
+
+Elasticsearchはそんな方法ももちろん用意していて、query_stringというのを使えばよい
+これを使うといわゆるキーワードマッチ的なものに
+
+{{{
+$ curl localhost:9200/kuromoji_test/anime_title/_search -d '{
+ "query" : {
+  "query_string" : {
+    "fields": ["title"],
+    "query": "\"ご注文は\"" # <- この文字列にマッチさせたいときはダブルクォーテーションでくくる
+  }
+ }
+}'
+{
+  "took": 55,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 2,
+    "max_score": 12.363281,
+    "hits": [
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzjkeMwOqfvLAiF",
+        "_score": 12.363281,
+        "_source": {
+          "id": 641,
+          "title": "ご注文はうさぎですか??"
+        }
+      },
+      {
+        "_index": "kuromoji_test",
+        "_type": "anime_title",
+        "_id": "AVqWsRzjkeMwOqfvLAiE",
+        "_score": 12.267111,
+        "_source": {
+          "id": 640,
+          "title": "ご注文はうさぎですか? ご注文はうさぎですか??"
+        }
+      }
+    ]
+  }
+}
+}}}
+
+<<<
+
+vvv
+
+**[size:200%:やった〜！😊]**
+
+^^^
+
+vvv
+
+**[size:200%:はい]**
+
+^^^
+
+vvv
+
+というわけで、Elasticsearchとはなんぞやというところから、軽く全文検索の触りの部分までお話させていただきました
+
+^^^
+
+vvv
+
+もちろん使い方はこれだけではなくて、ログ解析だったり、ランキング作成だったり、レコメンドだったりいろいろな用途で使えます
+
+^^^
+
+vvv
+
+全文検索の部分も、文字列の正規化や、辞書の作成だったりいろいろな要素がまだまだてんこ盛りで、本が一冊かけちゃうレベルなので、ちゃんと知りたい人は各自調べてみてくださいね！
+
+^^^
+
+vvv
+
+サービスで大量のデータをバリバリ扱うだけでなく、手元でも簡単に動かせるので、個人レベルでのちょっとしたデータの解析なんかもサクッとできるようになって夢が広がりんぐです。
+
+^^^
+
+vvv
+
+実はRDBMSとちがって、ドキュメント指向のシステムなので、そのへんもやりにくかったことが実現しやすくなってたりといろいろといい感じであります。
+
+^^^
+
+vvv
+
+みんなもElasticsearchつかおうぜ！！
+
+^^^
+
+vvv
+
+**[size:200%:ご清聴ありがとうございました]**
+
+^^^
+
+vvv
+
+**[size:200%:ご質問タイム]**
+
+^^^
+
+vvv
+
+**[size:200%:完]**
+
+^^^
+
