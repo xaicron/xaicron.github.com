@@ -1166,7 +1166,7 @@ s6._handleEvent = function(event) {
 
     event = event || window.event;
 
-    if (event.type == 'keypress' || s6.uai.ie && event.type == 'keydown') {
+    if (event.type == 'keypress' || event.type == 'keydown') {
         s6.keyIdentifier(event);
     }
 
