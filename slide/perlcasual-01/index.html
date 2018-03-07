@@ -1,0 +1,1917 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript; charset=utf-8" />
+<title>Perl vs WindowsFS</title>
+<script type="text/javascript" src="s6.js"></script>
+<script type="text/javascript" src="s6setup.js"></script>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+<body>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Perl vs WindowsFS</h1>
+  <div align="center">
+    <p><font color="yellow">xaicron (id:xaicron)</font></p>
+    <p>2009 11/20 Casual Perl Talks#1</p>
+  </div>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>10分のつもりで120枚ぐらいありますが</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p><s>TAKESAKOメソッド(高橋メソッド？)では5分で100枚って書いてあったから大丈夫</s></p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>自己紹介</h1>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>自己紹介</h2>
+<pre>
+  my $profile = {
+    name =&gt; <font color="yellow">'嶋田 裕二'</font>,
+    id   =&gt; <font color="yellow">'xaicron'</font>,
+    age  =&gt; 23,
+  }
+</pre>
+  <p>すぎゃーんさんを<s>パクり</s>参考にしました</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { display: 'none', fontSize: '30%' },
+  },
+  actions: [
+    [
+      ['p', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>自己紹介</h2>
+  <p>Blog: にひりずむ::しんぷる<br />(<a href="http://blog.livedoor.jp/xaicron/">http://blog.livedoor.jp/xaicron/</a>)
+  <p><font color="red">※</font>id:xaicronの方はなんだかエロいことが書いてあるので大人になってから見ましょう（今は完全に放置ですが）</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '50%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>自己紹介</h2>
+  <ul>
+    <li>プログラミング歴 <span>3年ぐらい</span></li>
+    <li>初めて触った言語 <span><font color="red">PHP</font></span></li>
+    <li>今はいろいろ (perl, java, javascript, python, actionsctipt3, C?, Lua?, Haskell?, Go?...)</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { fontSize: '70%' },
+    'ul/li[1]': { display: 'none', fontSize: '70%' },
+    'ul/li[2]': { display: 'none', fontSize: '70%' },
+    'ul/li/span': { display: 'none' },
+  },
+  actions: [
+    [
+      ['ul/li[0]/span[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]/span[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>自己紹介</h2>
+  <p>ちなみに</p>
+  <p>PHPは難しかったので挫折しました</p>
+  <p>当時はサーバー構築とかDB構築とかしないと動かないと思ってた</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'p[1]': { display: 'none', fontSize: '70%' },
+    'p[2]': { display: 'none', fontSize: '30%' },
+  },
+  actions: [
+    [
+      ['p[1]', 'fade in', 0.4],
+    ],
+    [
+      ['p[2]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>自己紹介</h2>
+  <p>好きな言語は <span>もちろんPerl</span></p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'p/span': { display: 'none'},
+  },
+  actions: [
+    [
+      ['p/span', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>自己紹介</h2>
+  <p>&quot;I <font color="pink">&hearts;</font> Perl&quot;</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { textAlign: 'center', fontSize: '140%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>さて</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>今日は、WindowsでPerlを今より少しだけ便利につかえる<font color="red">かも</font>しれないモジュールを書いたのでご紹介します。</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>その名も</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicode</h1>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>予備知識</h1>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>Windowsのファイルシステムの文字コードについて</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <ul>
+    <li>cp932</li>
+    <li>8.3形式 (PROGRA~1とか)</li>
+    <li>Unicode (UTF16-LE)</li>
+  </ul>
+  <p>Windowsでは1つのファイルに対して上記3種類のものが扱える</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { display: 'none' },
+    p: { display: 'none', fontSize: '50%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['p', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>Perlで通常扱えるのは<font color="red">cp932</font>のみ</p>
+  <p>&gt; ファイル名にUnicodeが含まれている場合は「?」になってしまう。</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'p[1]': { display: 'none' },
+  },
+  actions: [
+    [
+      ['p[1]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>こっちが「?」だよ！！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>OSのバージョンによっては、8.3形式で帰ってくることも。</p>
+  <p>&gt; 単純な読み書きは出来るが、Unicodeな名前にrenameとかは出来ない</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>デモ1</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>宮川さんのこの辺の記事もPerlとUnicode問題について詳しいです。</p>
+  <ul>
+    <li><a href="http://subtech.g.hatena.ne.jp/miyagawa/20070513/1178988848">http://subtech.g.hatena.ne.jp/miyagawa/20070513/1178988848</a></li>
+    <li><a href="http://subtech.g.hatena.ne.jp/miyagawa/20070513/1179038019">http://subtech.g.hatena.ne.jp/miyagawa/20070513/1179038019</a></li>
+    <li><a href="http://subtech.g.hatena.ne.jp/miyagawa/20070815/1187134943">http://subtech.g.hatena.ne.jp/miyagawa/20070815/1187134943</a></li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '60%' },
+    'ul/li': { fontSize: '60%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>どうすればいいの・・・？</p>
+  <p> &gt; Windows捨ててLinuxとかMac使おうぜ！！</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'p[1]': { display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['p[1]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>最近だとKindle</p>
+  <p><img src="img/Kindle.png" alt=" "></p>
+<script type="text/javascript">
+s6.page({
+    p: { fontSize: '70%' },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>でもWindowsじゃないとエロゲーが出来ないよ！！</p>
+  <p> &gt; エロゲーもPerlもしたいよ！！</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'p[1]': { display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['p[1]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>予備知識</h2>
+  <p>なんとか扱えるように出来ないか？</p>
+  <p> &gt; Win32::APIを使うといいっぽい！</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'p[1]': { display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['p[1]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::APIとは</h2>
+  <ul>
+    <li>その名の通り、Windowsを扱うためのAPI</li>
+    <li>Win32::APIはPerlのバインディング</li>
+    <li>Active PerlおよびStrawberry Perlには標準で付属</li>
+    <li>これを使えばDLLの関数をPerlから呼び出すことが可能に</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::APIとは</h2>
+<pre>
+<span class="res">use</span> Win32::API;
+<span class="res">my</span> $MessageBox = Win32::API-&gt;new(
+    <span class="qot">&quot;user32&quot;</span>,      <span class="comment"># 呼び出し元DLL名</span>
+    <span class="qot">&quot;MessageBoxA&quot;</span>, <span class="comment"># 呼び出す関数</span>
+    <span class="qot">&quot;NPPN&quot;</span>,        <span class="comment"># 関数の引数</span>
+    <span class="qot">&quot;N&quot;</span>            <span class="comment"># 戻り値</span>
+);
+$MessageBox-&gt;Call(0, <span class="qot">&quot;Hello, Casual!\n&quot;</span>, <span class="qot">&quot;Message&quot;</span>, 4096);
+</pre>
+  <p>こんな感じで関数を呼び出してつかう</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    pre: { fontSize: '40%' },
+    p: { fontSize: '40%', display: 'none' },
+  },
+  actions: [
+    [
+      ['p', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::APIとは</h2>
+  <p>使わない場合</p>
+<pre>
+<span class="res">use</span> DynaLoader;
+<span class="res">sub</span> GetProcAddress {
+    <span class="res">my</span> ($DLL, $API) = @_;
+    <span class="res">my</span> $path = <span class="qot">&quot;$ENV{SystemRoot}\\system32\\$DLL&quot;</span>;
+    <span class="res">my</span> $libref = DynaLoader::dl_load_file($path);
+    <span class="res">pack</span> <span class="qot">&quot;L&quot;</span>, DynaLoader::dl_find_symbol($libref, $API);
+}
+<span class="res">my</span> $x86 = <span class="qot">&quot;&quot;</span>
+. <span class="qot">&quot;h\0\0\0\0&quot;</span>
+. <span class="qot">&quot;h&quot;</span> . <span class="res">pack</span>(<span class="qot">&quot;P&quot;</span>, <span class="qot">&quot;Message&quot;</span>)
+. <span class="qot">&quot;h&quot;</span> . <span class="res">pack</span>(<span class="qot">&quot;P&quot;</span>, <span class="qot">&quot;Hello, World!\n&quot;</span>)
+. <span class="qot">&quot;h&quot;</span> . <span class="res">pack</span>(<span class="qot">&quot;L&quot;</span>, 1024)
+. <span class="qot">&quot;\xb8&quot;</span> . GetProcAddress(<span class="qot">&quot;user32.dll&quot;</span>, <span class="qot">&quot;MessageBoxA&quot;</span>)
+. <span class="qot">&quot;\xff\xd0&quot;</span> <span class="comment"># call eax</span>
+. <span class="qot">&quot;\xc3&quot;</span>     <span class="comment"># ret</span>
+;
+DynaLoader::dl_install_xsub(<span class="qot">&quot;X&quot;</span>,unpack<span class="qot">&quot;L&quot;</span>,pack<span class="qot">&quot;P&quot;</span>,$x86);&amp;X;
+</pre>
+  <p>ちょっと難しい</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    pre: { fontSize: '20%' },
+    p: { fontSize: '40%', marginBottom: '0px' },
+    'p[1]': { display: 'none', marginTop: '0.4em' },
+  },
+  actions: [
+    [
+      ['p[1]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::APIとは</h2>
+  <p>これを使えばUnicode文字が含まれてるファイルを扱える。</p>
+  <span>詳しくは<a href="http://subtech.g.hatena.ne.jp/miyagawa/20070815/1187134943">http://subtech.g.hatena.ne.jp/miyagawa/20070815/1187134943</a></span>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    span: { fontSize: '60%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::APIとは</h2>
+  <p>が、しかし。</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::APIとは</h2>
+  <ul>
+    <li>毎回API叩くとかやってられない</li>
+    <li>インターフェースがPerlっぽくない</li>
+    <li>ちょっとでも引数の指定をミスるとSEGV</li>
+    <li>Unicode用のAPIは引数も戻り値もUTF16-LE(しかもNULL混じり)</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>というわけで</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>いろいろありましたが、</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>やっと本題</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>WindowsのUnicode関連のあれこれをすっきり解消したい！!</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>そんなあなたに</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicode</h1>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode</h2>
+  <ul>
+    <li>WindowsでUnicodeなファイルとかを簡単に扱えるWin32::APIのラッパー</li>
+    <li>Perlで普通にファイルを扱うのとほとんど同じ感覚で使える</li>
+    <li>Perl内では常にflagged utf8で扱うのでモダンな気持ちを味わえる</li>
+    <li>ついでにコマンドプロンプトにもそのままutf8な文字を出力しちゃう</li>
+    <li><font color="red">兎に角、関数をエクスポート</font></li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { display: 'none', fontSize: '50%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[4]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode</h2>
+  <p>Win32::Unicodeを使ったら</p>
+<ul>
+  <li>彼女が出来ました</li>
+  <li>借金が無くなりました</li>
+  <li>猫アレルギーが治りました</li>
+  <li>声優検定で合格しました</li>
+</ul>
+  
+  <p>といったことはありませんが、便利です。</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '70%' },
+    'p[1]': { fontSize: '60%', display: 'none' },
+    'ul/li': { display: 'none', fontSize: '60%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+    [
+      ['p[1]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicodeの構成</h1>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    h1: { fontSize: '80%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicodeの構成</h2>
+  <ul>
+    <li>Win32::Unicode</li>
+    <li>Win32::Unicode::Console</li>
+    <li>Win32::Unicode::Constant</li>
+    <li>Win32::Unicode::Dir</li>
+    <li>Win32::Unicode::Encode</li>
+    <li>Win32::Unicode::Error</li>
+    <li>Win32::Unicode::File</li>
+    <li>Win32::Unicode::Native</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicodeの構成</h2>
+  <p>単体で使う可能性があるものは以下の6つ</p>
+  <ul>
+    <li>Win32::Unicode</li>
+    <li>Win32::Unicode::Console</li>
+    <li>Win32::Unicode::Dir</li>
+    <li>Win32::Unicode::Error</li>
+    <li>Win32::Unicode::File</li>
+    <li>Win32::Unicode::Native</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '60%' },
+    'ul/li': { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicode::Console</h1>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    h1: { fontSize: '80%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Console</h2>
+  <ul>
+    <li>flagged utf8な文字をそのままコマンドプロンプトに出力できる</li>
+    <li>cp932以外の文字が含まれていてもOK (MSゴシックが対応していれば)</li>
+    <li>Perlを通さずにコンソールに直接ぶっこむ</li>
+    <li>リダイレクト時は普通にPerlのprintを使う</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { fontSize: '70%', display: 'none' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Console</h2>
+  <p>エクスポートされる関数</p>
+  <ul>
+    <li>print<span>W</span><font color="red">W</font></li>
+    <li>printf<span>W</span><font color="red">W</font></li>
+    <li>say<span>W</span><font color="red">W</font></li>
+    <li>warn<span>W</span><font color="red">W</font></li>
+    <li>die<span>W</span><font color="red">W</font></li>
+  </ul>
+  <p>全部「W」がつく</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '70%' },
+    'p[1]': { display: 'none', fontSize: '60%', marginTop: '0.2em' },
+    ul: { margin: '0.2em 10%'  },
+    'ul/li': { fontSize: '70%' },
+    'ul/li/font': { display: 'none' },
+  },
+  actions: [
+    [
+      ['ul/li/span', 'fade out', 0],
+      ['ul/li/font', 'fade in', 0.4],
+      ['p[1]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Console</h2>
+<pre>
+<span class="res">use</span> strict;
+<span class="res">use</span> warnings;
+<span class="res">use</span> utf8;
+<font color="red">use Win32::Unicode::Console;</font>
+
+print<font color="red">W</font> <span class="qot">'I &hearts; Perl'</span>;
+</pre>
+  <p>flagged utf8をそのままコマンドプロンプトに出力できる</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'pre/font': { display: 'none' },
+    p: { display: 'none', fontSize: '50%' },
+  },
+  actions: [
+    [
+      ['pre/font', 'fade in', 0.4],
+      ['p', 'fade in', 0.4],
+    ],
+  ]
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Console</h2>
+  <p>デモ2</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Console</h2>
+  <p>便利！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Console</h2>
+  <ul>
+    <li>ほとんどの場合、binmode STDOUT =&gt; ':encoding(cp932)'で対応できる</li>
+    <li>リダイレクトするときは標準のprintを使用するので、binmodeが必要</li>
+    <li>flushされるタイミングがなんか微妙</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicode::File</h1>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    h1: { fontSize: '80%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::File</h2>
+  <ul>
+    <li>Unicodeが含まれるファイルの読み書き</li>
+    <li>IO::Fileっぽいインターフェース</li>
+    <li>引数はflagged utf8</li>
+    <li>あとはファイル移動、削除、コピー</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': {display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::File</h2>
+  <p>エクスポートされる関数</p>
+  <table border="0" width="80%" style="margin-left: 10%; font-size:70%;">
+    <tr>
+      <td valign="top" nowrap width="50%">
+        <ul>
+          <li>unlink<font color="red">W</font></li>
+          <li>rename<font color="red">W</font></li>
+          <li>copy<font color="red">W</font></li>
+          <li>move<font color="red">W</font></li>
+          <li>touch<font color="red">W</font></li>
+        </ul>
+      </td>
+      <td valign="top" width="50%">
+        <ul>
+          <li>file_type</li>
+          <li>file_size</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::File</h2>
+  <p>IO::Fileっぽく</p>
+<pre>
+<span class="res">use</span> strict;
+<span class="res">use</span> warnings;
+<span class="res">use</span> utf8;
+<span class="res">use</span> Win32::Unicode::File;
+
+<span class="res">my</span> $wfile = Win32::Unicode::File-&gt;new;
+$wfile-&gt;<span class="res">open</span>(<span class="qot">'&gt;'</span>, <span class="qot">'森鷗外.txt'</span>); <span class="comment"># Unicodeファイル</span>
+$wfile-&gt;<span class="res">binmode</span>(<span class="qot">':encoding(cp932)'</span>);
+$wfile-&gt;<span class="res">write</span>(<span class="qot">&quot;こんにちわ Unicode\n&quot;</span>);
+$wfile-&gt;<span class="res">close</span>;
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '50%', margin: '0.2em' },
+    pre: { fontSize: '35%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::File</h2>
+  <p>素のPerlっぽく</p>
+<pre>
+<span class="res">use</span> strict;
+<span class="res">use</span> warnings;
+<span class="res">use</span> utf8;
+<span class="res">use</span> Win32::Unicode::File;
+
+<span class="res">my</span> $fh = Win32::Unicode::File-&gt;new;
+<span class="res">open</span> $fh, <span class="qot">'&gt;'</span>, <span class="qot">&quot;I \x{2665} Perl.txt&quot;</span>; <span class="comment"># Unicodeファイル</span>
+<span class="res">binmode</span> $fh, <span class="qot">':encoding(cp932)'</span>;
+<span class="res">print</span> {$fh} <span class="qot">&quot;こんにちわ Unicode\n&quot;</span>;
+<span class="res">close</span> $fh;
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '50%', margin: '0.2em' },
+    pre: { fontSize: '35%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::File</h2>
+  <p>デモ3</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::File</h2>
+<pre>
+<span class="res">use</span> utf8;
+<span class="res">use</span> Win32::Unicode::File;
+
+<span class="res">my</span> $file = <span class="qot">&quot;I \x{2665} Perl.txt&quot;</span>;
+<span class="res">if</span> (<span class="bre">file_type</span> f =&gt; $file) {
+    <span class="res">print</span> file_size $file;
+}
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    pre: { fontSize: '50%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::File</h2>
+  <ul>
+    <li>file_typeは -X演算子の代わり</li>
+    <li>typeを重ね打ち出来る</li>
+    <li>file_type <font color="red">rhf</font> =&gt; $fileとか (読み込み専用で隠し属性のファイル)</li>
+    <li>file_sizeはそのまま</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::File</h2>
+  <p>TODO</p>
+  <ul>
+    <li>まだstatとかflockとか未実装</li>
+    <li>たぶん4GB超えるファイルが扱えない（気が向いたら対応）</li>
+    <li>-X演算子が使えない (なんかやり方知ってる人いたら教えてください＞＜)</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicode::Dir</h1>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <ul>
+    <li>Unicodeが含まれるディレクトリの操作</li>
+    <li>File::Pathの機能</li>
+    <li>File::Findの機能</li>
+    <li>getcwdとかchdirとかその辺</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': {display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <p>エクスポートされる関数</p>
+  <table border="0" width="80%" style="margin-left: 10%; font-size:50%;">
+    <tr>
+      <td valign="top" nowrap width="50%">
+      <ul>
+        <li>mkdir<font color="red">W</font></li>
+        <li>rmdir<font color="red">W</font></li>
+        <li>getcwd<font color="red">W</font></li>
+        <li>chdir<font color="red">W</font></li>
+        <li>find<font color="red">W</font></li>
+        <li>finddepth<font color="red">W</font></li>
+      </ul>
+      </td>
+      <td valign="top" width="50%">
+        <ul>
+        <li>mkpath<font color="red">W</font></li>
+        <li>rmtree<font color="red">W</font></li>
+        <li>mvtree<font color="red">W</font></li>
+        <li>cptree<font color="red">W</font></li>
+        <li>dir_size</li>
+        <li>file_type</li>
+        <li>file_size</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+<pre>
+<span class="res">use</span> utf8;
+<span class="res">use</span> Win32::Unicode::Console;
+<span class="res">use</span> Win32::Unicode::Dir;
+
+<span class="res">my</span> $wdir = Win32::Unicode::Dir-&gt;new;
+$wdir-&gt;<span class="res">open</span>(<span class="qot">'森鷗外'</span>);
+<span class="res">for</span> <span class="res">my</span> $file ($wdir-&gt;fetch) {
+    <span class="bre">sayW</span> $file;
+}
+$wdir-&gt;<span class="res">close</span>;
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    pre: { fontSize: '40%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <p>デモ4</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <p>File::Find</p>
+<pre>
+<span class="res">use</span> utf8;
+<span class="res">use</span> File::Find;
+
+find <span class="res">sub</span> {
+    <span class="res">my</span> $file = $_;
+    <span class="res">my</span> $full_path = $File::Find::name;
+    <span class="res">my</span> $cwd = $File::Find::cwd;
+    <span class="bre">printf</span> <span class="qot">&quot;%s : %s : %s\n&quot;</span>, $file, $full_path, $cwd;
+}, <span class="qot">'.'</span>;
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '50%', margin: '0.2em' },
+    pre: { fontSize: '35%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <p>File::Find Win32::Unicode::Dir版</p>
+<pre>
+<span class="res">use</span> utf8;
+<span class="res">use</span> Win32::Unicode::Console;
+<span class="res">use</span> Win32::Unicode::Dir;
+
+find<font color="red">W</font> <span class="res">sub</span> {
+    <span class="res">my</span> $file = $_;
+    <span class="res">my</span> $full_path = $<font color="red">Win32::Unicode::Dir</font>::name;
+    <span class="res">my</span> $cwd = $<font color="red">Win32::Unicode::Dir</font>::cwd;
+    <span class="bre">printf<font color="red">W</font></span> <span class="qot">&quot;%s : %s : %s\n&quot;</span>, $file, $full_path, $cwd;
+}, <span class="qot">'.'</span>;
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '50%', margin: '0.2em' },
+    pre: { fontSize: '35%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <p>$Win32::Unicode::Dir::nameとか長すぎるので、第一引数で受け取れます。</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <p>File::Find 第一引数版</p>
+<pre>
+<span class="res">use</span> utf8;
+<span class="res">use</span> Win32::Unicode::Console;
+<span class="res">use</span> Win32::Unicode::Dir;
+
+findW <span class="res">sub</span> {
+    <span class="res">my</span> $perf = <span class="res">shift</span>;
+    <span class="bre">printfW</span> <span class="qot">&quot;%s : %s : %s\n&quot;</span>, $perf-&gt;{<span class="bre">file</span>}, $perf-&gt;{<span class="bre">path</span>}, $perf-&gt;{<span class="bre">cwd</span>};
+}, <span class="qot">'.'</span>;
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '50%', margin: '0.2em' },
+    pre: { fontSize: '33%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <p>超すっきりしましたね！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Dir</h2>
+  <ul>
+    <li>rmtreeWとかcptreeWとかはFile::Pathと一緒です</li>
+    <li>dir_sizeはディレクトリ配下のファイルを再帰的に足し算して返します。(なのでクソ遅い)</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicode::Error</h1>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    h1: { fontSize: '80%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Error</h2>
+  <ul>
+    <li>「or die $!」 の代わりに使うやつ</li>
+    <li>日本語でエラーメッセージが表示されちゃうすぐれもの！</li>
+    <li>といってもWindowsのエラーメッセージなのでお察しください</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': {display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Error</h2>
+  <p>エクスポートされる関数</p>
+  <ul>
+    <li>error<font color="red">W</font> のみ</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Error</h2>
+<pre>
+<span class="res">use</span> utf8;
+<span class="res">use</span> Win32::Unicode::Console;
+<span class="res">use</span> Win32::Unicode::File;
+
+<span class="res">my</span> $fh = Win32::Unicode::File-&gt;new;
+<span class="res">open</span> $fh, <span class="qot">'&lt;'</span>, <span class="qot">'存在しない.txt'</span> <span class="res">or</span> <span class="bre">dieW</span> <font color="red">errorW</font>;
+<span class="res">print</span> <span class="res">join</span> <span class="qot">&quot;\n&quot;</span>, &lt;$fh&gt;;
+<span class="res">close</span> $fh;
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    pre: { fontSize: '40%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicode</h1>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode</h2>
+  <ul>
+    <li>今までのモジュールを全部useして関数も全部エクスポートする</li>
+    <li>実際使うときはこいつだけuseすればOK</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': {display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>さて</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>ここまで来て言うのもアレですが、</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>「W」はさすがに無くね？</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>ｗｗｗ</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>「もうWなんて飽き飽きなんだよ！」</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>「おれはもっと普通にやりたいんだよ！！」</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>Win32::Unicode::(File|Dir)->newとかやってられないよ！！</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>そんなあなたに</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>Win32::Unicode::Native</h1>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    h1: { fontSize: '80%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Native</h2>
+  <ul>
+    <li>useするだけでほぼ完全に普通のPerlと同じように扱える</li>
+    <li>新しいことを覚えたくないあなたにぴったり</li>
+    <li>CORE::GLOBALは書き換えず、あくまでエクスポート</li>
+    <li>なので有効範囲はuseしたところのみ</li>
+    <li>例外として、print系は変更範囲がプログラム全体に及ぶ</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': {display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[4]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Native</h2>
+  <p>エクスポートされる関数</p>
+  <p>いままでのから「W」を抜いたやつ</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Native</h2>
+<pre>
+<span class="res">use</span> utf8;
+<span class="res">use</span> Win32::Unicode::Native;
+
+<span class="res">print</span> <span class="qot">&quot;flagged utf8な文字も普通にいける&quot;</span>;
+
+<span class="comment"># Win32::Unicode::File-&gt;newとかしない</span>
+<span class="res">open</span> <span class="res">my</span> $fh, <span class="qot">'&gt;'</span>, <span class="qot">'森鷗外.txt'</span> <span class="res">or</span> <span class="res">die</span> error;
+<span class="res">print</span> $fh <span class="qot">&quot;ほげほげ&quot;</span>;
+<span class="res">close</span> $fh;
+
+<span class="comment"># Win32::Unicode::Dir-&gt;newとかしない</span>
+<span class="res">opendir</span> <span class="res">my</span> $dh, <span class="qot">&quot;\x{2600}&quot;</span> <span class="res">or</span> <span class="res">die</span> error;
+say <span class="res">join</span> <span class="qot">&quot;\n&quot;</span>, <span class="res">readdir</span> $dh;
+<span class="res">close</span> $dh;
+</pre>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    pre: { fontSize: '30%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Native</h2>
+  <p>完全にそのまま！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Native</h2>
+  <p>ちなみに</p>
+<pre>
+use Win32::Unicode '-native'
+</pre>
+  <p>でもOK</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Native</h2>
+  <p>デモ5</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h2>Win32::Unicode::Native</h2>
+  <ul>
+    <li>ベアワードなファイルハンドルが扱えない (FH とか)</li>
+    <li>STDOUTをtieしているので影響範囲がプログラム全体に渡る</li>
+    <li>Win32::Unicode自体、中でいろいろやっている分、遅い (tieとかblessとかエンコードとかAPIコールとか)</li>
+  </ul>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': { fontSize: '70%' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>だけど便利！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>かもしれない</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>そんなわけで</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>Perl vs WindowsFS</p>
+  <p>↓</p>
+  <p>Perl <font color="pink">&hearts;</font> WindowsFS</p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { textAlign: 'center' },
+    'p[1]': { display: 'none' },
+    'p[2]': { display: 'none' },
+  },
+  actions: [
+    [
+      ['p[1]', 'fade in', 0.4],
+      ['p[2]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>これからはもうUnicodeのファイルが来てもプッツンしない</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>健全な生活を歩むことができるようになりますね！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>Win32::Unicodeを使えば</p>
+  <ul>
+    <li>今まで包茎で悩んでいた時間をエロサイトを閲覧するなど有効活用できるようになる</li>
+    <li>全裸で街を出歩いても捕まらなくなる (半裸で出歩くというストレスが無くなる)</li>
+    <li>どれだけハンバーガーを食べても健康美は揺るがない</li>
+    <li>などなど。。。</li>
+  </ul>
+  <script type="text/javascript">
+s6.page({
+  styles: {
+    'ul/li': {display: 'none', fontSize: '70%' },
+  },
+  actions: [
+    [
+      ['ul/li[0]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[1]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[2]', 'fade in', 0.4],
+    ],
+    [
+      ['ul/li[3]', 'fade in', 0.4],
+    ],
+  ],
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>WindowsでPerlを使うときはぜひ使って見てください！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>開発はgithubで行ってます (<a href="http://github.com/xaicron/p5-win32-unicode">http://github.com/xaicron/p5-win32-unicode</a>)</p>
+  <p><img src="img/github.png" alt="画像" /></p>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    p: { fontSize: '60%' },
+    'p[1]': { textAlign: 'center' },
+  },
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>CPANにあげる予定</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>そんなわけで</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>まとめ</h1>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>初めて話をしたので至らない点も多かったと思いますが</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>最後まで聞いていただいてありがとうございました。</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>Casual Perlはゆる～いつながり</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>気軽に集まれるプログラマーの輪が広がっていくと、いろんなものがもっともっと生まれていくと思います。</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>これからもこういった集まりとかが出来るとすごくいいですね！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>今までトークしたことない自分も何か話せたし</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>普段は聴いているだけの人でも</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>ちょっとした勇気で<font color="red">スピーカー</font>になれる！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>まぁ聴いているだけでもいいんですが。</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>結局何が言いたいかというと</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>Casual Perl++</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>開催してくださったyusukebeさん本当にありがとうございます！！</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <p>というわけで</p>
+<script type="text/javascript">
+s6.page({
+});
+</script>
+</div>
+
+<!-- ===================================================== -->
+<div>
+  <h1>ご清聴ありがとう<br />ございました。</h1>
+<script type="text/javascript">
+s6.page({
+  styles: {
+    h1: { fontWeight: 'normal' },
+  },
+});
+</script>
+</div>
+
+
+</body>
+</html>

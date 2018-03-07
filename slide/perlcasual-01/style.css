@@ -1,0 +1,64 @@
+.s6 .page h1 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.s6 .page h2 {
+    font-size: 80%;
+    padding-left: 0.3em;
+    border-left: 0.2em solid #f90;
+}
+
+.s6 .page p {
+    font-size: 80%;
+}
+
+.s6 .page.default > pre {
+    border-top: 0.1em solid;
+    border-bottom:  0.1em solid;
+}
+
+.s6.dark .page.default > pre {
+    border-top-color: #0f3;
+    border-bottom-color: #0f3;
+}
+
+/* Perl Code Start */
+span.comment {
+	font: 90%/90% monospace;
+	color: rgb(0, 200, 0);
+}
+
+span.anno {
+	font: bold 100% monospace;
+	color: rgb(255, 0, 0);
+}
+
+span.res {
+	font: bold 100% monospace;
+	color: #ff9900;
+/*	color: rgb(200, 0, 200); */
+}
+
+span.qot {
+	font: 100% monospace;
+	color: rgb(80, 150, 255);
+}
+
+span.normal {
+	font: 100% monospace;
+	color: #252525;
+}
+
+span.bre {
+	font: 100% monospace;
+	color: #fff;
+}
+
+span.count {
+	font: 100% monospace;
+	color: #333;
+	border-right: 1px solid #333;
+	padding: 1px 5px 0px 0px;
+}
+/* Perl Code End */
